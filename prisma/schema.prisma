@@ -1,0 +1,158 @@
+// CATLA BROADBAND SERVICE - Complaint Management System
+// Prisma Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── User / Staff ────────────────────────────────────────
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  passwordHash  String
+  role          String   @default("OPERATOR") // ADMIN | DIRECTOR | OPERATOR | TECHNICIAN
+  phone         String?
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  assignedComplaints Complaint[] @relation("AssignedTech")
+  createdComplaints  Complaint[] @relation("CreatedBy")
+  attachments        Attachment[]
+  auditLogs          AuditLog[]
+  escalationNotifs   EscalationEvent[]
+}
+
+// ─── Customer (cached from SmartGuard BMS) ───────────────
+model Customer {
+  id            String   @id @default(cuid())
+  smartguardId  String?  @unique
+  name          String
+  phone         String
+  email         String?
+  address       String
+  area          String?
+  plan          String?
+  speed         String?
+  category      String   @default("HOME") // HOME | BUSINESS | ENTERPRISE | GOVERNMENT
+  status        String   @default("ACTIVE") // ACTIVE | SUSPENDED | DISCONNECTED
+  balance       Float?   @default(0)
+  dueDate       String?
+  lastSyncedAt  DateTime @default(now())
+  createdAt     DateTime @default(now())
+
+  // Relations
+  complaints    Complaint[]
+}
+
+// ─── Complaint Type (seeded dropdown data) ───────────────
+model ComplaintType {
+  id              String   @id @default(cuid())
+  category        String   // e.g., "No Internet", "Slow Speed"
+  subType         String   // e.g., "Complete Outage", "Speed Below Plan"
+  icon            String?  // emoji
+  defaultPriority String   @default("MEDIUM") // CRITICAL | HIGH | MEDIUM | LOW
+  active          Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+
+  // Relations
+  complaints      Complaint[]
+
+  @@unique([category, subType])
+}
+
+// ─── Complaint (core record) ─────────────────────────────
+model Complaint {
+  id                String    @id @default(cuid())
+  ticketNumber      String    @unique // TKT-YYMMDD-NNNNN
+  customerId        String
+  complaintTypeId   String
+  priority          String    @default("MEDIUM") // CRITICAL | HIGH | MEDIUM | LOW
+  status            String    @default("OPEN")   // OPEN | ASSIGNED | IN_PROGRESS | ON_THE_WAY | ARRIVED | WORKING | RESOLVED | CLOSED
+  description       String?
+  customerCategory  String    @default("HOME")   // HOME | BUSINESS | ENTERPRISE | GOVERNMENT
+
+  // SLA
+  slaDeadline       DateTime?
+  slaHours          Float?
+  escalationLevel   Int       @default(0) // 0=none, 1=L2, 2=Manager, 3=Director
+
+  // Assignment
+  assignedTechId    String?
+  createdById       String
+
+  // Resolution
+  resolutionType    String?
+  resolutionNotes   String?
+  resolvedAt        DateTime?
+  closedAt          DateTime?
+
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  customer          Customer       @relation(fields: [customerId], references: [id])
+  complaintType     ComplaintType   @relation(fields: [complaintTypeId], references: [id])
+  assignedTech      User?          @relation("AssignedTech", fields: [assignedTechId], references: [id])
+  createdBy         User           @relation("CreatedBy", fields: [createdById], references: [id])
+  attachments       Attachment[]
+  auditLogs         AuditLog[]
+  escalationEvents  EscalationEvent[]
+}
+
+// ─── Attachment (photos from technicians) ────────────────
+model Attachment {
+  id          String   @id @default(cuid())
+  complaintId String
+  uploadedById String
+  fileName    String
+  filePath    String
+  fileType    String   @default("image/jpeg")
+  fileSize    Int      @default(0) // bytes
+  stage       String   @default("AFTER") // BEFORE | DURING | AFTER
+  gpsLat      Float?
+  gpsLng      Float?
+  capturedAt  DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  // Relations
+  complaint   Complaint @relation(fields: [complaintId], references: [id])
+  uploadedBy  User      @relation(fields: [uploadedById], references: [id])
+}
+
+// ─── Audit Log ───────────────────────────────────────────
+model AuditLog {
+  id          String   @id @default(cuid())
+  complaintId String?
+  userId      String
+  action      String   // CREATED | STATUS_CHANGED | ASSIGNED | ESCALATED | RESOLVED | CLOSED | PHOTO_UPLOADED
+  details     String?  // JSON string with old/new values
+  createdAt   DateTime @default(now())
+
+  // Relations
+  complaint   Complaint? @relation(fields: [complaintId], references: [id])
+  user        User       @relation(fields: [userId], references: [id])
+}
+
+// ─── Escalation Event ────────────────────────────────────
+model EscalationEvent {
+  id             String   @id @default(cuid())
+  complaintId    String
+  level          Int      // 1=L2, 2=Manager, 3=Director
+  notifiedUserId String?
+  slaPercentage  Float    // % of SLA elapsed at escalation
+  triggeredAt    DateTime @default(now())
+
+  // Relations
+  complaint      Complaint @relation(fields: [complaintId], references: [id])
+  notifiedUser   User?     @relation(fields: [notifiedUserId], references: [id])
+}
