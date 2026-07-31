@@ -812,16 +812,19 @@
             }
         }
 
-        function toTitleCase(str) {
+                function toTitleCase(str) {
             if (!str) return str;
             const acronyms = ['SLA', 'NOC', 'ILL', 'ILP', 'BGP', 'SMTP', 'VPN', 'VPNS', 'IP', 'IPV4', 'AIIDC', 'CATLA', 'GST', 'UPS', 'CAF', 'DD', 'PVT', 'LTD', 'CO'];
-            return str.replace(/\w\S*/g, function(txt) {
+            let titleCased = str.replace(/\w\S*/g, function(txt) {
                 let upper = txt.toUpperCase();
                 let cleanUpper = upper.replace(/[^A-Z0-9]/g, '');
                 if (acronyms.includes(cleanUpper)) {
                     return txt.toUpperCase();
                 }
                 return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+            return titleCased.replace(/\([^)]+\)/g, function(match) {
+                return match.toUpperCase();
             });
         }
 
@@ -951,6 +954,7 @@
 
 </body>
 </html>
+
 
 
 
