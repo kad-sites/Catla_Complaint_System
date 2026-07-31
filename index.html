@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -989,83 +989,65 @@ window.addEventListener('DOMContentLoaded', function() {
     document.getElementById('refNoInput').value = 'CATLA/' + storedYear + '/' + currentSeq;
 });
 
-// Auto-strip " Mbps Plan" on focus, re-add on blur
+// Auto-strip suffixes on focus, re-add on blur
 document.querySelectorAll('.plan-speed').forEach(function(inp) {
     inp.addEventListener('focus', function() {
         this.value = this.value.replace(/ Mbps Plan$/i, '').trim();
     });
     inp.addEventListener('blur', function() {
-        var val = this.value.replace(/ Mbps Plan$/i, '').trim();
-        if (val) { this.value = val + ' Mbps Plan'; }
+        var v = this.value.replace(/ Mbps Plan$/i, '').trim();
+        if (v) this.value = v + ' Mbps Plan';
     });
 });
 
-// Auto-strip for Rate fields: "? 208.00 / Mbps" -> "208.00"
 document.querySelectorAll('.auto-rate').forEach(function(inp) {
     inp.addEventListener('focus', function() {
-        this.value = this.value.replace(/^?\s*/, '').replace(/\s*\/\s*Mbps$/, '').trim();
+        this.value = this.value.replace(/^[\u20B9]\s*/, '').replace(/\s*\/\s*Mbps$/, '').trim();
     });
     inp.addEventListener('blur', function() {
-        var val = this.value.replace(/^?\s*/, '').replace(/\s*\/\s*Mbps$/, '').trim();
-        if (val) { this.value = '? ' + val + ' / Mbps'; }
+        var v = this.value.replace(/^[\u20B9]\s*/, '').replace(/\s*\/\s*Mbps$/, '').trim();
+        if (v) this.value = '\u20B9 ' + v + ' / Mbps';
     });
 });
 
-// Auto-strip for Ratio fields: "1:1 Dedicated" -> "1:1"
 document.querySelectorAll('.auto-ratio').forEach(function(inp) {
     inp.addEventListener('focus', function() {
         this.value = this.value.replace(/\s*Dedicated$/, '').trim();
     });
     inp.addEventListener('blur', function() {
-        var val = this.value.replace(/\s*Dedicated$/, '').trim();
-        if (val) { this.value = val + ' Dedicated'; }
+        var v = this.value.replace(/\s*Dedicated$/, '').trim();
+        if (v) this.value = v + ' Dedicated';
     });
 });
 
-// Auto-strip for Annual Amount: "? 2,49,600.00 + GST" -> "2,49,600.00"
 document.querySelectorAll('.auto-amount').forEach(function(inp) {
     inp.addEventListener('focus', function() {
-        this.value = this.value.replace(/^?\s*/, '').replace(/\s*\+\s*GST$/, '').trim();
+        this.value = this.value.replace(/^[\u20B9]\s*/, '').replace(/\s*\+\s*GST$/, '').trim();
     });
     inp.addEventListener('blur', function() {
-        var val = this.value.replace(/^?\s*/, '').replace(/\s*\+\s*GST$/, '').trim();
-        if (val) { this.value = '? ' + val + ' + GST'; }
+        var v = this.value.replace(/^[\u20B9]\s*/, '').replace(/\s*\+\s*GST$/, '').trim();
+        if (v) this.value = '\u20B9 ' + v + ' + GST';
     });
 });
 
-// Auto-strip for Installation: "? 15,000.00/-" -> "15,000.00"
 document.querySelectorAll('.auto-one-time').forEach(function(inp) {
     inp.addEventListener('focus', function() {
-        this.value = this.value.replace(/^?\s*/, '').replace(/\/-$/, '').trim();
+        this.value = this.value.replace(/^[\u20B9]\s*/, '').replace(/\/-$/, '').trim();
     });
     inp.addEventListener('blur', function() {
-        var val = this.value.replace(/^?\s*/, '').replace(/\/-$/, '').trim();
-        if (val) { this.value = '? ' + val + '/-'; }
+        var v = this.value.replace(/^[\u20B9]\s*/, '').replace(/\/-$/, '').trim();
+        if (v) this.value = '\u20B9 ' + v + '/-';
     });
 });
 
 function handlePrint() {
     window.print();
-    // After print, increment sequence for the NEXT one.
-    let currentSeq = parseInt(localStorage.getItem('catlaSequence')) || 100;
+    var currentSeq = parseInt(localStorage.getItem('catlaSequence')) || 100;
     currentSeq += 1;
     localStorage.setItem('catlaSequence', currentSeq);
-    let yyyy = new Date().getFullYear();
+    var yyyy = new Date().getFullYear();
     document.getElementById('refNoInput').value = 'CATLA/' + yyyy + '/' + currentSeq;
 }
-
-// Auto-strip " Mbps Plan" on focus, re-add on blur
-document.querySelectorAll('.plan-speed').forEach(function(inp) {
-    inp.addEventListener('focus', function() {
-        this.value = this.value.replace(/ Mbps Plan$/i, '').trim();
-    });
-    inp.addEventListener('blur', function() {
-        let val = this.value.replace(/ Mbps Plan$/i, '').trim();
-        if (val && !/Mbps Plan$/i.test(val)) {
-            this.value = val + ' Mbps Plan';
-        }
-    });
-});
 </script>
 </body>
 </html>
