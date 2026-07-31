@@ -542,7 +542,7 @@
             <strong style="font-size: 11pt;">CATLA Proposal Generator (Interactive Form)</strong>
             <span style="color: #94A3B8; font-size: 8.5pt; margin-left: 10px;">✨ Fully Aligned & Justified Layout!</span>
         </div>
-        <button class="btn-print" onclick="window.print()">🖨️ Save as PDF / Print</button>
+        <button class="btn-print" onclick="handlePrint()">🖨️ Save as PDF / Print</button>
     </div>
 
         <div class="document-wrapper">
@@ -579,11 +579,11 @@
             <div class="doc-title-right">
                 <div class="meta-line">
                     <span style="font-weight: 700; color: #475569;">Ref No:</span> 
-                    <input type="text" class="ref-input" value="CATLA/ILL/2022/AIIDC" style="width: 150px; font-weight: 700; text-align: right;">
+                    <input type="text" id="refNoInput" class="ref-input" value="" style="width: 150px; font-weight: 700; text-align: right;">
                 </div>
                 <div class="meta-line">
                     <span style="font-weight: 700; color: #475569;">Date:</span> 
-                    <input type="text" class="date-input" value="19/12/2022" style="width: 100px; font-weight: 700; text-align: right;">
+                    <input type="text" id="currentDateInput" class="date-input" value="" style="width: 100px; font-weight: 700; text-align: right;">
                 </div>
             </div>
         </div>
@@ -592,8 +592,8 @@
         <div class="client-info-grid">
             <div class="client-cell">
                 <div class="info-label">PREPARED FOR</div>
-                <input type="text" id="personNameInput" oninput="syncCompanyName()" value="The Managing Director" style="font-weight:700; font-size:9.5pt; margin-bottom:3px; text-align:left;">
-                <textarea id="companyNameInput" class="auto-expand" rows="1" style="margin-bottom:3px;" oninput="syncCompanyName()">Assam Industrial Infrastructure Development Corp (AIIDC)</textarea>
+                <input type="text" id="personNameInput" oninput="syncCompanyName()" value="" placeholder="The Managing Director" style="font-weight:700; font-size:9.5pt; margin-bottom:3px; text-align:left;">
+                <textarea id="companyNameInput" class="auto-expand" rows="1" style="margin-bottom:3px;" oninput="syncCompanyName()" placeholder="Client / Company"></textarea>
                 <input type="text" value="Guwahati, Assam" style="text-align:left;">
             </div>
             <div class="client-cell">
@@ -774,8 +774,7 @@
                 <div style="font-weight: 700; color: #0F172A; margin-bottom: 5px;">Account & Technical Support Managers</div>
                 
                 <select id="managerSelect" style="font-weight:700; color:#059669; font-size:8.8pt; margin-bottom:5px; cursor:pointer;" onchange="updateManagerDetails()">
-                    <option value="Anupam P. Das / Zoheb Aziz|+91 9854051519 / +91 9854051522|catlabroadbandservices@gmail.com" selected>Anupam P. Das / Zoheb Aziz</option>
-                    <option value="Anupam Das|+91 9854051519|catlabroadbandservices@gmail.com">Anupam Das (9854051519)</option>
+                    <option value="Anupam Das|+91 9854051519|catlabroadbandservices@gmail.com" selected>Anupam Das (9854051519)</option>
                     <option value="Zoheb Aziz|+91 9854051522|catlabroadbandservices@gmail.com">Zoheb Aziz (9854051522)</option>
                     <option value="Utpal Jyoti Das|+91 9854051520|catlabroadbandservices@gmail.com">Utpal Jyoti Das (9854051520)</option>
                     <option value="Deep Singh|+91 9854051525|catlabroadbandservices@gmail.com">Deep Singh (9854051525)</option>
@@ -959,9 +958,50 @@
         }
     </script>
 
-<script>window.addEventListener('DOMContentLoaded', syncCompanyName);</script>
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+    syncCompanyName();
+    updateManagerDetails();
+    
+    // Date
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+    document.getElementById('currentDateInput').value = dd + '/' + mm + '/' + yyyy;
+    
+    // Sequence
+    let storedYear = localStorage.getItem('catlaYear');
+    let currentSeq = localStorage.getItem('catlaSequence');
+    
+    if (!storedYear || parseInt(storedYear) < yyyy) {
+        storedYear = yyyy;
+        currentSeq = 100;
+        localStorage.setItem('catlaYear', storedYear);
+        localStorage.setItem('catlaSequence', currentSeq);
+    }
+    
+    if (!currentSeq) {
+        currentSeq = 100;
+        localStorage.setItem('catlaSequence', currentSeq);
+    }
+    
+    document.getElementById('refNoInput').value = 'CATLA/' + storedYear + '/' + currentSeq;
+});
+
+function handlePrint() {
+    window.print();
+    // After print, increment sequence for the NEXT one.
+    let currentSeq = parseInt(localStorage.getItem('catlaSequence')) || 100;
+    currentSeq += 1;
+    localStorage.setItem('catlaSequence', currentSeq);
+    let yyyy = new Date().getFullYear();
+    document.getElementById('refNoInput').value = 'CATLA/' + yyyy + '/' + currentSeq;
+}
+</script>
 </body>
 </html>
+
 
 
 
