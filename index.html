@@ -989,6 +989,17 @@ window.addEventListener('DOMContentLoaded', function() {
     document.getElementById('refNoInput').value = 'CATLA/' + storedYear + '/' + currentSeq;
 });
 
+// Auto-strip " Mbps Plan" on focus, re-add on blur
+document.querySelectorAll('.plan-speed').forEach(function(inp) {
+    inp.addEventListener('focus', function() {
+        this.value = this.value.replace(/ Mbps Plan$/i, '').trim();
+    });
+    inp.addEventListener('blur', function() {
+        var val = this.value.replace(/ Mbps Plan$/i, '').trim();
+        if (val) { this.value = val + ' Mbps Plan'; }
+    });
+});
+
 function handlePrint() {
     window.print();
     // After print, increment sequence for the NEXT one.
@@ -998,9 +1009,23 @@ function handlePrint() {
     let yyyy = new Date().getFullYear();
     document.getElementById('refNoInput').value = 'CATLA/' + yyyy + '/' + currentSeq;
 }
+
+// Auto-strip " Mbps Plan" on focus, re-add on blur
+document.querySelectorAll('.plan-speed').forEach(function(inp) {
+    inp.addEventListener('focus', function() {
+        this.value = this.value.replace(/ Mbps Plan$/i, '').trim();
+    });
+    inp.addEventListener('blur', function() {
+        let val = this.value.replace(/ Mbps Plan$/i, '').trim();
+        if (val && !/Mbps Plan$/i.test(val)) {
+            this.value = val + ' Mbps Plan';
+        }
+    });
+});
 </script>
 </body>
 </html>
+
 
 
 
