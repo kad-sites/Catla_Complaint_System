@@ -65,7 +65,7 @@
         }
         .cover-title {
             font-family: 'EB Garamond', Garamond, serif;
-            font-size: 16pt;
+            font-size: 13pt;
             font-weight: 400;
             font-style: italic;
             color: #334155;
@@ -75,7 +75,7 @@
         }
         .cover-to {
             font-family: 'EB Garamond', Garamond, serif;
-            font-size: 14pt;
+            font-size: 11pt;
             font-weight: 400;
             color: #64748B;
             margin-bottom: 24px;
@@ -83,7 +83,7 @@
         }
         .cover-company {
             font-family: 'EB Garamond', Garamond, serif;
-            font-size: 24pt;
+            font-size: 18pt;
             font-weight: 500;
             color: #0F172A;
         }
@@ -800,12 +800,14 @@
 
     <!-- JavaScript -->
     <script>
-        function syncCompanyName() {
+                function syncCompanyName() {
             let companyInput = document.getElementById('companyNameInput');
             let targetNotice = document.getElementById('companyNoticeTarget');
+            let coverCompany = document.getElementById('coverCompanyName');
             if (companyInput && targetNotice) {
                 let cleanedVal = toTitleCase(companyInput.value.trim());
                 targetNotice.innerText = cleanedVal || "Client / Company";
+                if (coverCompany) coverCompany.innerText = cleanedVal || "Client / Company";
             }
         }
 
@@ -948,5 +950,6 @@
 
 </body>
 </html>
+
 
 
