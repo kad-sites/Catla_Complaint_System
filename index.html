@@ -90,7 +90,10 @@
         }
 
         /* Print Controls Panel (Screen only) */
-        .no-print-toolbar {
+                    .brand-badge {
+                display: none !important;
+            }
+            .no-print-toolbar {
             position: fixed;
             top: 0;
             left: 0;
@@ -493,6 +496,9 @@
                     color: #64748B;
                 }
             }
+                        .brand-badge {
+                display: none !important;
+            }
             .no-print-toolbar {
                 display: none !important;
             }
@@ -526,7 +532,33 @@
                 page-break-before: always !important;
             }
         }
-    </style>
+            .brand-badge {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            border: 1px solid #E2E8F0;
+        }
+        .brand-badge span {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 8.5pt;
+            color: #64748B;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .brand-badge img {
+            height: 22px;
+            width: auto;
+        }
+</style>
 </head>
 <body>
 
@@ -1085,6 +1117,11 @@ function handlePrint() {
     document.getElementById('refNoInput').value = 'CATLA/' + yyyy + '/' + currentSeq;
 }
 </script>
+    <!-- Brand Badge (Hidden on Print) -->
+    <div class="brand-badge">
+        <span>Managed by</span>
+        <img src="prowessisai_logo.jpg" alt="ProwessisAI">
+    </div>
 </body>
 </html>
 
