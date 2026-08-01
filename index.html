@@ -1025,16 +1025,25 @@ function setupInput(selector, formatFn) {
             this.dataset.oldValue = this.value;
             this.value = '';
         });
-        inp.addEventListener('blur', function() {
-            var val = this.value.trim();
+        var processInput = function(el) {
+            var val = el.value.trim();
             if (val === '') {
-                this.value = this.dataset.oldValue || '';
+                el.value = el.dataset.oldValue || '';
             } else {
-                this.value = formatFn(val);
+                el.value = formatFn(val);
             }
-            // Trigger recalculation if it's in a pricing row
-            var row = this.closest('.pricing-row');
+            var row = el.closest('.pricing-row');
             if (row) recalculateAmount(row);
+        };
+        inp.addEventListener('blur', function() {
+            processInput(this);
+        });
+        inp.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                processInput(this);
+                this.blur();
+            }
         });
     });
 }
@@ -1050,9 +1059,10 @@ setupInput('.auto-rate', function(val) {
 });
 
 setupInput('.auto-ratio', function(val) {
-    // If they just type "1:1", keep it. The old logic appended Dedicated.
-    // Let's just append " Dedicated" if it doesn't have it.
     var clean = val.replace(/\s*Dedicated$/i, '').trim();
+    if (clean.length >= 2 && clean.indexOf(':') === -1) {
+        clean = clean.substring(0, 1) + ':' + clean.substring(1);
+    }
     return clean + ' Dedicated';
 });
 
