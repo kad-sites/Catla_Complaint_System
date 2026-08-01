@@ -1047,12 +1047,20 @@
         window.addEventListener("beforeprint", function() {
             document.body.dataset.wasDark = document.body.classList.contains('dark-theme');
             document.body.classList.remove('dark-theme');
+            var tb = document.querySelector('.no-print-toolbar');
+            if (tb) tb.style.display = 'none';
+            var bb = document.querySelector('.brand-badge');
+            if (bb) bb.style.display = 'none';
         });
 
         window.addEventListener("afterprint", function() {
             if (document.body.dataset.wasDark === 'true') {
                 document.body.classList.add('dark-theme');
             }
+            var tb = document.querySelector('.no-print-toolbar');
+            if (tb) tb.style.display = '';
+            var bb = document.querySelector('.brand-badge');
+            if (bb) bb.style.display = '';
         });
 
         function toggleDarkMode() {
