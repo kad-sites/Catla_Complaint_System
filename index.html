@@ -557,106 +557,121 @@
             width: auto;
         }
         /* Screen-only Dark Grey Theme */
+        /* Dark Theme Button */
+        .btn-dark {
+            background: #1E293B;
+            color: #E2E8F0;
+            border: 1px solid #334155;
+            padding: 10px 20px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 10pt;
+            transition: all 0.2s ease;
+        }
+        .btn-dark:hover {
+            background: #334155;
+        }
+
         @media screen {
             /* 1. Global Page Background & Text */
-            body { 
+            body.dark-theme { 
                 background-color: #0B1120 !important; 
                 color: #E2E8F0 !important; 
             }
             
             /* 2. Main Document Container */
-            .document-wrapper { 
+            body.dark-theme .document-wrapper { 
                 background-color: #1E293B !important; 
                 box-shadow: 0 10px 40px rgba(0,0,0,0.8) !important; 
                 border: 1px solid #334155 !important;
             }
             
             /* 3. Header Banner & Logo Fixes */
-            .header-banner { background-color: transparent !important; }
-            .header-banner div { color: #F8FAFC !important; }
+            body.dark-theme .header-banner { background-color: transparent !important; }
+            body.dark-theme .header-banner div { color: #F8FAFC !important; }
             
-            .logo-img, .cover-logo { 
+            body.dark-theme .logo-img, body.dark-theme .cover-logo { 
                 filter: invert(1) hue-rotate(180deg) brightness(1.2) !important; 
                 mix-blend-mode: screen !important; 
             }
             
             /* 4. Text & Labels */
-            .section-heading { color: #FFFFFF !important; }
-            .cover-company, .feature-title, h3 { color: #F8FAFC !important; }
-            .info-label, .feature-desc, .meta-line, .meta-line span, .terms-list li { color: #94A3B8 !important; }
-            .proposal-title { color: #10B981 !important; }
+            body.dark-theme .section-heading { color: #FFFFFF !important; }
+            body.dark-theme .cover-company, body.dark-theme .feature-title, body.dark-theme h3 { color: #F8FAFC !important; }
+            body.dark-theme .info-label, body.dark-theme .feature-desc, body.dark-theme .meta-line, body.dark-theme .meta-line span, body.dark-theme .terms-list li { color: #94A3B8 !important; }
+            body.dark-theme .proposal-title { color: #10B981 !important; }
             
             /* 5. Grids and Cards */
-            .client-info-grid, .feature-card { 
+            body.dark-theme .client-info-grid, body.dark-theme .feature-card { 
                 background-color: #0F172A !important; 
                 border-color: #334155 !important; 
             }
             
             /* 6. Input Fields (Beautiful dark mode boxes) */
-            input[type="text"], textarea, select { 
+            body.dark-theme input[type="text"], body.dark-theme textarea, body.dark-theme select { 
                 background-color: #0B1120 !important; 
                 color: #F8FAFC !important; 
                 border: 1px solid #334155 !important;
             }
-            input[type="text"]:focus, textarea:focus, select:focus {
+            body.dark-theme input[type="text"]:focus, body.dark-theme textarea:focus, body.dark-theme select:focus {
                 border-color: #10B981 !important;
                 background-color: #1E293B !important;
             }
             
-            .spec-num input { 
+            body.dark-theme .spec-num input { 
                 background-color: transparent !important; 
                 border: none !important; 
             }
             
             /* 7. Tables & Signatures & Terms */
-            .price-table input, .one-time-box input, .price-table th { font-weight: 400 !important; }
-            .price-table th { 
+            body.dark-theme .price-table input, body.dark-theme .one-time-box input, body.dark-theme .price-table th { font-weight: 400 !important; }
+            body.dark-theme .price-table th { 
                 background-color: #0B1120 !important; 
                 border-bottom: 2px solid #10B981 !important; 
                 color: #F8FAFC !important;
             }
-            .price-table td { 
+            body.dark-theme .price-table td { 
                 border-bottom-color: #334155 !important; 
                 color: #E2E8F0 !important; 
             }
-            .terms-table { 
+            body.dark-theme .terms-table { 
                 background-color: #0F172A !important; 
                 border-color: #334155 !important; 
             }
-            .terms-table td { border-bottom-color: #334155 !important; }
-            .terms-label { color: #94A3B8 !important; }
-            .terms-val { color: #F8FAFC !important; }
+            body.dark-theme .terms-table td { border-bottom-color: #334155 !important; }
+            body.dark-theme .terms-label { color: #94A3B8 !important; }
+            body.dark-theme .terms-val { color: #F8FAFC !important; }
             
             /* 7.5 Remaining Boxes */
-            .one-time-box {
+            body.dark-theme .one-time-box {
                 background-color: #0F172A !important;
                 border-color: #334155 !important;
                 color: #E2E8F0 !important;
             }
-            .confidentiality-notice {
+            body.dark-theme .confidentiality-notice {
                 background-color: #1E293B !important;
                 border-color: #B45309 !important;
                 color: #FBBF24 !important;
             }
-            .contact-footer {
+            body.dark-theme .contact-footer {
                 background-color: #0F172A !important;
                 color: #E2E8F0 !important;
             }
             
-            .signature-block { border-top-color: #334155 !important; }
+            body.dark-theme .signature-block { border-top-color: #334155 !important; }
             
             /* 8. UI Elements */
-            .no-print-toolbar { 
+            body.dark-theme .no-print-toolbar { 
                 background: #0B1120 !important; 
                 border-bottom: 1px solid #334155 !important; 
             }
-            .brand-badge { 
+            body.dark-theme .brand-badge { 
                 background: #1E293B !important; 
                 border-color: #334155 !important; 
             }
-            .brand-badge span { color: #94A3B8 !important; }
-        }
-</style>
+            body.dark-theme .brand-badge span { color: #94A3B8 !important; }
+        }</style>
 </head>
 <body>
 
@@ -666,6 +681,11 @@
             <strong style="font-size: 11pt;">CATLA Proposal Generator (Interactive Form)</strong>
             <span style="color: #94A3B8; font-size: 8.5pt; margin-left: 10px;">✨ Fully Aligned & Justified Layout!</span>
         </div>
+        <div style="display: flex; gap: 12px;">
+            <button class="btn-dark" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+            <button class="btn-print" onclick="handlePrint()">🖨️ Save as PDF / Print</button>
+        </div>
+    </div>
         <button class="btn-print" onclick="handlePrint()">🖨️ Save as PDF / Print</button>
     </div>
 
@@ -923,8 +943,8 @@
     </div>
 
     <!-- JavaScript -->
-    <script>
-                        function syncCompanyName() {
+        <script>
+        function syncCompanyName() {
             let companyInput = document.getElementById('companyNameInput');
             let personInput = document.getElementById('personNameInput');
             let targetNotice = document.getElementById('companyNoticeTarget');
@@ -942,7 +962,7 @@
             }
         }
 
-                function toTitleCase(str) {
+        function toTitleCase(str) {
             if (!str) return str;
             const acronyms = ['SLA', 'NOC', 'ILL', 'ILP', 'BGP', 'SMTP', 'VPN', 'VPNS', 'IP', 'IPV4', 'AIIDC', 'CATLA', 'GST', 'UPS', 'CAF', 'DD', 'PVT', 'LTD', 'CO'];
             let titleCased = str.replace(/\w\S*/g, function(txt) {
@@ -962,19 +982,6 @@
             el.style.height = 'auto';
             el.style.height = (el.scrollHeight + 2) + 'px';
         }
-
-        document.querySelectorAll('textarea.auto-expand').forEach(ta => {
-            adjustTextareaHeight(ta);
-            ta.addEventListener('input', function() {
-                adjustTextareaHeight(this);
-            });
-        });
-
-        window.addEventListener('load', function() {
-            document.querySelectorAll('textarea.auto-expand').forEach(ta => {
-                adjustTextareaHeight(ta);
-            });
-        });
 
         function updateManagerDetails() {
             let select = document.getElementById('managerSelect');
@@ -1026,8 +1033,67 @@
             }
         }
 
+        function handlePrint() {
+            window.print();
+            var currentSeq = parseInt(localStorage.getItem('catlaSequence')) || 100;
+            currentSeq += 1;
+            localStorage.setItem('catlaSequence', currentSeq);
+            var yyyy = new Date().getFullYear();
+            document.getElementById('refNoInput').value = 'CATLA/' + yyyy + '/' + currentSeq;
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-theme');
+            localStorage.setItem('catlaDarkMode', document.body.classList.contains('dark-theme'));
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('catlaDarkMode') === 'true') {
+                document.body.classList.add('dark-theme');
+            }
+
+            syncCompanyName();
+            updateManagerDetails();
+            
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0');
+            let yyyy = today.getFullYear();
+            document.getElementById('currentDateInput').value = dd + '/' + mm + '/' + yyyy;
+            
+            let storedYear = localStorage.getItem('catlaYear');
+            let currentSeq = localStorage.getItem('catlaSequence');
+            
+            if (!storedYear || parseInt(storedYear) < yyyy) {
+                storedYear = yyyy;
+                currentSeq = 100;
+                localStorage.setItem('catlaYear', storedYear);
+                localStorage.setItem('catlaSequence', currentSeq);
+            }
+            
+            if (!currentSeq) {
+                currentSeq = 100;
+                localStorage.setItem('catlaSequence', currentSeq);
+            }
+            
+            document.getElementById('refNoInput').value = 'CATLA/' + storedYear + '/' + currentSeq;
+
+            document.querySelectorAll('textarea.auto-expand').forEach(ta => {
+                adjustTextareaHeight(ta);
+            });
+        });
+
+        document.querySelectorAll('textarea.auto-expand').forEach(ta => {
+            ta.addEventListener('input', function() {
+                adjustTextareaHeight(this);
+            });
+        });
+
+        // Setup global text inputs (TitleCase on blur/enter)
         document.querySelectorAll('input[type="text"], textarea').forEach(input => {
-            if (!input.classList.contains('auto-rate') && 
+            if (!input.classList.contains('plan-speed') &&
+                !input.classList.contains('auto-rate') && 
+                !input.classList.contains('auto-ratio') &&
                 !input.classList.contains('auto-amount') && 
                 !input.classList.contains('auto-one-time') &&
                 input.id !== 'managerEmail' && 
@@ -1039,10 +1105,6 @@
                         adjustTextareaHeight(this);
                     }
                     syncCompanyName();
-                    let row = this.closest('.pricing-row');
-                    if (row) {
-                        updateRowCalculation(row);
-                    }
                 });
 
                 input.addEventListener('keydown', function(e) {
@@ -1053,168 +1115,76 @@
                             adjustTextareaHeight(this);
                         }
                         syncCompanyName();
-                        let row = this.closest('.pricing-row');
-                        if (row) {
-                            updateRowCalculation(row);
-                        }
                         this.blur();
                     }
                 });
             }
         });
 
-        let oneTimeInput = document.querySelector('.auto-one-time');
-        if (oneTimeInput) {
-            function formatOneTime() {
-                let num = parseNumber(oneTimeInput.value);
-                if (num > 0) {
-                    oneTimeInput.value = '₹ ' + formatIndianCurrency(num) + '/-';
-                }
-            }
-            oneTimeInput.addEventListener('blur', formatOneTime);
-            oneTimeInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    formatOneTime();
-                    this.blur();
-                }
+        // Pricing Inputs Setup
+        function setupPricingInput(selector, formatFn) {
+            document.querySelectorAll(selector).forEach(function(inp) {
+                inp.addEventListener('focus', function() {
+                    this.dataset.oldValue = this.value;
+                    this.value = '';
+                });
+                
+                var processInput = function(el) {
+                    var val = el.value.trim();
+                    if (val === '') {
+                        el.value = el.dataset.oldValue || '';
+                    } else {
+                        el.value = formatFn(val);
+                    }
+                    var row = el.closest('.pricing-row');
+                    if (row) {
+                        updateRowCalculation(row);
+                    }
+                };
+                
+                inp.addEventListener('blur', function() {
+                    processInput(this);
+                });
+                
+                inp.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        processInput(this);
+                        this.blur();
+                    }
+                });
             });
         }
-    
-function handlePrint() {
-    window.print();
-    var currentSeq = parseInt(localStorage.getItem('catlaSequence')) || 100;
-    currentSeq += 1;
-    localStorage.setItem('catlaSequence', currentSeq);
-    var yyyy = new Date().getFullYear();
-    document.getElementById('refNoInput').value = 'CATLA/' + yyyy + '/' + currentSeq;
-}
-</script>
 
-<script>
-window.addEventListener('DOMContentLoaded', function() {
-    syncCompanyName();
-    updateManagerDetails();
-    
-    // Date
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    let yyyy = today.getFullYear();
-    document.getElementById('currentDateInput').value = dd + '/' + mm + '/' + yyyy;
-    
-    // Sequence
-    let storedYear = localStorage.getItem('catlaYear');
-    let currentSeq = localStorage.getItem('catlaSequence');
-    
-    if (!storedYear || parseInt(storedYear) < yyyy) {
-        storedYear = yyyy;
-        currentSeq = 100;
-        localStorage.setItem('catlaYear', storedYear);
-        localStorage.setItem('catlaSequence', currentSeq);
-    }
-    
-    if (!currentSeq) {
-        currentSeq = 100;
-        localStorage.setItem('catlaSequence', currentSeq);
-    }
-    
-    document.getElementById('refNoInput').value = 'CATLA/' + storedYear + '/' + currentSeq;
-});
-
-// Helper to parse numbers
-function parseNumber(str) {
-    if (!str) return 0;
-    return parseFloat(str.replace(/,/g, '').match(/[\d\.]+/)) || 0;
-}
-
-// Helper to format Indian currency
-function formatIndianCurrency(num) {
-    return num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-function recalculateAmount(row) {
-    var speedInp = row.querySelector('.plan-speed');
-    var rateInp = row.querySelector('.auto-rate');
-    var amountInp = row.querySelector('.auto-amount');
-    
-    if (speedInp && rateInp && amountInp) {
-        var speed = parseNumber(speedInp.value);
-        var rate = parseNumber(rateInp.value);
-        if (speed > 0 && rate > 0) {
-            var total = speed * rate * 12;
-            amountInp.value = '\u20B9 ' + formatIndianCurrency(total) + ' + GST';
-        }
-    }
-}
-
-// Setup inputs for auto-clear on focus and format on blur
-function setupInput(selector, formatFn) {
-    document.querySelectorAll(selector).forEach(function(inp) {
-        inp.addEventListener('focus', function() {
-            this.dataset.oldValue = this.value;
-            this.value = '';
+        setupPricingInput('.plan-speed', function(val) {
+            var num = parseNumber(val);
+            return num > 0 ? num + ' Mbps Plan' : val;
         });
-        var processInput = function(el) {
-            var val = el.value.trim();
-            if (val === '') {
-                el.value = el.dataset.oldValue || '';
-            } else {
-                el.value = formatFn(val);
+
+        setupPricingInput('.auto-rate', function(val) {
+            var num = parseNumber(val);
+            return num > 0 ? '₹ ' + formatIndianCurrency(num) + ' / Mbps' : val;
+        });
+
+        setupPricingInput('.auto-ratio', function(val) {
+            var clean = val.replace(/\s*Dedicated$/i, '').trim();
+            if (clean.length >= 2 && clean.indexOf(':') === -1) {
+                clean = clean.substring(0, 1) + ':' + clean.substring(1);
             }
-            var row = el.closest('.pricing-row');
-            if (row) recalculateAmount(row);
-        };
-        inp.addEventListener('blur', function() {
-            processInput(this);
+            return clean + ' Dedicated';
         });
-        inp.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                processInput(this);
-                this.blur();
-            }
+
+        setupPricingInput('.auto-amount', function(val) {
+            var num = parseNumber(val);
+            return num > 0 ? '₹ ' + formatIndianCurrency(num) + ' + GST' : val;
         });
-    });
-}
 
-setupInput('.plan-speed', function(val) {
-    var num = parseNumber(val);
-    return num > 0 ? num + ' Mbps Plan' : val;
-});
+        setupPricingInput('.auto-one-time', function(val) {
+            var num = parseNumber(val);
+            return num > 0 ? '₹ ' + formatIndianCurrency(num) + '/-' : val;
+        });
 
-setupInput('.auto-rate', function(val) {
-    var num = parseNumber(val);
-    return num > 0 ? '\u20B9 ' + formatIndianCurrency(num) + ' / Mbps' : val;
-});
-
-setupInput('.auto-ratio', function(val) {
-    var clean = val.replace(/\s*Dedicated$/i, '').trim();
-    if (clean.length >= 2 && clean.indexOf(':') === -1) {
-        clean = clean.substring(0, 1) + ':' + clean.substring(1);
-    }
-    return clean + ' Dedicated';
-});
-
-setupInput('.auto-amount', function(val) {
-    var num = parseNumber(val);
-    return num > 0 ? '\u20B9 ' + formatIndianCurrency(num) + ' + GST' : val;
-});
-
-setupInput('.auto-one-time', function(val) {
-    var num = parseNumber(val);
-    return num > 0 ? '\u20B9 ' + formatIndianCurrency(num) + '/-' : val;
-});
-
-function handlePrint() {
-    window.print();
-    var currentSeq = parseInt(localStorage.getItem('catlaSequence')) || 100;
-    currentSeq += 1;
-    localStorage.setItem('catlaSequence', currentSeq);
-    var yyyy = new Date().getFullYear();
-    document.getElementById('refNoInput').value = 'CATLA/' + yyyy + '/' + currentSeq;
-}
-</script>
+    </script>
     <!-- Brand Badge (Hidden on Print) -->
     <div class="brand-badge">
         <span>Managed by</span>
