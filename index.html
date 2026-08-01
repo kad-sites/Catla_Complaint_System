@@ -540,7 +540,7 @@
     <div class="no-print-toolbar">
         <div>
             <strong style="font-size: 11pt;">CATLA Proposal Generator (Interactive Form)</strong>
-            <span style="color: #94A3B8; font-size: 8.5pt; margin-left: 10px;">? Fully Aligned & Justified Layout!</span>
+            <span style="color: #94A3B8; font-size: 8.5pt; margin-left: 10px;">✨ Fully Aligned & Justified Layout!</span>
         </div>
         <button class="btn-print" onclick="handlePrint()">🖨️ Save as PDF / Print</button>
     </div>
@@ -635,13 +635,13 @@
             </div>
             <div class="card-gap"></div>
             <div class="feature-card">
-                <div class="card-icon">??</div>
+                <div class="card-icon">🌐</div>
                 <div class="card-title">Bundled /29 Static IP Pool</div>
                 <div class="card-desc">Includes dedicated usable Public IPv4 static addresses for secure corporate VPNs and server hosting.</div>
             </div>
             <div class="card-gap"></div>
             <div class="feature-card">
-                <div class="card-icon">??</div>
+                <div class="card-icon">🌐</div>
                 <div class="card-title">BGP & SMTP Support</div>
                 <div class="card-desc">Advanced BGP routing support, custom announcements, and enterprise SMTP relay for smooth mail flow.</div>
             </div>
@@ -893,12 +893,12 @@
 
             let rateNum = parseNumber(rateInput.value);
             if (rateNum > 0) {
-                rateInput.value = '? ' + formatIndianCurrency(rateNum) + ' / Mbps';
+                rateInput.value = '₹ ' + formatIndianCurrency(rateNum) + ' / Mbps';
             }
 
             if (speedNum > 0 && rateNum > 0) {
                 let annualTotal = speedNum * rateNum * 12;
-                totalInput.value = '? ' + formatIndianCurrency(annualTotal) + ' + GST';
+                totalInput.value = '₹ ' + formatIndianCurrency(annualTotal) + ' + GST';
             }
         }
 
@@ -944,7 +944,7 @@
             function formatOneTime() {
                 let num = parseNumber(oneTimeInput.value);
                 if (num > 0) {
-                    oneTimeInput.value = '? ' + formatIndianCurrency(num) + '/-';
+                    oneTimeInput.value = '₹ ' + formatIndianCurrency(num) + '/-';
                 }
             }
             oneTimeInput.addEventListener('blur', formatOneTime);
