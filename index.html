@@ -558,29 +558,77 @@
         }
         /* Screen-only Dark Grey Theme */
         @media screen {
-            body { background-color: #334155 !important; color: #CBD5E1 !important; }
-            .document-wrapper { background-color: #475569 !important; box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important; border: 1px solid #475569; }
+            /* 1. Global Page Background & Text */
+            body { 
+                background-color: #0B1120 !important; 
+                color: #E2E8F0 !important; 
+            }
+            
+            /* 2. Main Document Container */
+            .document-wrapper { 
+                background-color: #1E293B !important; 
+                box-shadow: 0 10px 40px rgba(0,0,0,0.8) !important; 
+                border: 1px solid #334155 !important;
+            }
+            
+            /* 3. Header Banner & Logo Fixes */
             .header-banner { background-color: transparent !important; }
             .header-banner div { color: #F8FAFC !important; }
-            .logo-img, .cover-logo { filter: invert(1) hue-rotate(180deg) brightness(1.2) !important; mix-blend-mode: screen !important; }
-            .cover-company { color: #F8FAFC !important; }
-            .client-info-grid { background-color: #334155 !important; border-color: #334155 !important; }
-            .info-label { color: #94A3B8 !important; }
-            .feature-card { background-color: #334155 !important; border-color: #334155 !important; }
-            .feature-title { color: #F8FAFC !important; }
-            .feature-desc { color: #94A3B8 !important; }
-            .price-table td { border-bottom-color: #334155 !important; color: #CBD5E1 !important; }
-            .terms-list li { color: #CBD5E1 !important; }
-            .signature-block { border-top-color: #334155 !important; }
-            .brand-badge { background: #334155 !important; border-color: #334155 !important; }
-            .brand-badge span { color: #94A3B8 !important; }
-            input[type="text"] { color: #F8FAFC !important; background-color: transparent !important; }
-            input.auto-one-time, input.auto-ratio, input.auto-rate, input.auto-calc, input.auto-bw { color: #F8FAFC !important; background-color: transparent !important; }
-            .doc-title-right input, .client-cell input { color: #F8FAFC !important; background-color: transparent !important; }
-            .price-table th { background-color: #1E293B !important; border-bottom: 1px solid #334155; }
-            .no-print-toolbar { background: #1E293B !important; border-bottom: 1px solid #334155; }
-            .meta-line { color: #94A3B8 !important; }
+            
+            .logo-img, .cover-logo { 
+                filter: invert(1) hue-rotate(180deg) brightness(1.2) !important; 
+                mix-blend-mode: screen !important; 
+            }
+            
+            /* 4. Text & Labels */
+            .cover-company, .feature-title, h3 { color: #F8FAFC !important; }
+            .info-label, .feature-desc, .meta-line, .meta-line span, .terms-list li { color: #94A3B8 !important; }
             .proposal-title { color: #10B981 !important; }
+            
+            /* 5. Grids and Cards */
+            .client-info-grid, .feature-card { 
+                background-color: #0F172A !important; 
+                border-color: #334155 !important; 
+            }
+            
+            /* 6. Input Fields (Beautiful dark mode boxes) */
+            input[type="text"], textarea, select { 
+                background-color: #0B1120 !important; 
+                color: #F8FAFC !important; 
+                border: 1px solid #334155 !important;
+            }
+            input[type="text"]:focus, textarea:focus, select:focus {
+                border-color: #10B981 !important;
+                background-color: #1E293B !important;
+            }
+            
+            .spec-num input { 
+                background-color: transparent !important; 
+                border: none !important; 
+            }
+            
+            /* 7. Tables & Signatures */
+            .price-table th { 
+                background-color: #0B1120 !important; 
+                border-bottom: 2px solid #10B981 !important; 
+                color: #F8FAFC !important;
+            }
+            .price-table td { 
+                border-bottom-color: #334155 !important; 
+                color: #E2E8F0 !important; 
+            }
+            .signature-block { border-top-color: #334155 !important; }
+            
+            /* 8. UI Elements */
+            .no-print-toolbar { 
+                background: #0B1120 !important; 
+                border-bottom: 1px solid #334155 !important; 
+            }
+            .brand-badge { 
+                background: #1E293B !important; 
+                border-color: #334155 !important; 
+            }
+            .brand-badge span { color: #94A3B8 !important; }
         }
 </style>
 </head>
