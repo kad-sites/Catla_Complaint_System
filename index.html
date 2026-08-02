@@ -579,15 +579,17 @@
                 font-weight: 400 !important;
             }
             body.dark-theme { 
-                background-color: #0B1120 !important; 
+                background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 50%, #020617 100%) !important; 
                 color: #E2E8F0 !important; 
             }
             
             /* 2. Main Document Container */
             body.dark-theme .document-wrapper { 
-                background-color: #1E293B !important; 
+                background-color: rgba(15, 23, 42, 0.75) !important; 
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
                 box-shadow: 0 10px 40px rgba(0,0,0,0.8) !important; 
-                border: 1px solid #334155 !important;
+                border: 1px solid rgba(71, 85, 105, 0.6) !important;
             }
             
             /* 3. Header Banner & Logo Fixes */
@@ -666,7 +668,7 @@
             
             /* 8. UI Elements */
             body.dark-theme .no-print-toolbar { 
-                background: #0B1120 !important; 
+                background: #0F172A !important; 
                 border-bottom: 1px solid #334155 !important; 
             }
             body.dark-theme .brand-badge { 
