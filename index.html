@@ -676,7 +676,14 @@
                 border-color: #334155 !important; 
             }
             body.dark-theme .brand-badge span { color: #94A3B8 !important; }
-        }</style>
+        }
+        
+        @media (max-width: 600px) {
+            .hide-on-mobile {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -684,7 +691,7 @@
     <div class="no-print-toolbar">
         <div>
             <strong style="font-size: 11pt;">CATLA Proposal Generator (Interactive Form)</strong>
-            <span style="color: #94A3B8; font-size: 8.5pt; margin-left: 10px;">✨ Fully Aligned & Justified Layout!</span>
+            <span class="hide-on-mobile" style="color: #94A3B8; font-size: 8.5pt; margin-left: 10px;">✨ Fully Aligned & Justified Layout!</span>
         </div>
         <div style="display: flex; gap: 12px;">
             <a href="https://kad-sites.github.io/catla_quotation/" target="_blank" style="text-decoration: none;">
