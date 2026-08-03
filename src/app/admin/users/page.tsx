@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AppShell from '@/components/AppShell'
 import {
-  Search, Filter, Plus, MoreHorizontal, UserCheck, UserX, User,
+  Search, Filter, Plus, MoreHorizontal, UserCheck, UserX, User, Users,
   Mail, Phone, MapPin, Edit, Trash2, CheckCircle2, X, ChevronDown, ChevronUp
 } from 'lucide-react'
 import { getComplaints } from '@/actions/complaintStore'

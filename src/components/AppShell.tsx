@@ -8,12 +8,12 @@ import {
   Users, Settings, LogOut, Bell, Search, ChevronDown, MapPin, ListTodo, Activity
 } from 'lucide-react'
 
-const NAV_ITEMS = [
+const NAV_ITEMS_TEMPLATE = [
   { label: 'DASHBOARD', items: [
     { href: '/director', icon: LayoutDashboard, label: 'Manager Dashboard', badge: '' },
   ]},
   { label: 'COMPLAINTS', items: [
-    { href: '/director/complaints', icon: ListTodo, label: 'All Complaints', badge: '12' },
+    { href: '/director/complaints', icon: ListTodo, label: 'All Complaints', badge: '' },
     { href: '/tracking', icon: Activity, label: 'Live Tracking', badge: 'New' },
   ]},
   { label: 'FIELD', items: [
@@ -27,6 +27,34 @@ const NAV_ITEMS = [
 
 export default function AppShell({ children, role = 'DIRECTOR' }: { children: React.ReactNode, role?: string }) {
   const pathname = usePathname()
+  const [complaintCount, setComplaintCount] = React.useState<number>(0)
+
+  React.useEffect(() => {
+    // Fetch count
+    fetch('/api/complaints')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setComplaintCount(data.length)
+        }
+      })
+      .catch(err => console.error("Failed to load complaints count", err))
+  }, [])
+
+  const NAV_ITEMS = NAV_ITEMS_TEMPLATE.map(section => {
+    if (section.label === 'COMPLAINTS') {
+      return {
+        ...section,
+        items: section.items.map(item => {
+          if (item.label === 'All Complaints') {
+            return { ...item, badge: complaintCount > 0 ? complaintCount.toString() : '' }
+          }
+          return item
+        })
+      }
+    }
+    return section
+  })
 
   return (
     <div className="app-layout">
