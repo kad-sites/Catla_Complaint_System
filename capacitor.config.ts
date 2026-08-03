@@ -4,7 +4,6 @@ const config: CapacitorConfig = {
   appId: 'com.catlabroadband.complaints',
   appName: 'Catla Technician',
   webDir: 'out',
-  bundledWebRuntime: false,
   server: {
     androidScheme: 'https'
   },
