@@ -745,7 +745,7 @@
             
         </div>
         <div style="display: flex; gap: 12px;">
-            
+            <button class="btn-dark no-print" onclick="addPricingRow()" style="background: #10B981; border-color: #059669; color: white;">➕ Add Plan</button>
             <a href="https://kad-sites.github.io/catla_quotation/" style="text-decoration: none;">
                 <button class="btn-dark" style="background: #3B82F6; border-color: #2563EB; color: white;">📄 Quotation</button>
             </a>
@@ -871,20 +871,16 @@
                     <th style="width: 14%;">Data Cap</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="pricing-tbody">
                 <tr class="pricing-row">
-                    <td><input type="text" class="plan-speed" value="100 Mbps Plan" style="font-weight:700; text-align:center;"></td>
+                    <td><input type="text" class="plan-speed" value="100 Mbps Plan" style="font-weight:700; text-align:center;" oninput="updateRowCalculation(this.closest('tr'))"></td>
                     <td><input type="text" class="auto-ratio" value="1:1 Dedicated" style="text-align:center;"></td>
-                    <td><input type="text" class="auto-rate" value="₹ 208.00 / Mbps" style="text-align:center;"></td>
+                    <td><input type="text" class="auto-rate" value="₹ 208.00 / Mbps" style="text-align:center;" oninput="updateRowCalculation(this.closest('tr'))"></td>
                     <td><input type="text" class="auto-amount" value="₹ 2,49,600.00 + GST" style="font-weight:700; color:#059669; text-align:center;"></td>
-                    <td><input type="text" value="Unlimited" style="text-align:center;"></td>
-                </tr>
-                <tr class="pricing-row">
-                    <td><input type="text" class="plan-speed" value="50 Mbps Plan" style="font-weight:700; text-align:center;"></td>
-                    <td><input type="text" class="auto-ratio" value="1:1 Dedicated" style="text-align:center;"></td>
-                    <td><input type="text" class="auto-rate" value="₹ 300.00 / Mbps" style="text-align:center;"></td>
-                    <td><input type="text" class="auto-amount" value="₹ 1,80,000.00 + GST" style="font-weight:700; color:#059669; text-align:center;"></td>
-                    <td><input type="text" value="Unlimited" style="text-align:center;"></td>
+                    <td style="position: relative;">
+                        <input type="text" value="Unlimited" style="text-align:center;">
+                        <button class="btn-remove no-print" onclick="removePricingRow(this)" style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); background: #EF4444; color: white; border: none; border-radius: 4px; padding: 2px 6px; font-size: 8pt; cursor: pointer; font-weight: bold;" title="Remove Row">X</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -1114,6 +1110,44 @@
                 document.getElementById('refNoInput').value = 'CATLA/' + yyyy + '/' + currentSeq;
             }
         }
+
+        function addPricingRow() {
+            const tbody = document.getElementById('pricing-tbody');
+            const tr = document.createElement('tr');
+            tr.className = 'pricing-row';
+            tr.innerHTML = `
+                <td><input type="text" class="plan-speed" value="50 Mbps Plan" style="font-weight:700; text-align:center;" oninput="updateRowCalculation(this.closest('tr'))"></td>
+                <td><input type="text" class="auto-ratio" value="1:1 Dedicated" style="text-align:center;"></td>
+                <td><input type="text" class="auto-rate" value="₹ 300.00 / Mbps" style="text-align:center;" oninput="updateRowCalculation(this.closest('tr'))"></td>
+                <td><input type="text" class="auto-amount" value="₹ 1,80,000.00 + GST" style="font-weight:700; color:#059669; text-align:center;"></td>
+                <td style="position: relative;">
+                    <input type="text" value="Unlimited" style="text-align:center;">
+                    <button class="btn-remove no-print" onclick="removePricingRow(this)" style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); background: #EF4444; color: white; border: none; border-radius: 4px; padding: 2px 6px; font-size: 8pt; cursor: pointer; font-weight: bold;" title="Remove Row">X</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function removePricingRow(btn) {
+            const tr = btn.closest('tr');
+            if (document.querySelectorAll('.pricing-row').length > 1) {
+                tr.remove();
+            } else {
+                alert("Cannot remove the last pricing row.");
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/ /g, '-');
+            const dateInput = document.getElementById('currentDateInput');
+            if (dateInput) dateInput.value = dateStr;
+
+            const seq = parseInt(localStorage.getItem('catlaSequence')) || 101;
+            const yyyy = now.getFullYear();
+            const refInput = document.getElementById('refNoInput');
+            if (refInput) refInput.value = 'CATLA/' + yyyy + '/' + seq;
+        });
     </script>
     <!-- Brand Badge (Hidden on Print) -->
     <div class="brand-badge">
