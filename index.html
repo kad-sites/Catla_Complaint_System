@@ -1209,12 +1209,7 @@
             document.getElementById('historyModal').style.display = 'none';
         }
 
-        function clearHistory() {
-            if(confirm("Are you sure you want to clear all saved history on this device?")) {
-                localStorage.removeItem('catlaHistory');
-                renderHistory();
-            }
-        }
+
 
         function renderHistory() {
             const listEl = document.getElementById('historyList');
@@ -1345,9 +1340,7 @@
                     <!-- History items will be injected here -->
                 </ul>
             </div>
-            <div class="history-modal-footer">
-                <button class="btn-dark" onclick="clearHistory()" style="background: #EF4444; border-color: #DC2626; color: white;">Clear History</button>
-            </div>
+
         </div>
     </div>
 
