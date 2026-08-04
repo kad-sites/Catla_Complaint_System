@@ -388,10 +388,10 @@
         }
         .otb-title { font-weight: 700; color: #1E293B; font-size: 9.2pt; text-align:left; }
         .otb-desc { font-size: 8pt; color: #64748B; text-align:justify; margin-top: 2px; }
-        .auto-one-time { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11pt; color: #0F172A; text-align: right; width: 95px; background: transparent; border: none; outline: none; }
+        .auto-one-time { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11pt; color: #0F172A; text-align: right !important; width: 130px; background: transparent; border: none; outline: none; }
         .auto-one-time:focus { border-bottom: 1px dashed #3B82F6; }
         .otb-label { font-size: 8.2pt; font-weight: 600; color: #64748B; }
-        #installation-words { font-size: 7.5pt; color: #94A3B8; text-align: right; width: 100%; background: transparent; border: none; outline: none; font-style: italic; margin-top: 2px; padding-right: 2px; text-transform: capitalize; }
+        #installation-words { font-size: 7.5pt; color: #94A3B8; text-align: right; width: 100%; background: transparent; border: none; outline: none; font-style: italic; margin-top: 2px; padding-right: 2px; text-transform: capitalize; white-space: normal; line-height: 1.2; }
 
         .otb-left {
             display: table-cell;
@@ -807,7 +807,7 @@
                         <input type="text" class="auto-one-time" value="₹ 15,000.00/-">
                         <span class="otb-label">(One-Time)</span>
                     </div>
-                    <input type="text" id="installation-words" value="(Rupees Fifteen Thousand Only)" readonly>
+                    <div id="installation-words">(Rupees Fifteen Thousand Only)</div>
                 </div>
             </div>
         </div>
