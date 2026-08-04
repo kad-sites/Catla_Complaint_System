@@ -726,109 +726,7 @@
             }
         }
     
-        /* History Modal CSS */
-        .history-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.7);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
-        .history-modal {
-            background: white;
-            border-radius: 12px;
-            width: 600px;
-            max-width: 90%;
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border: 1px solid #E2E8F0;
-            overflow: hidden;
-        }
-        body.dark-theme .history-modal {
-            background: #0F172A;
-            border-color: #334155;
-            color: #F8FAFC;
-        }
-        .history-modal-header {
-            padding: 16px 24px;
-            border-bottom: 1px solid #E2E8F0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #F8FAFC;
-        }
-        body.dark-theme .history-modal-header {
-            background: #1E293B;
-            border-color: #334155;
-        }
-        .history-modal-title {
-            font-size: 14pt;
-            font-weight: 700;
-            margin: 0;
-        }
-        .close-btn {
-            background: transparent;
-            border: none;
-            font-size: 16pt;
-            cursor: pointer;
-            color: #64748B;
-        }
-        .close-btn:hover { color: #0F172A; }
-        body.dark-theme .close-btn:hover { color: white; }
-        
-        .history-modal-body {
-            padding: 24px;
-            overflow-y: auto;
-            flex: 1;
-        }
-        .history-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        .history-item {
-            padding: 12px;
-            border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            background: #F8FAFC;
-        }
-        body.dark-theme .history-item {
-            border-color: #334155;
-            background: #1E293B;
-        }
-        .history-item-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            font-size: 9pt;
-            color: #64748B;
-            font-weight: 600;
-        }
-        .history-item-party {
-            font-size: 11pt;
-            font-weight: 700;
-            color: #0F172A;
-        }
-        body.dark-theme .history-item-party { color: #F8FAFC; }
-        
-        .history-modal-footer {
-            padding: 16px 24px;
-            border-top: 1px solid #E2E8F0;
-            display: flex;
-            justify-content: flex-end;
-            background: #F8FAFC;
-        }
-        body.dark-theme .history-modal-footer {
-            background: #1E293B;
-            border-color: #334155;
-        }
-    </style>
+        </style>
 
 </head>
 <body>
@@ -840,13 +738,13 @@
             
         </div>
         <div style="display: flex; gap: 12px;">
-            <button class="btn-dark" onclick="openHistoryModal()">📜 History</button>
+            
             <a href="https://kad-sites.github.io/catla_quotation/" style="text-decoration: none;">
                 <button class="btn-dark" style="background: #3B82F6; border-color: #2563EB; color: white;">📄 Quotation</button>
             </a>
             <button class="btn-dark" onclick="toggleDarkMode()">🌙 Dark Mode</button>
-            <button class="btn-dark" onclick="window.print()" style="background: #475569; border-color: #334155; color: white; margin-right: 8px;">👁️ Preview</button>
-            <button class="btn-print" onclick="handlePrint()">🖨️ Finalize & Save</button>
+            
+            <button class="btn-print" onclick="handlePrint()">🖨️ Save as PDF</button>
         </div>
     </div>
 
@@ -1199,120 +1097,7 @@
         }
 
         
-        const WEBHOOK_URL = ""; // PASTE URL HERE
-
-        function openHistoryModal() {
-            document.getElementById('historyModal').style.display = 'flex';
-            renderHistory();
-        }
-
-        function closeHistoryModal() {
-            document.getElementById('historyModal').style.display = 'none';
-        }
-
-
-
-        function renderHistory() {
-            const listEl = document.getElementById('historyList');
-            const history = JSON.parse(localStorage.getItem('catlaHistory') || '[]');
-            
-            if (history.length === 0) {
-                listEl.innerHTML = '<li style="text-align:center; color:#64748B;">No history found.</li>';
-                return;
-            }
-
-            // Reverse to show newest first
-            listEl.innerHTML = history.slice().reverse().map(item => {
-                let html = `
-                <li class="history-item">
-                    <div class="history-item-header" style="margin-bottom: 8px;">
-                        <span class="history-item-party" style="font-size: 10pt;">${item.date} &nbsp;|&nbsp; ${item.company} &nbsp;<span style="color:#64748B; font-weight:500;">(Attn: ${item.partyName})</span></span>
-                    </div>`;
-                    
-                if (item.plan1 && item.amount1) {
-                    html += `
-                    <div style="display:flex; justify-content:space-between; font-size:9pt; margin-bottom: 2px;">
-                        <span style="color:#64748B;">${item.plan1}</span>
-                        <span style="color:#059669; font-weight:600;">${item.amount1}</span>
-                    </div>`;
-                }
-                
-                if (item.plan2 && item.amount2) {
-                    html += `
-                    <div style="display:flex; justify-content:space-between; font-size:9pt; margin-bottom: 2px;">
-                        <span style="color:#64748B;">${item.plan2}</span>
-                        <span style="color:#059669; font-weight:600;">${item.amount2}</span>
-                    </div>`;
-                }
-                
-                if (item.installation) {
-                    html += `
-                    <div style="display:flex; justify-content:space-between; font-size:9pt; border-top: 1px dashed #CBD5E1; padding-top: 4px; margin-top: 4px;">
-                        <span style="color:#64748B;">Installation & Setup</span>
-                        <span style="color:#059669; font-weight:600;">${item.installation}</span>
-                    </div>`;
-                }
-                
-                html += `</li>`;
-                return html;
-            }).join('');
-        }
-
         function handlePrint() {
-            // 1. Extract values
-            const dateVal = document.getElementById('currentDateInput') ? document.getElementById('currentDateInput').value : '';
-            const partyVal = document.getElementById('personNameInput') ? document.getElementById('personNameInput').value : '';
-            const companyVal = document.getElementById('companyNameInput') ? document.getElementById('companyNameInput').value : '';
-            
-            // Get plans and recurring amounts
-            const planSpeeds = document.querySelectorAll('.plan-speed');
-            const amounts = document.querySelectorAll('.auto-amount');
-            let p1 = '', a1 = '', p2 = '', a2 = '';
-            if (planSpeeds.length > 0 && amounts.length > 0) {
-                p1 = planSpeeds[0].value;
-                a1 = amounts[0].value;
-            }
-            if (planSpeeds.length > 1 && amounts.length > 1) {
-                p2 = planSpeeds[1].value;
-                a2 = amounts[1].value;
-            }
-            
-            // Get installation
-            const instEl = document.querySelector('.auto-one-time');
-            const instVal = instEl ? instEl.value : '';
-
-            const record = {
-                date: dateVal,
-                partyName: partyVal,
-                company: companyVal,
-                plan1: p1,
-                amount1: a1,
-                plan2: p2,
-                amount2: a2,
-                installation: instVal,
-                timestamp: new Date().toISOString()
-            };
-
-            // 2. Save locally
-            if (companyVal || partyVal) {
-                const history = JSON.parse(localStorage.getItem('catlaHistory') || '[]');
-                history.push(record);
-                localStorage.setItem('catlaHistory', JSON.stringify(history));
-                
-                // 3. Send to Google Sheets (if URL exists)
-                if (WEBHOOK_URL) {
-                    // Send a1 as amount so it works with current sheet headers
-                    const sheetRecord = Object.assign({}, record, {amount: a1});
-                    fetch(WEBHOOK_URL, {
-                        method: 'POST',
-                        mode: 'no-cors', // no-cors prevents CORS errors but makes response opaque
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(sheetRecord)
-                    }).catch(err => console.error("Webhook failed:", err));
-                }
-            }
-
-            // 4. Do normal print stuff
             window.print();
             var currentSeq = parseInt(localStorage.getItem('catlaSequence')) || 100;
             currentSeq += 1;
@@ -1329,21 +1114,7 @@
         <img src="prowessisai_logo.png" alt="ProwessisAI">
     </div>
 
-    <!-- History Modal -->
-    <div id="historyModal" class="history-modal-overlay">
-        <div class="history-modal">
-            <div class="history-modal-header">
-                <h2 class="history-modal-title">Proposal History</h2>
-                <button class="close-btn" onclick="closeHistoryModal()">&times;</button>
-            </div>
-            <div class="history-modal-body">
-                <ul id="historyList" class="history-list">
-                    <!-- History items will be injected here -->
-                </ul>
-            </div>
-
-        </div>
-    </div>
+    
 
 </body>
 </html>
