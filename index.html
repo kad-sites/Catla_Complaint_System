@@ -844,13 +844,13 @@
                 <div style="font-weight: 700; color: #1E3A8A; font-size: 9.2pt; text-align:left;">End-To-End Fiber Installation, Laying & Commissioning</div>
                 <div style="font-size: 8pt; color: #3B82F6; text-align:justify;">Includes high-throughput fiber laying, splice box setup, optical testing & enterprise router alignment.</div>
             </div>
-            <div class="otb-right">
-                <div class="otb-right-flex">
-                    <input type="text" class="auto-one-time" value="₹ 15,000.00/-" style="font-family:'Space Grotesk', sans-serif; font-weight:800; font-size:11pt; color:#1E40AF; text-align:right; width:125px;">
-                    <span style="font-size: 8.2pt; font-weight: 600; color: #4B5563;">(One-Time)</span>
-                </div>
-                <div style="margin-top: 4px; padding-right: 2px;">
-                    <input type="text" value="(Rupees Fifteen Thousand Only)" style="font-size: 7.5pt; color: #64748B; text-align: right; width: 100%; background: transparent !important; border: none; font-style: italic;">
+            <div class="otb-right" style="vertical-align: middle;">
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                    <div style="display: inline-flex; align-items: center; gap: 6px;">
+                        <input type="text" class="auto-one-time" value="₹ 15,000.00/-" style="font-family:'Space Grotesk', sans-serif; font-weight:800; font-size:11pt; color:#1E40AF; text-align:right; width:125px;">
+                        <span style="font-size: 8.2pt; font-weight: 600; color: #4B5563;">(One-Time)</span>
+                    </div>
+                    <input type="text" id="installation-words" value="(Rupees Fifteen Thousand Only)" style="font-size: 7.5pt; color: #64748B; text-align: right; width: 100%; background: transparent !important; border: none; font-style: italic; margin-top: 2px; padding-right: 2px; text-transform: capitalize;">
                 </div>
             </div>
         </div>
@@ -1215,8 +1215,29 @@
             return num > 0 ? '₹ ' + formatIndianCurrency(num) + ' + GST' : val;
         });
 
+        function inWords(num) {
+            var a = ['','One ','Two ','Three ','Four ', 'Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '];
+            var b = ['', '', 'Twenty','Thirty','Forty','Fifty', 'Sixty','Seventy','Eighty','Ninety'];
+            if ((num = num.toString()).length > 9) return 'overflow';
+            var n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+            if (!n) return ''; 
+            var str = '';
+            str += (n[1] != 0) ? (a[Number(n[1])] || b[Number(n[1][0])] + ' ' + a[Number(n[1][1])]) + 'Crore ' : '';
+            str += (n[2] != 0) ? (a[Number(n[2])] || b[Number(n[2][0])] + ' ' + a[Number(n[2][1])]) + 'Lakh ' : '';
+            str += (n[3] != 0) ? (a[Number(n[3])] || b[Number(n[3][0])] + ' ' + a[Number(n[3][1])]) + 'Thousand ' : '';
+            str += (n[4] != 0) ? (a[Number(n[4])] || b[Number(n[4][0])] + ' ' + a[Number(n[4][1])]) + 'Hundred ' : '';
+            str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[Number(n[5][0])] + ' ' + a[Number(n[5][1])]) : '';
+            return str.trim() ? '(Rupees ' + str.trim() + ' Only)' : '';
+        }
+
         setupPricingInput('.auto-one-time', function(val) {
             var num = parseNumber(val);
+            var wordsInput = document.getElementById('installation-words');
+            if (wordsInput && num > 0) {
+                wordsInput.value = inWords(num);
+            } else if (wordsInput) {
+                wordsInput.value = '';
+            }
             return num > 0 ? '₹ ' + formatIndianCurrency(num) + '/-' : val;
         });
 
