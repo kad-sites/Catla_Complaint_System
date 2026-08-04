@@ -1226,16 +1226,40 @@
             }
 
             // Reverse to show newest first
-            listEl.innerHTML = history.slice().reverse().map(item => `
+            listEl.innerHTML = history.slice().reverse().map(item => {
+                let html = `
                 <li class="history-item">
-                    <div class="history-item-header">
-                        <span>${item.date}</span>
-                        <span style="color:#059669;">${item.amount}</span>
-                    </div>
-                    <div class="history-item-party">${item.company}</div>
-                    <div style="font-size:9pt; color:#64748B; margin-top:2px;">Attn: ${item.partyName}</div>
-                </li>
-            `).join('');
+                    <div class="history-item-header" style="margin-bottom: 8px;">
+                        <span class="history-item-party" style="font-size: 10pt;">${item.date} &nbsp;|&nbsp; ${item.company} &nbsp;<span style="color:#64748B; font-weight:500;">(Attn: ${item.partyName})</span></span>
+                    </div>`;
+                    
+                if (item.plan1 && item.amount1) {
+                    html += `
+                    <div style="display:flex; justify-content:space-between; font-size:9pt; margin-bottom: 2px;">
+                        <span style="color:#64748B;">${item.plan1}</span>
+                        <span style="color:#059669; font-weight:600;">${item.amount1}</span>
+                    </div>`;
+                }
+                
+                if (item.plan2 && item.amount2) {
+                    html += `
+                    <div style="display:flex; justify-content:space-between; font-size:9pt; margin-bottom: 2px;">
+                        <span style="color:#64748B;">${item.plan2}</span>
+                        <span style="color:#059669; font-weight:600;">${item.amount2}</span>
+                    </div>`;
+                }
+                
+                if (item.installation) {
+                    html += `
+                    <div style="display:flex; justify-content:space-between; font-size:9pt; border-top: 1px dashed #CBD5E1; padding-top: 4px; margin-top: 4px;">
+                        <span style="color:#64748B;">Installation & Setup</span>
+                        <span style="color:#059669; font-weight:600;">${item.installation}</span>
+                    </div>`;
+                }
+                
+                html += `</li>`;
+                return html;
+            }).join('');
         }
 
         function handlePrint() {
@@ -1244,15 +1268,32 @@
             const partyVal = document.getElementById('personNameInput') ? document.getElementById('personNameInput').value : '';
             const companyVal = document.getElementById('companyNameInput') ? document.getElementById('companyNameInput').value : '';
             
-            // Get the first recurring amount
+            // Get plans and recurring amounts
+            const planSpeeds = document.querySelectorAll('.plan-speed');
             const amounts = document.querySelectorAll('.auto-amount');
-            const amountVal = amounts.length > 0 ? amounts[0].value : '';
+            let p1 = '', a1 = '', p2 = '', a2 = '';
+            if (planSpeeds.length > 0 && amounts.length > 0) {
+                p1 = planSpeeds[0].value;
+                a1 = amounts[0].value;
+            }
+            if (planSpeeds.length > 1 && amounts.length > 1) {
+                p2 = planSpeeds[1].value;
+                a2 = amounts[1].value;
+            }
+            
+            // Get installation
+            const instEl = document.querySelector('.auto-one-time');
+            const instVal = instEl ? instEl.value : '';
 
             const record = {
                 date: dateVal,
                 partyName: partyVal,
                 company: companyVal,
-                amount: amountVal,
+                plan1: p1,
+                amount1: a1,
+                plan2: p2,
+                amount2: a2,
+                installation: instVal,
                 timestamp: new Date().toISOString()
             };
 
@@ -1264,11 +1305,13 @@
                 
                 // 3. Send to Google Sheets (if URL exists)
                 if (WEBHOOK_URL) {
+                    // Send a1 as amount so it works with current sheet headers
+                    const sheetRecord = Object.assign({}, record, {amount: a1});
                     fetch(WEBHOOK_URL, {
                         method: 'POST',
                         mode: 'no-cors', // no-cors prevents CORS errors but makes response opaque
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(record)
+                        body: JSON.stringify(sheetRecord)
                     }).catch(err => console.error("Webhook failed:", err));
                 }
             }
@@ -1283,189 +1326,6 @@
                 document.getElementById('refNoInput').value = 'CATLA/' + yyyy + '/' + currentSeq;
             }
         }
-
-        window.addEventListener("beforeprint", function() {
-            document.body.dataset.wasDark = document.body.classList.contains('dark-theme');
-            document.body.classList.remove('dark-theme');
-            var tb = document.querySelector('.no-print-toolbar');
-            if (tb) tb.style.display = 'none';
-            var bb = document.querySelector('.brand-badge');
-            if (bb) bb.style.display = 'none';
-        });
-
-        window.addEventListener("afterprint", function() {
-            if (document.body.dataset.wasDark === 'true') {
-                document.body.classList.add('dark-theme');
-            }
-            var tb = document.querySelector('.no-print-toolbar');
-            if (tb) tb.style.display = '';
-            var bb = document.querySelector('.brand-badge');
-            if (bb) bb.style.display = '';
-        });
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-theme');
-            localStorage.setItem('catlaDarkMode', document.body.classList.contains('dark-theme'));
-        }
-
-        window.addEventListener('DOMContentLoaded', function() {
-            if (localStorage.getItem('catlaDarkMode') === 'true') {
-                document.body.classList.add('dark-theme');
-            }
-
-            syncCompanyName();
-            updateManagerDetails();
-            
-            let today = new Date();
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0');
-            let yyyy = today.getFullYear();
-            document.getElementById('currentDateInput').value = dd + '/' + mm + '/' + yyyy;
-            
-            let storedYear = localStorage.getItem('catlaYear');
-            let currentSeq = localStorage.getItem('catlaSequence');
-            
-            if (!storedYear || parseInt(storedYear) < yyyy) {
-                storedYear = yyyy;
-                currentSeq = 100;
-                localStorage.setItem('catlaYear', storedYear);
-                localStorage.setItem('catlaSequence', currentSeq);
-            }
-            
-            if (!currentSeq) {
-                currentSeq = 100;
-                localStorage.setItem('catlaSequence', currentSeq);
-            }
-            
-            document.getElementById('refNoInput').value = 'CATLA/' + storedYear + '/' + currentSeq;
-
-            document.querySelectorAll('textarea.auto-expand').forEach(ta => {
-                adjustTextareaHeight(ta);
-            });
-        });
-
-        document.querySelectorAll('textarea.auto-expand').forEach(ta => {
-            ta.addEventListener('input', function() {
-                adjustTextareaHeight(this);
-            });
-        });
-
-        // Setup global text inputs (TitleCase on blur/enter)
-        document.querySelectorAll('input[type="text"], textarea').forEach(input => {
-            if (!input.classList.contains('plan-speed') &&
-                !input.classList.contains('auto-rate') && 
-                !input.classList.contains('auto-ratio') &&
-                !input.classList.contains('auto-amount') && 
-                !input.classList.contains('auto-one-time') &&
-                input.id !== 'managerEmail' && 
-                input.id !== 'managerPhone') {
-                
-                input.addEventListener('blur', function() {
-                    this.value = toTitleCase(this.value);
-                    if (this.tagName.toLowerCase() === 'textarea') {
-                        adjustTextareaHeight(this);
-                    }
-                    syncCompanyName();
-                });
-
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        this.value = toTitleCase(this.value);
-                        if (this.tagName.toLowerCase() === 'textarea') {
-                            adjustTextareaHeight(this);
-                        }
-                        syncCompanyName();
-                        this.blur();
-                    }
-                });
-            }
-        });
-
-        // Pricing Inputs Setup
-        function setupPricingInput(selector, formatFn) {
-            document.querySelectorAll(selector).forEach(function(inp) {
-                inp.addEventListener('focus', function() {
-                    this.dataset.oldValue = this.value;
-                    this.value = '';
-                });
-                
-                var processInput = function(el) {
-                    var val = el.value.trim();
-                    if (val === '') {
-                        el.value = el.dataset.oldValue || '';
-                    } else {
-                        el.value = formatFn(val);
-                    }
-                    var row = el.closest('.pricing-row');
-                    if (row) {
-                        updateRowCalculation(row);
-                    }
-                };
-                
-                inp.addEventListener('blur', function() {
-                    processInput(this);
-                });
-                
-                inp.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        processInput(this);
-                        this.blur();
-                    }
-                });
-            });
-        }
-
-        setupPricingInput('.plan-speed', function(val) {
-            var num = parseNumber(val);
-            return num > 0 ? num + ' Mbps Plan' : val;
-        });
-
-        setupPricingInput('.auto-rate', function(val) {
-            var num = parseNumber(val);
-            return num > 0 ? '₹ ' + formatIndianCurrency(num) + ' / Mbps' : val;
-        });
-
-        setupPricingInput('.auto-ratio', function(val) {
-            var clean = val.replace(/\s*Dedicated$/i, '').trim();
-            if (clean.length >= 2 && clean.indexOf(':') === -1) {
-                clean = clean.substring(0, 1) + ':' + clean.substring(1);
-            }
-            return clean + ' Dedicated';
-        });
-
-        setupPricingInput('.auto-amount', function(val) {
-            var num = parseNumber(val);
-            return num > 0 ? '₹ ' + formatIndianCurrency(num) + ' + GST' : val;
-        });
-
-        function inWords(num) {
-            var a = ['','One ','Two ','Three ','Four ', 'Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '];
-            var b = ['', '', 'Twenty','Thirty','Forty','Fifty', 'Sixty','Seventy','Eighty','Ninety'];
-            if ((num = num.toString()).length > 9) return 'overflow';
-            var n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-            if (!n) return ''; 
-            var str = '';
-            str += (n[1] != 0) ? (a[Number(n[1])] || b[Number(n[1][0])] + ' ' + a[Number(n[1][1])]) + 'Crore ' : '';
-            str += (n[2] != 0) ? (a[Number(n[2])] || b[Number(n[2][0])] + ' ' + a[Number(n[2][1])]) + 'Lakh ' : '';
-            str += (n[3] != 0) ? (a[Number(n[3])] || b[Number(n[3][0])] + ' ' + a[Number(n[3][1])]) + 'Thousand ' : '';
-            str += (n[4] != 0) ? (a[Number(n[4])] || b[Number(n[4][0])] + ' ' + a[Number(n[4][1])]) + 'Hundred ' : '';
-            str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[Number(n[5][0])] + ' ' + a[Number(n[5][1])]) : '';
-            return str.trim() ? '(Rupees ' + str.trim() + ' Only)' : '';
-        }
-
-        setupPricingInput('.auto-one-time', function(val) {
-            var num = parseNumber(val);
-            var wordsInput = document.getElementById('installation-words');
-            if (wordsInput && num > 0) {
-                if (wordsInput.tagName === 'INPUT') { wordsInput.value = inWords(num); } else { wordsInput.textContent = inWords(num); }
-            } else if (wordsInput) {
-                if (wordsInput.tagName === 'INPUT') { wordsInput.value = ''; } else { wordsInput.textContent = ''; }
-            }
-            return num > 0 ? '₹ ' + formatIndianCurrency(num) + '/-' : val;
-        });
-
     </script>
     <!-- Brand Badge (Hidden on Print) -->
     <div class="brand-badge">
