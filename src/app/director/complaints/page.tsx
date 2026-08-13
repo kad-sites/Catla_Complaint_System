@@ -45,6 +45,7 @@ function StatusBadge({ status }: { status: string }) {
     WORKING: { cls: 'accepted', label: 'Accepted' },
     RESOLVED: { cls: 'resolved', label: 'Resolved' },
     BREACHED: { cls: 'breached', label: 'SLA Breached' },
+    REJECTED: { cls: 'breached', label: 'Rejected' },
   }
   const s = map[status] || map.OPEN
   return <span className={`status-badge ${s.cls}`}>{s.label}</span>
@@ -138,7 +139,12 @@ export default function AllComplaints() {
   }
 
   const filtered = complaints
-    .filter(t => statusFilter === 'ALL' || t.status === statusFilter)
+    .filter(t => {
+      if (statusFilter === 'ALL') return true;
+      if (statusFilter === 'OPEN') return t.status === 'OPEN' || t.status === 'REJECTED';
+      if (statusFilter === 'IN_PROGRESS') return t.status === 'IN_PROGRESS' || t.status === 'ASSIGNED' || t.status === 'WORKING';
+      return t.status === statusFilter;
+    })
     .filter(t => {
       if (!searchQuery) return true
       const q = searchQuery.toLowerCase()
@@ -150,8 +156,8 @@ export default function AllComplaints() {
 
   const counts = {
     ALL: complaints.length,
-    OPEN: complaints.filter(t => t.status === 'OPEN').length,
-    IN_PROGRESS: complaints.filter(t => t.status === 'IN_PROGRESS' || t.status === 'ASSIGNED').length,
+    OPEN: complaints.filter(t => t.status === 'OPEN' || t.status === 'REJECTED').length,
+    IN_PROGRESS: complaints.filter(t => t.status === 'IN_PROGRESS' || t.status === 'ASSIGNED' || t.status === 'WORKING').length,
     RESOLVED: complaints.filter(t => t.status === 'RESOLVED').length,
     BREACHED: complaints.filter(t => t.status === 'BREACHED').length,
   }

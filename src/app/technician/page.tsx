@@ -396,7 +396,7 @@ export default function TechnicianApp() {
               ) : (
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
                   <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)' }} onClick={async () => {
-                    await updateComplaint(task.id, { status: 'OPEN', tech: '' })
+                    await updateComplaint(task.id, { status: 'REJECTED', tech: 'Unassigned' })
                     setAssignments(prev => prev.filter(t => t.id !== task.id))
                   }}>
                     ❌ Reject
