@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
+import { Logo } from './Logo'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, Headphones, Wrench, BarChart3,
@@ -60,10 +61,10 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
     <div className="app-layout">
       {/* Sidebar */}
       <aside className="app-sidebar">
-        <div className="sidebar-brand">
-          <div className="sidebar-brand-logo">CB</div>
+        <div className="sidebar-brand" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Logo width={40} height={40} />
           <div>
-            <h1>CATLA BROADBAND</h1>
+            <h1>CBS System</h1>
             <span>Complaint NOC</span>
           </div>
         </div>
