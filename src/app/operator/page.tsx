@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { sendTicketSMS } from '@/actions/sendTicketSMS'
 import { saveComplaint } from '@/actions/complaintStore'
+import { sendTelegramAlert } from '@/actions/sendTelegramAlert'
 
 const CATEGORIES = [
   { id: '1', name: 'No Internet', priority: 'CRITICAL', icon: '🔴' },
@@ -190,6 +191,10 @@ export default function OperatorConsole() {
 
     // Send Twilio SMS in background
     sendTicketSMS(customer.phone, ticketNum, customer.name)
+
+    // Send Telegram alert in background
+    const telegramMessage = `🚨 <b>New Complaint Registered</b>\n\n<b>Ticket:</b> ${ticketNum}\n<b>Customer:</b> ${customer.name}\n<b>Phone:</b> ${customer.phone}\n<b>Category:</b> ${category}\n<b>Issue:</b> ${subType}\n<b>SLA:</b> ${formattedSla}`;
+    sendTelegramAlert(telegramMessage);
 
     setSuccess(ticketNum)
     setSubmitting(false)
