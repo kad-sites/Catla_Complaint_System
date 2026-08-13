@@ -1,18 +1,30 @@
 'use server'
 
-import { prisma } from '@/lib/db'
+const SUPABASE_URL = process.env.SUPABASE_URL || ''
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 
-// Read complaints from Database
+const headers = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+  'Content-Type': 'application/json',
+  'Prefer': 'return=representation',
+}
+
+// Read complaints from Supabase
 export async function getComplaints() {
   try {
-    const complaints = await prisma.uIComplaint.findMany({
-      orderBy: {
-        createdAt: 'desc'
-      }
-    })
-    return complaints
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/UIComplaint?order=createdAt.desc`,
+      { headers, cache: 'no-store' }
+    )
+    if (!res.ok) {
+      const errText = await res.text()
+      console.error('Supabase GET error:', res.status, errText)
+      return []
+    }
+    return await res.json()
   } catch (error) {
-    console.error('Error fetching complaints from DB:', error)
+    console.error('Error fetching complaints:', error)
     return []
   }
 }
@@ -20,27 +32,37 @@ export async function getComplaints() {
 // Add a new complaint
 export async function saveComplaint(complaint: any) {
   try {
-    await prisma.uIComplaint.create({
-      data: {
-        id: complaint.id,
-        customer: complaint.customer,
-        category: complaint.category,
-        issue: complaint.issue,
-        priority: complaint.priority,
-        sla: complaint.sla,
-        slaPercent: complaint.slaPercent,
-        tech: complaint.tech,
-        status: complaint.status,
-        time: complaint.time,
-        phone: complaint.phone,
-        address: complaint.address,
-        createdAt: complaint.createdAt,
-        slaHours: complaint.slaHours,
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/UIComplaint`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          id: complaint.id,
+          customer: complaint.customer,
+          category: complaint.category,
+          issue: complaint.issue,
+          priority: complaint.priority,
+          sla: complaint.sla,
+          slaPercent: complaint.slaPercent,
+          tech: complaint.tech,
+          status: complaint.status,
+          time: complaint.time,
+          phone: complaint.phone,
+          address: complaint.address,
+          createdAt: complaint.createdAt,
+          slaHours: complaint.slaHours,
+        }),
       }
-    })
+    )
+    if (!res.ok) {
+      const errText = await res.text()
+      console.error('Supabase POST error:', res.status, errText)
+      return { success: false, error: errText }
+    }
     return { success: true }
   } catch (error: any) {
-    console.error('Error saving complaint to DB:', error)
+    console.error('Error saving complaint:', error)
     return { success: false, error: error.message }
   }
 }
@@ -48,13 +70,22 @@ export async function saveComplaint(complaint: any) {
 // Update a specific complaint
 export async function updateComplaint(id: string, updates: any) {
   try {
-    await prisma.uIComplaint.update({
-      where: { id },
-      data: updates
-    })
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/UIComplaint?id=eq.${encodeURIComponent(id)}`,
+      {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify(updates),
+      }
+    )
+    if (!res.ok) {
+      const errText = await res.text()
+      console.error('Supabase PATCH error:', res.status, errText)
+      return { success: false, error: errText }
+    }
     return { success: true }
   } catch (error: any) {
-    console.error('Error updating complaint in DB:', error)
+    console.error('Error updating complaint:', error)
     return { success: false, error: error.message }
   }
 }
