@@ -244,7 +244,7 @@ export default function TechnicianApp() {
 
           {stage === 'pending' ? (
             <div style={{ marginBottom: '16px' }}>
-              <button onClick={async () => { setStage('enroute'); sendAssignmentSMS(selectedTask.phone, selectedTask.id, loggedInTech!, selectedTask.sla); await updateComplaint(selectedTask.id, { techAccepted: true }) }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
+              <button onClick={async () => { setStage('enroute'); sendAssignmentSMS(selectedTask.phone, selectedTask.id, loggedInTech!, selectedTask.sla); await updateComplaint(selectedTask.id, { status: 'WORKING' }) }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
                 Accept Job
               </button>
             </div>
