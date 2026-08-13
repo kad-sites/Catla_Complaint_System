@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { sendAssignmentSMS } from '@/actions/sendAssignmentSMS'
 import { getComplaints, updateComplaint } from '@/actions/complaintStore'
+import { sendTelegramAlert } from '@/actions/sendTelegramAlert'
 
 type Complaint = {
   id: string
@@ -119,13 +120,20 @@ export default function AllComplaints() {
     setComplaints(updatedComplaints)
     setReassigningId(null)
 
-    await updateComplaint(ticketId, {
+    // Ensure we only send fields that exist in the Supabase UIComplaint table
+    const newStatus = ticket.status === 'OPEN' ? 'ASSIGNED' : ticket.status;
+    const res = await updateComplaint(ticketId, {
       tech: techName,
-      status: ticket.status === 'OPEN' ? 'ASSIGNED' : ticket.status,
-      assignedAt: nowTime,
-      techAccepted: false,
-      previousAssignments: newPrevious
+      status: newStatus
     })
+
+    if (res.success) {
+      // Send Telegram alert in background
+      const telegramMessage = `👨‍🔧 <b>Task Assigned</b>\n\n<b>Ticket:</b> ${ticket.id}\n<b>Customer:</b> ${ticket.customer}\n<b>Address:</b> ${ticket.address}\n<b>Assigned To:</b> ${techName}\n<b>Status:</b> ${newStatus}`;
+      sendTelegramAlert(telegramMessage);
+    } else {
+      console.error('Failed to assign in DB:', res.error);
+    }
   }
 
   const filtered = complaints
