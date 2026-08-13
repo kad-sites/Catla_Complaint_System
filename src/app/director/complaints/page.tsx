@@ -109,11 +109,12 @@ export default function AllComplaints() {
     }
     
     // Optimistic update
+    const newStatus = (ticket.status === 'OPEN' || ticket.status === 'REJECTED') ? 'ASSIGNED' : ticket.status;
     const updatedComplaints = complaints.map(t => 
       t.id === ticketId ? { 
         ...t, 
         tech: techName, 
-        status: t.status === 'OPEN' ? 'ASSIGNED' : t.status, 
+        status: newStatus, 
         assignedAt: nowTime, 
         techAccepted: false,
         previousAssignments: newPrevious
@@ -123,7 +124,6 @@ export default function AllComplaints() {
     setReassigningId(null)
 
     // Ensure we only send fields that exist in the Supabase UIComplaint table
-    const newStatus = ticket.status === 'OPEN' ? 'ASSIGNED' : ticket.status;
     const res = await updateComplaint(ticketId, {
       tech: techName,
       status: newStatus
