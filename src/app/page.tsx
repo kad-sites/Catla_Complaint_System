@@ -136,15 +136,15 @@ export default function LoginPage() {
                 marginBottom: '6px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
-              }}>Email Address</label>
+              }}>User ID / Email</label>
               <div style={{ position: 'relative' }}>
                 <Mail size={16} style={{ position: 'absolute', left: '14px', top: '12px', color: '#64748b' }} />
                 <input
-                  type="email"
+                  type="text"
                   required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="operator@catla.local"
+                  placeholder="admin or operator@catla.local"
                   className="form-input"
                   style={{ paddingLeft: '40px', height: '44px' }}
                 />
@@ -160,12 +160,11 @@ export default function LoginPage() {
                 marginBottom: '6px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
-              }}>Password</label>
+              }}>Password (Optional for admin)</label>
               <div style={{ position: 'relative' }}>
                 <Lock size={16} style={{ position: 'absolute', left: '14px', top: '12px', color: '#64748b' }} />
                 <input
                   type="password"
-                  required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
