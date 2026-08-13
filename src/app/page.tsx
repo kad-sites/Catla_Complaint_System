@@ -73,37 +73,11 @@ export default function LoginPage() {
       <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '420px' }}>
         {/* Logo + Brand */}
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <div style={{
-            width: '64px',
-            height: '64px',
-            borderRadius: '16px',
-            background: 'linear-gradient(135deg, #0ea5e9, #3b82f6)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 20px',
-            boxShadow: '0 8px 32px rgba(14, 165, 233, 0.3)',
-          }}>
-            <Wifi size={28} color="white" />
-          </div>
-          <h1 style={{
-            fontSize: '26px',
-            fontWeight: 800,
-            color: '#f1f5f9',
-            letterSpacing: '-0.5px',
-            marginBottom: '6px',
-          }}>
-            CATLA BROADBAND
-          </h1>
-          <p style={{
-            fontSize: '12px',
-            color: '#64748b',
-            textTransform: 'uppercase',
-            letterSpacing: '3px',
-            fontWeight: 600,
-          }}>
-            Complaint Management System
-          </p>
+          <img 
+            src="/catla_logo.png" 
+            alt="Catla Complaint Management System" 
+            style={{ maxWidth: '100%', height: 'auto', maxHeight: '100px', objectFit: 'contain' }} 
+          />
         </div>
 
         {/* Login Card */}

@@ -61,12 +61,12 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
     <div className="app-layout">
       {/* Sidebar */}
       <aside className="app-sidebar">
-        <div className="sidebar-brand" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Logo width={40} height={40} />
-          <div>
-            <h1>CBS System</h1>
-            <span>Complaint NOC</span>
-          </div>
+        <div className="sidebar-brand" style={{ padding: '12px 16px', display: 'flex', justifyContent: 'center' }}>
+          <img 
+            src="/catla_logo.png" 
+            alt="Catla Complaint Management System" 
+            style={{ maxWidth: '100%', height: 'auto', maxHeight: '60px', objectFit: 'contain' }} 
+          />
         </div>
 
         <nav className="sidebar-nav">
