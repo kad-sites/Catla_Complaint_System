@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ─── User / Staff ────────────────────────────────────────
@@ -155,4 +156,22 @@ model EscalationEvent {
   // Relations
   complaint      Complaint @relation(fields: [complaintId], references: [id])
   notifiedUser   User?     @relation(fields: [notifiedUserId], references: [id])
+}
+
+// ─── UI Complaint (Mock Replacement) ─────────────────────────────
+model UIComplaint {
+  id         String @id
+  customer   String
+  category   String
+  issue      String
+  priority   String
+  sla        String
+  slaPercent Float
+  tech       String
+  status     String
+  time       String
+  phone      String
+  address    String
+  createdAt  Float
+  slaHours   Float
 }

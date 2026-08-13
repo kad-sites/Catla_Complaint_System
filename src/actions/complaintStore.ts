@@ -1,17 +1,18 @@
 'use server'
 
-import fs from 'fs/promises'
-import path from 'path'
+import { prisma } from '@/lib/db'
 
-const DB_PATH = path.join(process.cwd(), 'complaints.json')
-
-// Read complaints from JSON
+// Read complaints from Database
 export async function getComplaints() {
   try {
-    const data = await fs.readFile(DB_PATH, 'utf-8')
-    return JSON.parse(data)
+    const complaints = await prisma.uIComplaint.findMany({
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+    return complaints
   } catch (error) {
-    // If file doesn't exist, return empty array
+    console.error('Error fetching complaints from DB:', error)
     return []
   }
 }
@@ -19,12 +20,27 @@ export async function getComplaints() {
 // Add a new complaint
 export async function saveComplaint(complaint: any) {
   try {
-    const current = await getComplaints()
-    current.unshift(complaint) // Add to top
-    await fs.writeFile(DB_PATH, JSON.stringify(current, null, 2), 'utf-8')
+    await prisma.uIComplaint.create({
+      data: {
+        id: complaint.id,
+        customer: complaint.customer,
+        category: complaint.category,
+        issue: complaint.issue,
+        priority: complaint.priority,
+        sla: complaint.sla,
+        slaPercent: complaint.slaPercent,
+        tech: complaint.tech,
+        status: complaint.status,
+        time: complaint.time,
+        phone: complaint.phone,
+        address: complaint.address,
+        createdAt: complaint.createdAt,
+        slaHours: complaint.slaHours,
+      }
+    })
     return { success: true }
   } catch (error: any) {
-    console.error('Error saving complaint:', error)
+    console.error('Error saving complaint to DB:', error)
     return { success: false, error: error.message }
   }
 }
@@ -32,14 +48,13 @@ export async function saveComplaint(complaint: any) {
 // Update a specific complaint
 export async function updateComplaint(id: string, updates: any) {
   try {
-    const current = await getComplaints()
-    const updated = current.map((c: any) => 
-      c.id === id ? { ...c, ...updates } : c
-    )
-    await fs.writeFile(DB_PATH, JSON.stringify(updated, null, 2), 'utf-8')
+    await prisma.uIComplaint.update({
+      where: { id },
+      data: updates
+    })
     return { success: true }
   } catch (error: any) {
-    console.error('Error updating complaint:', error)
+    console.error('Error updating complaint in DB:', error)
     return { success: false, error: error.message }
   }
 }
