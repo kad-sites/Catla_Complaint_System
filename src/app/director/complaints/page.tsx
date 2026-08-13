@@ -42,6 +42,7 @@ function StatusBadge({ status }: { status: string }) {
     OPEN: { cls: 'open', label: 'Open' },
     ASSIGNED: { cls: 'assigned', label: 'Assigned' },
     IN_PROGRESS: { cls: 'in-progress', label: 'In Progress' },
+    WORKING: { cls: 'accepted', label: 'Accepted' },
     RESOLVED: { cls: 'resolved', label: 'Resolved' },
     BREACHED: { cls: 'breached', label: 'SLA Breached' },
   }

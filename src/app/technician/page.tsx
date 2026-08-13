@@ -389,12 +389,33 @@ export default function TechnicianApp() {
                 <MapPin size={12} /> {task.address}
               </div>
 
+              {task.status === 'WORKING' ? (
+                <div style={{ padding: '10px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '8px', color: '#10b981', textAlign: 'center', fontWeight: 600, fontSize: '12px', marginBottom: '12px' }}>
+                  ✅ Job Accepted
+                </div>
+              ) : (
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+                  <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)' }} onClick={async () => {
+                    await updateComplaint(task.id, { status: 'OPEN', tech: '' })
+                    setAssignments(prev => prev.filter(t => t.id !== task.id))
+                  }}>
+                    ❌ Reject
+                  </button>
+                  <button className="btn btn-primary" style={{ flex: 1, fontSize: '12px', background: '#10b981', color: '#fff', border: 'none' }} onClick={async () => {
+                    setAssignments(prev => prev.map(t => t.id === task.id ? { ...t, status: 'WORKING' } : t))
+                    await updateComplaint(task.id, { status: 'WORKING' })
+                  }}>
+                    ✅ Accept
+                  </button>
+                </div>
+              )}
+
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px' }}>
                   <Navigation size={13} /> Navigate
                 </button>
-                <button className="btn btn-primary" style={{ flex: 1, fontSize: '12px' }} onClick={() => openJob(task)}>
-                  Open Job <ArrowRight size={13} />
+                <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px', border: '1px solid #0ea5e9', color: '#0ea5e9' }} onClick={() => openJob(task)}>
+                  View Details <ArrowRight size={13} />
                 </button>
               </div>
             </div>
