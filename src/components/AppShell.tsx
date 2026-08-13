@@ -2,7 +2,6 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { Logo } from './Logo'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, Headphones, Wrench, BarChart3,
