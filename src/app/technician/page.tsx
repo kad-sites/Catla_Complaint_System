@@ -19,6 +19,7 @@ type Assignment = {
   address: string
   phone: string
   notes: string
+  status: string
   previousAssignments?: { tech: string, reassignedAt: number }[]
 }
 
@@ -71,7 +72,8 @@ export default function TechnicianApp() {
             slaPercent: t.slaPercent,
             address: t.address,
             phone: t.phone,
-            notes: 'Customer reported issue via NOC.'
+            notes: 'Customer reported issue via NOC.',
+            status: t.status
           }))
           
           setAssignments(prev => {
@@ -159,7 +161,7 @@ export default function TechnicianApp() {
 
   const openJob = (task: Assignment) => {
     setSelectedTask(task)
-    setStage('pending')
+    setStage(task.status === 'WORKING' ? 'enroute' : 'pending')
     setPhotos([])
     setResolutionType('')
     setResolutionNotes('')
@@ -186,8 +188,8 @@ export default function TechnicianApp() {
       resolvedAt: new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }),
       resolution: resolutionType,
       resolutionNotes: resolutionNotes,
-      photos: [...photos],
-    }, ...prev])
+      photos: [], // Clear photos to prevent Base64 memory leak crashes on mobile WebView
+    }, ...prev].slice(0, 10))
     
     setTimeout(() => {
       closeJob()
