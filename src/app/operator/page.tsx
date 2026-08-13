@@ -39,12 +39,12 @@ const SNIPPETS = [
 
 const MOCK_CUSTOMERS = [
   { id: 'c1', smartguardId: 'CID-1042', name: 'Rajesh Kumar', phone: '+91-9876543210', address: 'B-42, Sector 15, Noida', category: 'RESIDENTIAL', plan: '100 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
-  { id: 'c2', smartguardId: 'CID-2081', name: 'TechCorp Pvt Ltd', phone: '+91-9123456789', address: '3rd Floor, Tech Park, Sector 62', category: 'COMMERCIAL', plan: '500 Mbps Leased', status: 'ACTIVE', openTickets: 1 },
+  { id: 'c2', smartguardId: 'CID-2081', name: 'TechCorp Pvt Ltd', phone: '+91-9123456789', address: '3rd Floor, Tech Park, Sector 62', category: 'COMMERCIAL', plan: '500 Mbps Leased', status: 'ACTIVE', openTickets: 0 },
   { id: 'c3', smartguardId: 'CID-3010', name: 'Priya Sharma', phone: '+91-9988776655', address: 'D-15, Green Valley, Sector 12', category: 'RESIDENTIAL', plan: '50 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c4', smartguardId: 'CID-4055', name: 'Govt Office Sec-5', phone: '+91-1120304050', address: 'Block A, Govt Complex, Sector 5', category: 'GOVERNMENT', plan: '200 Mbps Dedicated', status: 'ACTIVE', openTickets: 0 },
-  { id: 'c5', smartguardId: 'CID-5023', name: 'DataStream Ltd', phone: '+91-9090909090', address: 'Unit 7, Industrial Area', category: 'ENTERPRISE', plan: '1 Gbps Leased Line', status: 'ACTIVE', openTickets: 2 },
+  { id: 'c5', smartguardId: 'CID-5023', name: 'DataStream Ltd', phone: '+91-9090909090', address: 'Unit 7, Industrial Area', category: 'ENTERPRISE', plan: '1 Gbps Leased Line', status: 'ACTIVE', openTickets: 0 },
   { id: 'c6', smartguardId: 'CID-6011', name: 'Deep Das', phone: '+91-9854051521', address: 'H-12, Laketown, Kolkata', category: 'RESIDENTIAL', plan: '100 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
-  { id: 'c7', smartguardId: 'CID-6022', name: 'Anupam Das', phone: '+91-9854051519', address: 'Flat 4B, Salt Lake, Sector V, Kolkata', category: 'RESIDENTIAL', plan: '200 Mbps Fiber', status: 'ACTIVE', openTickets: 1 },
+  { id: 'c7', smartguardId: 'CID-6022', name: 'Anupam Das', phone: '+91-9854051519', address: 'Flat 4B, Salt Lake, Sector V, Kolkata', category: 'RESIDENTIAL', plan: '200 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c8', smartguardId: 'CID-6033', name: 'Deep Singh', phone: '+91-9854051525', address: 'A-22, Rajouri Garden, New Delhi', category: 'RESIDENTIAL', plan: '50 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c9', smartguardId: 'CID-6044', name: 'Utpal Das', phone: '+91-9854051520', address: 'C-7, Dum Dum Park, Kolkata', category: 'RESIDENTIAL', plan: '100 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c10', smartguardId: 'CID-6055', name: 'Zoheb Aziz', phone: '+91-9854051522', address: 'Rajarhat, New Town, Kolkata', category: 'RESIDENTIAL', plan: '300 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
