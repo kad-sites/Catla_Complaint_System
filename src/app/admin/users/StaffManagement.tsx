@@ -355,6 +355,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                   </td>
                   <td>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '13px' }}>
+                      <div style={{ color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}><Mail size={12} style={{ color: 'var(--color-text-muted)' }} /> {staff.email}</div>
                       <div style={{ color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}><Phone size={12} style={{ color: 'var(--color-text-muted)' }} /> {staff.phone}</div>
                     </div>
                   </td>
