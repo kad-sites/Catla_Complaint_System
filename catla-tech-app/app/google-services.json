@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "439493272840",
+    "project_id": "catla-84bf1",
+    "storage_bucket": "catla-84bf1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439493272840:android:f6fa0922bba36a25dc78bd",
+        "android_client_info": {
+          "package_name": "com.example.catlatechapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXtXI-YP-9LOAEUx4W3ONS84_mMTfpzo0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -133,6 +133,10 @@ export default function AllComplaints() {
       // Send Telegram alert in background
       const telegramMessage = `👨‍🔧 <b>Task Assigned</b>\n\n<b>Ticket:</b> ${ticket.id}\n<b>Customer:</b> ${ticket.customer}\n<b>Address:</b> ${ticket.address}\n<b>Assigned To:</b> ${techName}\n<b>Status:</b> ${newStatus}`;
       sendTelegramAlert(telegramMessage);
+
+      // Send Firebase Push Notification
+      const pushMessage = `Ticket ${ticket.id} assigned to ${techName} at ${ticket.address}`;
+      import('@/actions/sendPushNotification').then(m => m.sendPushNotification(ticket.id, pushMessage));
     } else {
       console.error('Failed to assign in DB:', res.error);
     }
