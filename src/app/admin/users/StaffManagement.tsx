@@ -28,17 +28,17 @@ type StaffMember = {
 function RoleBadge({ role }: { role: StaffRole }) {
   const displayRole = (role || '').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
   const styles: Record<string, string> = {
-    Manager: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
-    Operator: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-    Technician: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
-    Administrator: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-    'Fiber Technician': 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
-    'Support Staff': 'bg-pink-500/10 text-pink-400 border-pink-500/20',
-    Telecaller: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
-    'Bill Collector': 'bg-rose-500/10 text-rose-400 border-rose-500/20',
+    Manager: 'text-indigo-400',
+    Operator: 'text-emerald-400',
+    Technician: 'text-sky-400',
+    Administrator: 'text-purple-400',
+    'Fiber Technician': 'text-cyan-400',
+    'Support Staff': 'text-pink-400',
+    Telecaller: 'text-orange-400',
+    'Bill Collector': 'text-rose-400',
   }
   return (
-    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold border ${styles[displayRole] || 'bg-slate-500/10 text-slate-400 border-slate-500/20'}`}>
+    <span className={`text-xs font-medium ${styles[displayRole] || 'text-slate-400'}`}>
       {displayRole}
     </span>
   )
@@ -46,9 +46,9 @@ function RoleBadge({ role }: { role: StaffRole }) {
 
 function StatusBadge({ status }: { status: StaffStatus }) {
   const styles: Record<StaffStatus, string> = {
-    Active: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-    Inactive: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
-    'On Leave': 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+    Active: 'text-emerald-400',
+    Inactive: 'text-slate-400',
+    'On Leave': 'text-amber-400',
   }
   const icons = {
     Active: <UserCheck size={12} className="mr-1" />,
@@ -56,7 +56,7 @@ function StatusBadge({ status }: { status: StaffStatus }) {
     'On Leave': <User size={12} className="mr-1" />,
   }
   return (
-    <span className={`flex items-center w-fit px-2.5 py-1 rounded-full text-xs font-semibold border ${styles[status]}`}>
+    <span className={`flex items-center w-fit text-xs font-medium ${styles[status]}`}>
       {icons[status]} {status}
     </span>
   )
