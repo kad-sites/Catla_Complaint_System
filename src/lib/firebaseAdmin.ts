@@ -1,23 +1,26 @@
-import * as admin from 'firebase-admin';
+import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
+import { getMessaging } from 'firebase-admin/messaging';
 import path from 'path';
 import fs from 'fs';
 
-if (!admin.apps.length) {
+let app: App | undefined;
+
+if (!getApps().length) {
     try {
         let credential;
         if (process.env.FIREBASE_SERVICE_ACCOUNT) {
             const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-            credential = admin.credential.cert(serviceAccount);
+            credential = cert(serviceAccount);
         } else {
             // Fallback for local development
             const serviceAccountPath = path.resolve(process.cwd(), 'firebase-admin-key.json');
             if (fs.existsSync(serviceAccountPath)) {
-                credential = admin.credential.cert(serviceAccountPath);
+                credential = cert(serviceAccountPath);
             }
         }
 
         if (credential) {
-            admin.initializeApp({ credential });
+            app = initializeApp({ credential });
             console.log('Firebase Admin initialized successfully.');
         } else {
             console.warn('Firebase Admin credentials missing. Push notifications will not work.');
@@ -25,6 +28,8 @@ if (!admin.apps.length) {
     } catch (error) {
         console.error('Firebase admin initialization error', error);
     }
+} else {
+    app = getApps()[0];
 }
 
-export const messaging = admin.apps.length ? admin.messaging() : null;
+export const messaging = app ? getMessaging(app) : null;
