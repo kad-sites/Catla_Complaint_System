@@ -9,7 +9,7 @@ import {
 import { getComplaints } from '@/actions/complaintStore'
 import { getUsers, createUser, deleteUser, updateUser } from '@/actions/userStore'
 
-type StaffRole = 'Manager' | 'Operator' | 'Technician' | 'Administrator' | 'Fiber Technician' | 'Support Staff' | 'Telecaller' | 'Bill Collector' | string
+type StaffRole = 'Manager' | 'Sales Manager' | 'Operator' | 'Technician' | 'Administrator' | 'Fiber Technician' | 'Support Staff' | 'Telecaller' | 'Bill Collector' | string
 type StaffStatus = 'Active' | 'Inactive' | 'On Leave'
 
 type StaffMember = {
@@ -29,6 +29,7 @@ function RoleBadge({ role }: { role: StaffRole }) {
   const displayRole = (role || '').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
   const styles: Record<string, string> = {
     Manager: 'text-indigo-400',
+    'Sales Manager': 'text-violet-400',
     Operator: 'text-emerald-400',
     Technician: 'text-sky-400',
     Administrator: 'text-purple-400',
@@ -310,7 +311,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                 />
               </div>
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', flex: 1 }}>
-              {['All', 'Technician', 'Fiber Technician', 'Operator', 'Telecaller', 'Bill Collector'].map(role => (
+              {['All', 'Manager', 'Sales Manager', 'Technician', 'Fiber Technician', 'Operator', 'Telecaller', 'Bill Collector'].map(role => (
                   <button
                     key={role}
                     onClick={() => setRoleFilter(role)}
@@ -508,6 +509,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                   <select className="form-select" value={newStaff.role} onChange={e => setNewStaff({...newStaff, role: e.target.value})}>
                     <option value="Administrator">Administrator</option>
                     <option value="Manager">Manager</option>
+                    <option value="Sales Manager">Sales Manager</option>
                     <option value="Technician">Technician</option>
                     <option value="Fiber Technician">Fiber Technician</option>
                     <option value="Support Staff">Support Staff</option>
