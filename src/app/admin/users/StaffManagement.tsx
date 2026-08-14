@@ -310,11 +310,11 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
             <table className="ticket-table">
             <thead>
               <tr>
-                <th>Staff Member</th>
-                <th>Contact & Zone</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th style={{ textAlign: 'right' }}>Actions</th>
+                <th style={{ width: '30%' }}>Staff Member</th>
+                <th style={{ width: '25%' }}>Contact & Zone</th>
+                <th style={{ width: '20%' }}>Role</th>
+                <th style={{ width: '15%' }}>Status</th>
+                <th style={{ width: '10%', textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
