@@ -4,7 +4,7 @@ import { getUsers, createUser, updateUser } from '@/actions/userStore';
 export async function POST(request: Request) {
   try {
     const payload = await request.json();
-    const { name, phone, role, status, matchPhone } = payload;
+    const { name, phone, email, role, status, matchPhone } = payload;
     
     // Validate payload
     if (!name && !phone) {
@@ -28,6 +28,7 @@ export async function POST(request: Request) {
       await updateUser(existing.id, {
         name: name || existing.name,
         phone: phone || existing.phone,
+        email: email !== undefined ? email : existing.email,
         role: formattedRole,
         active
       }, true); // pass true for isSync
@@ -37,6 +38,7 @@ export async function POST(request: Request) {
         id: `STF-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
         name,
         phone,
+        email,
         role: formattedRole,
         active
       }, true); // pass true for isSync

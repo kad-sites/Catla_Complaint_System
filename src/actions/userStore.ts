@@ -64,6 +64,7 @@ export async function createUser(userData: any, isSync = false) {
           body: JSON.stringify({
             name: userData.name,
             phone: userData.phone,
+            email: userData.email,
             role: userData.role,
             status: userData.active === false ? 'Inactive' : 'Active'
           })
@@ -127,6 +128,7 @@ export async function updateUser(id: string, updates: any, isSync = false, origi
             matchPhone: originalPhone || updates.phone,
             name: updates.name,
             phone: updates.phone,
+            email: updates.email,
             role: updates.role,
             status: updates.active !== undefined ? (updates.active ? 'Active' : 'Inactive') : undefined
           })
