@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { sendAssignmentSMS } from '@/actions/sendAssignmentSMS'
 import { getComplaints, updateComplaint } from '@/actions/complaintStore'
+import { getUsers } from '@/actions/userStore'
 import { sendTelegramAlert } from '@/actions/sendTelegramAlert'
 
 type Complaint = {
@@ -63,6 +64,7 @@ function CategoryBadge({ category }: { category: string }) {
 
 export default function AllComplaints() {
   const [complaints, setComplaints] = useState<Complaint[]>(STATIC_COMPLAINTS)
+  const [technicians, setTechnicians] = useState<any[]>([])
   const [statusFilter, setStatusFilter] = useState('ALL')
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
@@ -75,14 +77,18 @@ export default function AllComplaints() {
     return () => clearInterval(timer)
   }, [])
 
-  // Poll server store for complaints
+  // Poll server store for complaints and technicians
   useEffect(() => {
     let isMounted = true
     const loadFromStore = async () => {
       try {
-        const stored = await getComplaints()
+        const [stored, users] = await Promise.all([
+          getComplaints(),
+          getUsers()
+        ])
         if (isMounted) {
           setComplaints([...stored, ...STATIC_COMPLAINTS])
+          setTechnicians(users.filter((u: any) => u.role === 'TECHNICIAN' && u.active))
         }
       } catch {}
     }
@@ -303,9 +309,10 @@ export default function AllComplaints() {
                           autoFocus={reassigningId === ticket.id}
                         >
                           <option value="" disabled>Assign Tech...</option>
-                          <option value="Amit Singh">Amit Singh</option>
-                          <option value="Vikram Jha">Vikram Jha</option>
-                          <option value="Suresh Pal">Suresh Pal</option>
+                          {technicians.length === 0 && <option disabled>Loading...</option>}
+                          {technicians.map(tech => (
+                            <option key={tech.id} value={tech.name}>{tech.name}</option>
+                          ))}
                         </select>
                       ) : (
                         <div 

@@ -7,6 +7,7 @@ import {
   Mail, Phone, MapPin, Edit, Trash2, CheckCircle2, X, ChevronDown, ChevronUp
 } from 'lucide-react'
 import { getComplaints } from '@/actions/complaintStore'
+import { getUsers, createUser, deleteUser } from '@/actions/userStore'
 
 type StaffRole = 'Manager' | 'Operator' | 'Technician'
 type StaffStatus = 'Active' | 'Inactive' | 'On Leave'
@@ -18,19 +19,11 @@ type StaffMember = {
   email: string
   phone: string
   status: StaffStatus
-  zone: string
-  lastActive: string
-  avatar: string
+  zone?: string
+  lastActive?: string
+  avatar?: string
+  active?: boolean
 }
-
-const MOCK_STAFF: StaffMember[] = [
-  { id: 'STF-001', name: 'Zoheb Aziz', role: 'Manager', email: 'zoheb@catlabroadband.com', phone: '+91 98765 43210', status: 'Active', zone: 'Head Office', lastActive: 'Just now', avatar: 'ZA' },
-  { id: 'STF-002', name: 'Amit Singh', role: 'Technician', email: 'amit@catlabroadband.com', phone: '+91 91234 56789', status: 'Active', zone: 'Guwahati South', lastActive: '2m ago', avatar: 'AS' },
-  { id: 'STF-003', name: 'Priya Sharma', role: 'Operator', email: 'priya@catlabroadband.com', phone: '+91 99887 76655', status: 'Active', zone: 'NOC Desk 1', lastActive: '5m ago', avatar: 'PS' },
-  { id: 'STF-004', name: 'Suresh Pal', role: 'Technician', email: 'suresh@catlabroadband.com', phone: '+91 98711 22334', status: 'On Leave', zone: 'Guwahati East', lastActive: 'Yesterday', avatar: 'SP' },
-  { id: 'STF-005', name: 'Vikram Jha', role: 'Technician', email: 'vikram@catlabroadband.com', phone: '+91 99988 77766', status: 'Active', zone: 'Guwahati North', lastActive: '12m ago', avatar: 'VJ' },
-  { id: 'STF-006', name: 'Ravi Kumar', role: 'Technician', email: 'ravi@catlabroadband.com', phone: '+91 91111 22222', status: 'Inactive', zone: 'Guwahati West', lastActive: '1w ago', avatar: 'RK' },
-]
 
 function RoleBadge({ role }: { role: StaffRole }) {
   const styles: Record<StaffRole, string> = {
@@ -69,25 +62,80 @@ export default function StaffManagement() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [complaints, setComplaints] = useState<any[]>([])
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [staff, setStaff] = useState<StaffMember[]>([])
+
+  // Form state
+  const [newStaff, setNewStaff] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    role: 'Technician',
+    zone: 'Guwahati Central'
+  })
+
+  const loadData = async () => {
+    try {
+      const [storedComplaints, storedUsers] = await Promise.all([
+        getComplaints(),
+        getUsers()
+      ])
+      setComplaints(storedComplaints)
+      setStaff(storedUsers.map((u: any) => ({
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        phone: u.phone || '',
+        role: u.role === 'OPERATOR' ? 'Operator' : u.role === 'TECHNICIAN' ? 'Technician' : 'Manager',
+        status: u.active ? 'Active' : 'Inactive',
+        zone: u.zone || 'Head Office',
+        avatar: u.name.substring(0, 2).toUpperCase()
+      })))
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   useEffect(() => {
     let isMounted = true
-    const loadFromStore = async () => {
-      try {
-        const stored = await getComplaints()
-        if (isMounted) setComplaints(stored)
-      } catch {}
+    const init = async () => {
+      await loadData()
     }
-    
-    loadFromStore()
-    const timer = setInterval(loadFromStore, 3000)
+    init()
+    const timer = setInterval(loadData, 5000)
     return () => {
       isMounted = false
       clearInterval(timer)
     }
   }, [])
 
-  const filteredStaff = MOCK_STAFF.filter(s => {
+  const handleAddStaff = async () => {
+    const res = await createUser({
+      id: `STF-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+      name: `${newStaff.firstName} ${newStaff.lastName}`.trim(),
+      email: newStaff.email,
+      phone: newStaff.phone,
+      role: newStaff.role.toUpperCase(),
+      zone: newStaff.zone,
+      active: true
+    });
+    if (res.success) {
+      setIsAddModalOpen(false);
+      setNewStaff({ firstName: '', lastName: '', email: '', phone: '', role: 'Technician', zone: 'Guwahati Central' });
+      loadData();
+    } else {
+      alert("Error adding staff: " + res.error);
+    }
+  }
+
+  const handleDeleteStaff = async (id: string) => {
+    if (confirm("Are you sure you want to delete this staff member?")) {
+      await deleteUser(id);
+      loadData();
+    }
+  }
+
+  const filteredStaff = staff.filter(s => {
     if (roleFilter !== 'All' && s.role !== roleFilter) return false
     if (searchQuery) {
       const q = searchQuery.toLowerCase()
@@ -108,7 +156,7 @@ export default function StaffManagement() {
                 background: 'rgba(14, 165, 233, 0.15)', color: 'var(--color-accent)',
                 fontSize: '13px', padding: '4px 12px', borderRadius: '20px', border: '1px solid rgba(14, 165, 233, 0.3)'
               }}>
-                {MOCK_STAFF.length} Total
+                {staff.length} Total
               </span>
             </h1>
             <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>Manage user roles, access levels, and team assignments.</p>
@@ -127,10 +175,10 @@ export default function StaffManagement() {
         {/* Stats Row */}
         <div className="kpi-grid" style={{ marginBottom: '24px' }}>
           {[
-            { label: 'Total Active', value: MOCK_STAFF.filter(s => s.status === 'Active').length, color: 'green', icon: <UserCheck size={24} /> },
-            { label: 'Technicians', value: MOCK_STAFF.filter(s => s.role === 'Technician').length, color: 'blue', icon: <Users size={24} /> },
-            { label: 'Operators', value: MOCK_STAFF.filter(s => s.role === 'Operator').length, color: 'purple', icon: <Users size={24} /> },
-            { label: 'On Leave', value: MOCK_STAFF.filter(s => s.status === 'On Leave').length, color: 'yellow', icon: <User size={24} /> },
+            { label: 'Total Active', value: staff.filter(s => s.status === 'Active').length, color: 'green', icon: <UserCheck size={24} /> },
+            { label: 'Technicians', value: staff.filter(s => s.role === 'Technician').length, color: 'blue', icon: <Users size={24} /> },
+            { label: 'Operators', value: staff.filter(s => s.role === 'Operator').length, color: 'purple', icon: <Users size={24} /> },
+            { label: 'On Leave', value: staff.filter(s => s.status === 'On Leave').length, color: 'yellow', icon: <User size={24} /> },
           ].map((stat, i) => (
             <div key={i} className={`kpi-card ${stat.color}`}>
               <div className="kpi-card-icon">{stat.icon}</div>
@@ -263,7 +311,10 @@ export default function StaffManagement() {
                       <button style={{ padding: '8px', background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', borderRadius: '8px' }} title="Edit Staff">
                         <Edit size={16} />
                       </button>
-                      <button style={{ padding: '8px', background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', borderRadius: '8px' }} title="Remove Staff">
+                      <button 
+                        onClick={() => handleDeleteStaff(staff.id)}
+                        style={{ padding: '8px', background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', borderRadius: '8px' }} title="Remove Staff"
+                      >
                         <Trash2 size={16} />
                       </button>
                       {staff.role === 'Technician' && (
@@ -348,28 +399,28 @@ export default function StaffManagement() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div className="form-group">
                   <label className="form-label">First Name</label>
-                  <input type="text" className="form-input" placeholder="John" />
+                  <input type="text" className="form-input" placeholder="John" value={newStaff.firstName} onChange={e => setNewStaff({...newStaff, firstName: e.target.value})} />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Last Name</label>
-                  <input type="text" className="form-input" placeholder="Doe" />
+                  <input type="text" className="form-input" placeholder="Doe" value={newStaff.lastName} onChange={e => setNewStaff({...newStaff, lastName: e.target.value})} />
                 </div>
               </div>
 
               <div className="form-group">
                 <label className="form-label">Email Address</label>
-                <input type="email" className="form-input" placeholder="john.doe@catlabroadband.com" />
+                <input type="email" className="form-input" placeholder="john.doe@catlabroadband.com" value={newStaff.email} onChange={e => setNewStaff({...newStaff, email: e.target.value})} />
               </div>
 
               <div className="form-group">
                 <label className="form-label">Phone Number</label>
-                <input type="text" className="form-input" placeholder="+91 99999 99999" />
+                <input type="text" className="form-input" placeholder="+91 99999 99999" value={newStaff.phone} onChange={e => setNewStaff({...newStaff, phone: e.target.value})} />
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div className="form-group">
                   <label className="form-label">Role</label>
-                  <select className="form-select">
+                  <select className="form-select" value={newStaff.role} onChange={e => setNewStaff({...newStaff, role: e.target.value})}>
                     <option value="Technician">Technician</option>
                     <option value="Operator">Operator</option>
                     <option value="Manager">Manager</option>
@@ -377,7 +428,7 @@ export default function StaffManagement() {
                 </div>
                 <div className="form-group">
                   <label className="form-label">Assigned Zone</label>
-                  <select className="form-select">
+                  <select className="form-select" value={newStaff.zone} onChange={e => setNewStaff({...newStaff, zone: e.target.value})}>
                     <option>Guwahati Central</option>
                     <option>Guwahati North</option>
                     <option>Guwahati South</option>
@@ -397,7 +448,7 @@ export default function StaffManagement() {
                 Cancel
               </button>
               <button 
-                onClick={() => setIsAddModalOpen(false)}
+                onClick={handleAddStaff}
                 className="btn btn-primary"
                 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
               >

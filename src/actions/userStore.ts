@@ -1,0 +1,84 @@
+'use server'
+
+const SUPABASE_URL = process.env.SUPABASE_URL || ''
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+
+const headers = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+  'Content-Type': 'application/json',
+  'Prefer': 'return=representation',
+}
+
+// Read all users
+export async function getUsers() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/User?order=createdAt.desc`,
+      { headers, cache: 'no-store' }
+    )
+    if (!res.ok) {
+      const errText = await res.text()
+      console.error('Supabase GET User error:', res.status, errText)
+      return []
+    }
+    return await res.json()
+  } catch (error) {
+    console.error('Error fetching users:', error)
+    return []
+  }
+}
+
+// Add a new user
+export async function createUser(userData: any) {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/User`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          role: userData.role,
+          active: userData.active ?? true,
+          passwordHash: 'catla123' // default password since it's required
+        }),
+      }
+    )
+    if (!res.ok) {
+      const errText = await res.text()
+      console.error('Supabase POST User error:', res.status, errText)
+      return { success: false, error: errText }
+    }
+    const data = await res.json()
+    return { success: true, data }
+  } catch (error: any) {
+    console.error('Error saving user:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+// Delete user
+export async function deleteUser(id: string) {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/User?id=eq.${id}`,
+      {
+        method: 'DELETE',
+        headers,
+      }
+    )
+    if (!res.ok) {
+      const errText = await res.text()
+      console.error('Supabase DELETE User error:', res.status, errText)
+      return { success: false, error: errText }
+    }
+    return { success: true }
+  } catch (error: any) {
+    console.error('Error deleting user:', error)
+    return { success: false, error: error.message }
+  }
+}

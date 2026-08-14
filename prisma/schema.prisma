@@ -19,6 +19,7 @@ model User {
   passwordHash  String
   role          String   @default("OPERATOR") // ADMIN | DIRECTOR | OPERATOR | TECHNICIAN
   phone         String?
+  zone          String?
   active        Boolean  @default(true)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
