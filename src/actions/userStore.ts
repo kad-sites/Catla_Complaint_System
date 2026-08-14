@@ -80,7 +80,7 @@ export async function createUser(userData: any, isSync = false) {
 }
 
 // Delete user
-export async function deleteUser(id: string) {
+export async function deleteUser(id: string, isSync = false, phone?: string) {
   try {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/User?id=eq.${id}`,
@@ -94,6 +94,18 @@ export async function deleteUser(id: string) {
       console.error('Supabase DELETE User error:', res.status, errText)
       return { success: false, error: errText }
     }
+
+    // Sync DELETE to MunshiBook
+    if (!isSync && phone) {
+      try {
+        await fetch('https://munshibook.vercel.app/api/sync/isp', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone })
+        }).catch(e => console.error('Sync DELETE error', e));
+      } catch (e) {}
+    }
+
     return { success: true }
   } catch (error: any) {
     console.error('Error deleting user:', error)

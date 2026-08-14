@@ -49,3 +49,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, error: e.message }, { status: 500 });
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const payload = await request.json();
+    const { phone } = payload;
+    if (!phone) return NextResponse.json({ success: false, error: 'Missing phone' }, { status: 400 });
+
+    const users = await getUsers();
+    const existing = users.find((u: any) => u.phone === phone);
+
+    if (existing) {
+      await deleteUser(existing.id, true); // pass true for isSync
+      return NextResponse.json({ success: true, action: 'deleted' });
+    } else {
+      return NextResponse.json({ success: true, action: 'not_found' });
+    }
+
+  } catch (e: any) {
+    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+  }
+}

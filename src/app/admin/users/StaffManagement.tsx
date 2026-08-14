@@ -208,9 +208,9 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
     setIsAddModalOpen(true)
   }
 
-  const handleDeleteStaff = async (id: string) => {
+  const handleDeleteStaff = async (id: string, phone: string) => {
     if (confirm("Are you sure you want to delete this staff member?")) {
-      await deleteUser(id);
+      await deleteUser(id, false, phone);
       loadData();
     }
   }
@@ -375,7 +375,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                         <Edit size={16} />
                       </button>
                       <button 
-                        onClick={() => handleDeleteStaff(staff.id)}
+                        onClick={() => handleDeleteStaff(staff.id, staff.phone)}
                         style={{ padding: '8px', background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', borderRadius: '8px' }} title="Remove Staff"
                       >
                         <Trash2 size={16} />
