@@ -158,13 +158,14 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
 
   const handleSaveStaff = async () => {
     if (editingStaffId) {
+      const originalUser = staff.find(s => s.id === editingStaffId);
       const res = await updateUser(editingStaffId, {
         name: `${newStaff.firstName} ${newStaff.lastName}`.trim(),
         email: newStaff.email,
         phone: newStaff.phone,
         role: newStaff.role.toUpperCase(),
         zone: newStaff.zone,
-      });
+      }, false, originalUser?.phone);
       if (res.success) {
         setIsAddModalOpen(false);
         setEditingStaffId(null);
@@ -238,7 +239,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                 {staff.length} Total
               </span>
             </h1>
-            <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>Manage user roles, access levels, and team assignments.</p>
+            <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>Manage User Roles, Access Levels, And Team Assignments.</p>
           </div>
           
           <button 
@@ -248,9 +249,9 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
               setIsAddModalOpen(true)
             }}
             className="btn btn-primary"
-            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '14px' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px', fontSize: '13px', fontWeight: 600, borderRadius: '99px', boxShadow: '0 4px 14px 0 rgba(14,165,233,0.39)', transition: 'all 0.2s ease-in-out' }}
           >
-            <Plus size={18} />
+            <Plus size={16} />
             Add New Staff
           </button>
         </div>
@@ -354,7 +355,6 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                   </td>
                   <td>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '13px' }}>
-                      <div style={{ color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}><Mail size={12} style={{ color: 'var(--color-text-muted)' }} /> {staff.email}</div>
                       <div style={{ color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}><Phone size={12} style={{ color: 'var(--color-text-muted)' }} /> {staff.phone}</div>
                     </div>
                   </td>
