@@ -84,23 +84,26 @@ export default function LoginPage() {
       <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '420px' }}>
         {/* Login Card */}
         <div style={{
-          background: '#111827',
-          border: '1px solid #1e293b',
-          borderRadius: '16px',
-          padding: '32px',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
+          background: 'rgba(17, 24, 39, 0.65)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '20px',
+          padding: '36px 32px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px' }}>
             <div>
               <h2 style={{
-                fontSize: '18px',
-                fontWeight: 700,
-                color: '#f1f5f9',
-                marginBottom: '6px',
+                fontSize: '16px',
+                fontWeight: 600,
+                color: '#f8fafc',
+                marginBottom: '4px',
+                letterSpacing: '0.3px',
               }}>Welcome back</h2>
               <p style={{
-                fontSize: '13px',
-                color: '#64748b',
+                fontSize: '12px',
+                color: '#94a3b8',
               }}>Please sign in to your account</p>
             </div>
             
@@ -145,18 +148,19 @@ export default function LoginPage() {
                   onChange={(e) => setRole(e.target.value)}
                   style={{
                     width: '100%',
-                    background: '#0a0d14',
-                    border: '1px solid #334155',
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
                     color: '#f1f5f9',
                     padding: '12px 16px',
-                    borderRadius: '8px',
-                    fontSize: '14px',
+                    borderRadius: '10px',
+                    fontSize: '13px',
                     outline: 'none',
-                    transition: 'border-color 0.2s',
+                    transition: 'all 0.2s ease',
                     appearance: 'none',
+                    boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
                   }}
-                  onFocus={(e) => e.target.style.borderColor = '#0ea5e9'}
-                  onBlur={(e) => e.target.style.borderColor = '#334155'}
+                  onFocus={(e) => { e.target.style.borderColor = 'rgba(14, 165, 233, 0.5)'; e.target.style.background = 'rgba(255,255,255,0.05)' }}
+                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'; e.target.style.background = 'rgba(255,255,255,0.03)' }}
                 >
                   <option value="admin">Administrator</option>
                   <option value="manager">Manager</option>
@@ -182,17 +186,18 @@ export default function LoginPage() {
                   required
                   style={{
                     width: '100%',
-                    background: '#0a0d14',
-                    border: '1px solid #334155',
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
                     color: '#f1f5f9',
                     padding: '12px 16px 12px 42px',
-                    borderRadius: '8px',
-                    fontSize: '14px',
+                    borderRadius: '10px',
+                    fontSize: '13px',
                     outline: 'none',
-                    transition: 'border-color 0.2s',
+                    transition: 'all 0.2s ease',
+                    boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
                   }}
-                  onFocus={(e) => e.target.style.borderColor = '#0ea5e9'}
-                  onBlur={(e) => e.target.style.borderColor = '#334155'}
+                  onFocus={(e) => { e.target.style.borderColor = 'rgba(14, 165, 233, 0.5)'; e.target.style.background = 'rgba(255,255,255,0.05)' }}
+                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'; e.target.style.background = 'rgba(255,255,255,0.03)' }}
                 />
               </div>
             </div>
@@ -200,13 +205,26 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-primary"
               style={{
                 width: '100%',
                 height: '46px',
                 fontSize: '14px',
-                fontWeight: 700,
+                fontWeight: 600,
+                background: 'linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '10px',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 4px 14px 0 rgba(14, 165, 233, 0.39)',
+                opacity: loading ? 0.7 : 1,
               }}
+              onMouseEnter={(e) => { if(!loading) e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(14, 165, 233, 0.4)' }}
+              onMouseLeave={(e) => { if(!loading) e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 14px 0 rgba(14, 165, 233, 0.39)' }}
             >
               {loading ? 'Authenticating...' : (
                 <>Sign In <ArrowRight size={16} /></>
