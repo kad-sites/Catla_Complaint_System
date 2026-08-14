@@ -30,7 +30,7 @@ export async function getUsers() {
 }
 
 // Add a new user
-export async function createUser(userData: any) {
+export async function createUser(userData: any, isSync = false) {
   try {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/User`,
@@ -54,6 +54,23 @@ export async function createUser(userData: any) {
       return { success: false, error: errText }
     }
     const data = await res.json()
+
+    // Sync to MunshiBook
+    if (!isSync) {
+      try {
+        await fetch('https://munshibook.vercel.app/api/sync/isp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: userData.name,
+            phone: userData.phone,
+            role: userData.role,
+            status: userData.active === false ? 'Inactive' : 'Active'
+          })
+        }).catch(e => console.error('Sync POST error', e));
+      } catch (e) {}
+    }
+
     return { success: true, data }
   } catch (error: any) {
     console.error('Error saving user:', error)
@@ -84,7 +101,7 @@ export async function deleteUser(id: string) {
 }
 
 // Update user
-export async function updateUser(id: string, updates: any) {
+export async function updateUser(id: string, updates: any, isSync = false, originalPhone?: string) {
   try {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/User?id=eq.${id}`,
@@ -99,6 +116,24 @@ export async function updateUser(id: string, updates: any) {
       console.error('Supabase PATCH User error:', res.status, errText)
       return { success: false, error: errText }
     }
+
+    // Sync to MunshiBook
+    if (!isSync) {
+      try {
+        await fetch('https://munshibook.vercel.app/api/sync/isp', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            matchPhone: originalPhone || updates.phone,
+            name: updates.name,
+            phone: updates.phone,
+            role: updates.role,
+            status: updates.active !== undefined ? (updates.active ? 'Active' : 'Inactive') : undefined
+          })
+        }).catch(e => console.error('Sync PUT error', e));
+      } catch (e) {}
+    }
+
     return { success: true }
   } catch (error: any) {
     console.error('Error updating user:', error)
