@@ -11,7 +11,7 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('appearance')
   const [accentColor, setAccentColor] = useState('sky')
   const [density, setDensity] = useState('comfortable')
-  const [companyName, setCompanyName] = useState('CATLA BROADBAND')
+  const [companyName, setCompanyName] = useState('RESONOVA BROADBAND')
 
   const accentColors = [
     { id: 'sky', bg: 'bg-sky-500', name: 'Sky Blue' },
@@ -169,7 +169,7 @@ export default function SettingsPage() {
                   </div>
                   <div className="form-group">
                     <label className="form-label">Support Email</label>
-                    <input type="email" defaultValue="noc@catlabroadband.com" className="form-input" />
+                    <input type="email" defaultValue="noc@resonova.com" className="form-input" />
                   </div>
                   <div className="form-group">
                     <label className="form-label">Timezone</label>

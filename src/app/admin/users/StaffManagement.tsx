@@ -150,9 +150,19 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
   useEffect(() => {
     let isMounted = true
     const timer = setInterval(loadData, 5000)
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsAddModalOpen(false)
+        setEditingStaffId(null)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+
     return () => {
       isMounted = false
       clearInterval(timer)
+      window.removeEventListener('keydown', handleKeyDown)
     }
   }, [])
 

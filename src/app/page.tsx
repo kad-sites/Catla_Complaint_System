@@ -85,8 +85,8 @@ export default function LoginPage() {
         {/* Logo + Brand */}
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <img 
-            src="/catla_logo.png" 
-            alt="Catla Complaint Management System" 
+            src="/resonova_logo.png" 
+            alt="Resonova Complaint Management System" 
             style={{ maxWidth: '100%', height: 'auto', maxHeight: '100px', objectFit: 'contain' }} 
           />
         </div>

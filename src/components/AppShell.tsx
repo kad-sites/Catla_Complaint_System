@@ -65,8 +65,8 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
       <aside className="app-sidebar">
         <div className="sidebar-brand" style={{ padding: '12px 16px', display: 'flex', justifyContent: 'center' }}>
           <img 
-            src="/catla_logo.png" 
-            alt="Catla Complaint Management System" 
+            src="/resonova_logo.png" 
+            alt="Resonova Complaint Management System" 
             style={{ maxWidth: '100%', height: 'auto', maxHeight: '60px', objectFit: 'contain' }} 
           />
         </div>
