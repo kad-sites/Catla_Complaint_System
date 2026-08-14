@@ -9,7 +9,7 @@ import {
 import { getComplaints } from '@/actions/complaintStore'
 import { getUsers, createUser, deleteUser } from '@/actions/userStore'
 
-type StaffRole = 'Manager' | 'Operator' | 'Technician'
+type StaffRole = 'Manager' | 'Operator' | 'Technician' | 'Administrator' | 'Fiber Technician' | 'Support Staff' | 'Telecaller' | 'Bill Collector' | string
 type StaffStatus = 'Active' | 'Inactive' | 'On Leave'
 
 type StaffMember = {
@@ -26,14 +26,20 @@ type StaffMember = {
 }
 
 function RoleBadge({ role }: { role: StaffRole }) {
-  const styles: Record<StaffRole, string> = {
+  const displayRole = (role || '').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+  const styles: Record<string, string> = {
     Manager: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
     Operator: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
     Technician: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
+    Administrator: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+    'Fiber Technician': 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+    'Support Staff': 'bg-pink-500/10 text-pink-400 border-pink-500/20',
+    Telecaller: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+    'Bill Collector': 'bg-rose-500/10 text-rose-400 border-rose-500/20',
   }
   return (
-    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold border ${styles[role]}`}>
-      {role}
+    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold border ${styles[displayRole] || 'bg-slate-500/10 text-slate-400 border-slate-500/20'}`}>
+      {displayRole}
     </span>
   )
 }
@@ -171,7 +177,7 @@ export default function StaffManagement() {
   }
 
   const filteredStaff = staff.filter(s => {
-    if (roleFilter !== 'All' && s.role !== roleFilter) return false
+    if (roleFilter !== 'All' && s.role.toUpperCase() !== roleFilter.toUpperCase()) return false
     if (searchQuery) {
       const q = searchQuery.toLowerCase()
       return s.name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q) || s.phone.includes(q)
@@ -211,8 +217,8 @@ export default function StaffManagement() {
         <div className="kpi-grid" style={{ marginBottom: '24px' }}>
           {[
             { label: 'Total Active', value: staff.filter(s => s.status === 'Active').length, color: 'green', icon: <UserCheck size={24} /> },
-            { label: 'Technicians', value: staff.filter(s => s.role === 'Technician').length, color: 'blue', icon: <Users size={24} /> },
-            { label: 'Operators', value: staff.filter(s => s.role === 'Operator').length, color: 'purple', icon: <Users size={24} /> },
+            { label: 'Technicians', value: staff.filter(s => s.role?.toUpperCase() === 'TECHNICIAN').length, color: 'blue', icon: <Users size={24} /> },
+            { label: 'Operators', value: staff.filter(s => s.role?.toUpperCase() === 'OPERATOR').length, color: 'purple', icon: <Users size={24} /> },
             { label: 'On Leave', value: staff.filter(s => s.status === 'On Leave').length, color: 'yellow', icon: <User size={24} /> },
           ].map((stat, i) => (
             <div key={i} className={`kpi-card ${stat.color}`}>
@@ -241,8 +247,8 @@ export default function StaffManagement() {
                   style={{ paddingLeft: '36px', height: '32px', fontSize: '13px' }}
                 />
               </div>
-              <div style={{ display: 'flex', gap: '6px' }}>
-                {['All', 'Manager', 'Operator', 'Technician'].map(role => (
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {['All', 'Administrator', 'Manager', 'Operator', 'Technician', 'Fiber Technician', 'Support Staff', 'Telecaller', 'Bill Collector'].map(role => (
                   <button
                     key={role}
                     onClick={() => setRoleFilter(role)}
@@ -456,9 +462,13 @@ export default function StaffManagement() {
                 <div className="form-group">
                   <label className="form-label">Role</label>
                   <select className="form-select" value={newStaff.role} onChange={e => setNewStaff({...newStaff, role: e.target.value})}>
-                    <option value="Technician">Technician</option>
-                    <option value="Operator">Operator</option>
+                    <option value="Administrator">Administrator</option>
                     <option value="Manager">Manager</option>
+                    <option value="Technician">Technician</option>
+                    <option value="Fiber Technician">Fiber Technician</option>
+                    <option value="Support Staff">Support Staff</option>
+                    <option value="Telecaller">Telecaller</option>
+                    <option value="Bill Collector">Bill Collector</option>
                   </select>
                 </div>
                 <div className="form-group">
