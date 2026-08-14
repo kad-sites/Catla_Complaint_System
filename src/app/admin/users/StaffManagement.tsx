@@ -210,7 +210,19 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
 
   const handleDeleteStaff = async (id: string, phone: string) => {
     if (confirm("Are you sure you want to delete this staff member?")) {
-      await deleteUser(id, false, phone);
+      try {
+        const res = await fetch('/api/staff/delete', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, phone })
+        });
+        const data = await res.json();
+        if (!data.success) {
+          alert("Error deleting staff: " + data.error);
+        }
+      } catch (e) {
+        console.error('Delete failed:', e);
+      }
       loadData();
     }
   }
