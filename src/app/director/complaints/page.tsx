@@ -4,10 +4,10 @@ import React, { useState, useEffect } from 'react'
 import AppShell from '@/components/AppShell'
 import {
   Search, Filter, Clock, AlertTriangle, CheckCircle2,
-  ChevronDown, Eye, MoreHorizontal, MapPin, Phone, ArrowUpDown
+  ChevronDown, Eye, MoreHorizontal, MapPin, Phone, ArrowUpDown, X
 } from 'lucide-react'
 import { sendAssignmentSMS } from '@/actions/sendAssignmentSMS'
-import { getComplaints, updateComplaint } from '@/actions/complaintStore'
+import { getComplaints, updateComplaint, deleteComplaint } from '@/actions/complaintStore'
 import { getUsers } from '@/actions/userStore'
 import { sendTelegramAlert } from '@/actions/sendTelegramAlert'
 
@@ -145,6 +145,18 @@ export default function AllComplaints() {
       import('@/actions/sendPushNotification').then(m => m.sendPushNotification(ticket.id, pushMessage));
     } else {
       console.error('Failed to assign in DB:', res.error);
+    }
+  }
+
+  const handleDelete = async (ticketId: string) => {
+    if (window.confirm('Are you sure you want to delete this complaint? This action cannot be undone.')) {
+      const res = await deleteComplaint(ticketId);
+      if (res.success) {
+        setComplaints(complaints.filter(c => c.id !== ticketId));
+      } else {
+        console.error('Failed to delete complaint:', res.error);
+        alert('Failed to delete complaint.');
+      }
     }
   }
 
@@ -353,7 +365,16 @@ export default function AllComplaints() {
                     </td>
                     <td style={{ padding: '12px 16px' }}><StatusBadge status={ticket.status} /></td>
                     <td style={{ padding: '12px 16px' }}>
-                      <Eye size={14} style={{ color: 'var(--color-text-muted)' }} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <Eye size={14} style={{ color: 'var(--color-text-muted)' }} />
+                        <div 
+                          onClick={(e) => { e.stopPropagation(); handleDelete(ticket.id); }}
+                          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          title="Delete Complaint"
+                        >
+                          <X size={14} style={{ color: 'var(--color-danger)' }} />
+                        </div>
+                      </div>
                     </td>
                   </tr>
 

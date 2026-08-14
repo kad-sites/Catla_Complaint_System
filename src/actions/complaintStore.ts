@@ -89,3 +89,25 @@ export async function updateComplaint(id: string, updates: any) {
     return { success: false, error: error.message }
   }
 }
+
+// Delete a specific complaint
+export async function deleteComplaint(id: string) {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/UIComplaint?id=eq.${encodeURIComponent(id)}`,
+      {
+        method: 'DELETE',
+        headers,
+      }
+    )
+    if (!res.ok) {
+      const errText = await res.text()
+      console.error('Supabase DELETE error:', res.status, errText)
+      return { success: false, error: errText }
+    }
+    return { success: true }
+  } catch (error: any) {
+    console.error('Error deleting complaint:', error)
+    return { success: false, error: error.message }
+  }
+}
