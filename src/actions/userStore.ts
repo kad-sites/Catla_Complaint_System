@@ -82,3 +82,26 @@ export async function deleteUser(id: string) {
     return { success: false, error: error.message }
   }
 }
+
+// Update user
+export async function updateUser(id: string, updates: any) {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/User?id=eq.${id}`,
+      {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify(updates),
+      }
+    )
+    if (!res.ok) {
+      const errText = await res.text()
+      console.error('Supabase PATCH User error:', res.status, errText)
+      return { success: false, error: errText }
+    }
+    return { success: true }
+  } catch (error: any) {
+    console.error('Error updating user:', error)
+    return { success: false, error: error.message }
+  }
+}

@@ -7,7 +7,7 @@ import {
   Mail, Phone, MapPin, Edit, Trash2, CheckCircle2, X, ChevronDown, ChevronUp
 } from 'lucide-react'
 import { getComplaints } from '@/actions/complaintStore'
-import { getUsers, createUser, deleteUser } from '@/actions/userStore'
+import { getUsers, createUser, deleteUser, updateUser } from '@/actions/userStore'
 
 type StaffRole = 'Manager' | 'Operator' | 'Technician' | 'Administrator' | 'Fiber Technician' | 'Support Staff' | 'Telecaller' | 'Bill Collector' | string
 type StaffStatus = 'Active' | 'Inactive' | 'On Leave'
@@ -101,7 +101,7 @@ export default function StaffManagement() {
   const [searchQuery, setSearchQuery] = useState('')
   const [roleFilter, setRoleFilter] = useState<string>('All')
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-  const [complaints, setComplaints] = useState<any[]>([])
+  const [editingStaffId, setEditingStaffId] = useState<string | null>(null)
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [staff, setStaff] = useState<StaffMember[]>([])
 
@@ -127,9 +127,9 @@ export default function StaffManagement() {
         name: u.name,
         email: u.email,
         phone: u.phone || '',
-        role: u.role === 'OPERATOR' ? 'Operator' : u.role === 'TECHNICIAN' ? 'Technician' : 'Manager',
+        role: (u.role || '').split(' ').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '),
         status: u.active ? 'Active' : 'Inactive',
-        zone: u.zone || 'Head Office',
+        zone: u.zone || '',
         avatar: u.name.substring(0, 2).toUpperCase()
       })))
     } catch (e) {
@@ -150,23 +150,55 @@ export default function StaffManagement() {
     }
   }, [])
 
-  const handleAddStaff = async () => {
-    const res = await createUser({
-      id: `STF-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
-      name: `${newStaff.firstName} ${newStaff.lastName}`.trim(),
-      email: newStaff.email,
-      phone: newStaff.phone,
-      role: newStaff.role.toUpperCase(),
-      zone: newStaff.zone,
-      active: true
-    });
-    if (res.success) {
-      setIsAddModalOpen(false);
-      setNewStaff({ firstName: '', lastName: '', email: '', phone: '', role: 'Technician', zone: '' });
-      loadData();
+  const handleSaveStaff = async () => {
+    if (editingStaffId) {
+      const res = await updateUser(editingStaffId, {
+        name: `${newStaff.firstName} ${newStaff.lastName}`.trim(),
+        email: newStaff.email,
+        phone: newStaff.phone,
+        role: newStaff.role.toUpperCase(),
+        zone: newStaff.zone,
+      });
+      if (res.success) {
+        setIsAddModalOpen(false);
+        setEditingStaffId(null);
+        setNewStaff({ firstName: '', lastName: '', email: '', phone: '', role: 'Technician', zone: '' });
+        loadData();
+      } else {
+        alert("Error updating staff: " + res.error);
+      }
     } else {
-      alert("Error adding staff: " + res.error);
+      const res = await createUser({
+        id: `STF-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+        name: `${newStaff.firstName} ${newStaff.lastName}`.trim(),
+        email: newStaff.email,
+        phone: newStaff.phone,
+        role: newStaff.role.toUpperCase(),
+        zone: newStaff.zone,
+        active: true
+      });
+      if (res.success) {
+        setIsAddModalOpen(false);
+        setNewStaff({ firstName: '', lastName: '', email: '', phone: '', role: 'Technician', zone: '' });
+        loadData();
+      } else {
+        alert("Error adding staff: " + res.error);
+      }
     }
+  }
+
+  const handleEditClick = (staff: StaffMember) => {
+    const [first, ...rest] = staff.name.split(' ')
+    setNewStaff({
+      firstName: first || '',
+      lastName: rest.join(' ') || '',
+      email: staff.email || '',
+      phone: staff.phone || '',
+      role: staff.role || 'Technician',
+      zone: staff.zone || ''
+    })
+    setEditingStaffId(staff.id)
+    setIsAddModalOpen(true)
   }
 
   const handleDeleteStaff = async (id: string) => {
@@ -204,7 +236,11 @@ export default function StaffManagement() {
           </div>
           
           <button 
-            onClick={() => setIsAddModalOpen(true)}
+            onClick={() => {
+              setEditingStaffId(null)
+              setNewStaff({ firstName: '', lastName: '', email: '', phone: '', role: 'Technician', zone: '' })
+              setIsAddModalOpen(true)
+            }}
             className="btn btn-primary"
             style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '14px' }}
           >
@@ -319,7 +355,6 @@ export default function StaffManagement() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '13px' }}>
                       <div style={{ color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}><Mail size={12} style={{ color: 'var(--color-text-muted)' }} /> {staff.email}</div>
                       <div style={{ color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}><Phone size={12} style={{ color: 'var(--color-text-muted)' }} /> {staff.phone}</div>
-                      <div style={{ color: 'var(--color-text-muted)', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}><MapPin size={12} style={{ color: 'var(--color-accent)' }} /> {staff.zone}</div>
                     </div>
                   </td>
                   <td>
@@ -328,7 +363,6 @@ export default function StaffManagement() {
                   <td>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       <StatusBadge status={staff.status} />
-                      <span style={{ fontSize: '11px', color: 'var(--color-text-muted)', fontWeight: 500, marginLeft: '4px' }}>Last active: {staff.lastActive}</span>
                     </div>
                   </td>
                   <td>
@@ -349,7 +383,9 @@ export default function StaffManagement() {
                   </td>
                   <td style={{ textAlign: 'right' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
-                      <button style={{ padding: '8px', background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', borderRadius: '8px' }} title="Edit Staff">
+                      <button 
+                        onClick={() => handleEditClick(staff)}
+                        style={{ padding: '8px', background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', borderRadius: '8px' }} title="Edit Staff">
                         <Edit size={16} />
                       </button>
                       <button 
@@ -427,7 +463,7 @@ export default function StaffManagement() {
         }}>
           <div className="data-card animate-fade-in" style={{ width: '100%', maxWidth: '500px', display: 'flex', flexDirection: 'column', maxHeight: '90vh' }}>
             <div style={{ padding: '20px', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--color-bg-app)' }}>
-              <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-text-primary)' }}>Add New Staff Member</h2>
+              <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-text-primary)' }}>{editingStaffId ? 'Edit Staff Member' : 'Add New Staff Member'}</h2>
               <button 
                 onClick={() => setIsAddModalOpen(false)}
                 style={{ background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', padding: '4px' }}
@@ -488,12 +524,12 @@ export default function StaffManagement() {
                 Cancel
               </button>
               <button 
-                onClick={handleAddStaff}
+                onClick={handleSaveStaff}
                 className="btn btn-primary"
                 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
               >
                 <CheckCircle2 size={18} />
-                Create Staff Account
+                {editingStaffId ? 'Save Changes' : 'Create Staff Account'}
               </button>
             </div>
           </div>
