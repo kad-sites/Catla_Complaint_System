@@ -112,7 +112,7 @@ export default function StaffManagement() {
     email: '',
     phone: '',
     role: 'Technician',
-    zone: 'Guwahati Central'
+    zone: ''
   })
 
   const loadData = async () => {
@@ -162,7 +162,7 @@ export default function StaffManagement() {
     });
     if (res.success) {
       setIsAddModalOpen(false);
-      setNewStaff({ firstName: '', lastName: '', email: '', phone: '', role: 'Technician', zone: 'Guwahati Central' });
+      setNewStaff({ firstName: '', lastName: '', email: '', phone: '', role: 'Technician', zone: '' });
       loadData();
     } else {
       alert("Error adding staff: " + res.error);
@@ -471,15 +471,10 @@ export default function StaffManagement() {
                     <option value="Bill Collector">Bill Collector</option>
                   </select>
                 </div>
-                <div className="form-group">
+                <div className="form-group" style={{ opacity: 0.5 }}>
                   <label className="form-label">Assigned Zone</label>
-                  <select className="form-select" value={newStaff.zone} onChange={e => setNewStaff({...newStaff, zone: e.target.value})}>
-                    <option>Guwahati Central</option>
-                    <option>Guwahati North</option>
-                    <option>Guwahati South</option>
-                    <option>Guwahati East</option>
-                    <option>Guwahati West</option>
-                    <option>NOC Desk</option>
+                  <select className="form-select" disabled>
+                    <option></option>
                   </select>
                 </div>
               </div>
