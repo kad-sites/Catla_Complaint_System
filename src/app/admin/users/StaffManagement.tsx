@@ -256,28 +256,25 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
         </div>
 
         {/* Stats Row */}
-        <div className="kpi-grid" style={{ marginBottom: '24px' }}>
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
           {[
-            { label: 'Total Active', value: staff.filter(s => s.status === 'Active').length, color: 'green', icon: <UserCheck size={24} /> },
-            { label: 'Technicians', value: staff.filter(s => s.role?.toUpperCase() === 'TECHNICIAN').length, color: 'blue', icon: <Users size={24} /> },
-            { label: 'Operators', value: staff.filter(s => s.role?.toUpperCase() === 'OPERATOR').length, color: 'purple', icon: <Users size={24} /> },
-            { label: 'On Leave', value: staff.filter(s => s.status === 'On Leave').length, color: 'yellow', icon: <User size={24} /> },
+            { label: 'Technicians', value: staff.filter(s => s.role?.toUpperCase() === 'TECHNICIAN').length, color: 'sky' },
+            { label: 'Fiber', value: staff.filter(s => s.role?.toUpperCase() === 'FIBER TECHNICIAN').length, color: 'cyan' },
+            { label: 'Operators', value: staff.filter(s => s.role?.toUpperCase() === 'OPERATOR').length, color: 'emerald' },
+            { label: 'Telecallers', value: staff.filter(s => s.role?.toUpperCase() === 'TELECALLER').length, color: 'orange' },
+            { label: 'Collectors', value: staff.filter(s => s.role?.toUpperCase() === 'BILL COLLECTOR').length, color: 'rose' },
+            { label: 'On Leave', value: staff.filter(s => s.status === 'On Leave').length, color: 'amber' },
           ].map((stat, i) => (
-            <div key={i} className={`kpi-card ${stat.color}`}>
-              <div className="kpi-card-icon">{stat.icon}</div>
-              <div className="kpi-card-label">{stat.label}</div>
-              <div className="kpi-card-value">{stat.value}</div>
+            <div key={i} className="data-card" style={{ padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '12px', flex: '1 1 120px' }}>
+              <div style={{ fontSize: '20px', fontWeight: 700, color: `var(--color-${stat.color}-500, ${stat.color})` }}>{stat.value}</div>
+              <div style={{ fontSize: '11px', color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>{stat.label}</div>
             </div>
           ))}
         </div>
 
         {/* Data Table */}
         <div className="data-card">
-          <div className="data-card-header">
-            <div className="data-card-title">
-              <Users size={16} /> Staff Directory
-            </div>
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--color-border)', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
               <div style={{ position: 'relative', width: '260px' }}>
                 <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} size={16} />
                 <input 
@@ -289,8 +286,8 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                   style={{ paddingLeft: '36px', height: '32px', fontSize: '13px' }}
                 />
               </div>
-              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                {['All', 'Administrator', 'Manager', 'Operator', 'Technician', 'Fiber Technician', 'Support Staff', 'Telecaller', 'Bill Collector'].map(role => (
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', flex: 1 }}>
+              {['All', 'Technician', 'Fiber Technician', 'Operator', 'Telecaller', 'Bill Collector'].map(role => (
                   <button
                     key={role}
                     onClick={() => setRoleFilter(role)}
@@ -306,7 +303,6 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                     {role}
                   </button>
                 ))}
-              </div>
             </div>
           </div>
           
