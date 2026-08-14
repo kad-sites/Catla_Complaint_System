@@ -314,7 +314,6 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                 <th>Contact & Zone</th>
                 <th>Role</th>
                 <th>Status</th>
-                <th>Workload</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
@@ -367,22 +366,6 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                       <StatusBadge status={staff.status} />
                     </div>
                   </td>
-                  <td>
-                    {staff.role === 'Technician' ? (
-                      <div style={{ display: 'flex', gap: '16px' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                          <span style={{ fontSize: '16px', fontWeight: 700, color: activeJobs.length > 0 ? '#3b82f6' : 'var(--color-text-muted)' }}>{activeJobs.length}</span>
-                          <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>Active</span>
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                          <span style={{ fontSize: '16px', fontWeight: 700, color: resolvedJobs.length > 0 ? '#10b981' : 'var(--color-text-muted)' }}>{resolvedJobs.length}</span>
-                          <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>Done</span>
-                        </div>
-                      </div>
-                    ) : (
-                      <span style={{ color: 'var(--color-text-muted)', fontSize: '12px' }}>—</span>
-                    )}
-                  </td>
                   <td style={{ textAlign: 'right' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
                       <button 
@@ -407,7 +390,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                 
                 {isExpanded && staff.role === 'Technician' && (
                   <tr style={{ background: 'rgba(14, 165, 233, 0.03)' }}>
-                    <td colSpan={6} style={{ padding: '20px' }}>
+                    <td colSpan={5} style={{ padding: '20px' }}>
                       <div style={{ background: 'var(--color-bg-app)', borderRadius: '8px', border: '1px solid var(--color-border)', padding: '16px' }}>
                         <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '12px' }}>Active Assignments & Flow</h4>
                         {activeJobs.length === 0 ? (
