@@ -28,8 +28,11 @@ const NAV_ITEMS_TEMPLATE = [
 export default function AppShell({ children, role = 'DIRECTOR' }: { children: React.ReactNode, role?: string }) {
   const pathname = usePathname()
   const [complaintCount, setComplaintCount] = React.useState<number>(0)
+  const [userRole, setUserRole] = React.useState<string | null>(null)
 
   React.useEffect(() => {
+    setUserRole(localStorage.getItem('userRole'))
+    
     // Fetch count
     fetch('/api/complaints')
       .then(res => res.json())
@@ -110,21 +113,31 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
             justifyContent: 'center',
             fontWeight: 700,
             fontSize: '13px',
-            color: 'white'
-          }}>ZA</div>
+            color: 'white',
+            textTransform: 'uppercase'
+          }}>
+            {userRole ? userRole.substring(0, 2) : 'ZA'}
+          </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)' }}>
-              {role === 'DIRECTOR' ? 'Manager' : role === 'OPERATOR' ? 'Desk Operator' : 'Admin'}
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', textTransform: 'capitalize' }}>
+              {userRole === 'admin' ? 'Administrator' : userRole || 'Manager'}
             </div>
             <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>Online</div>
           </div>
-          <button style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--color-text-muted)',
-            cursor: 'pointer',
-            padding: '4px'
-          }}>
+          <button 
+            onClick={() => {
+              localStorage.removeItem('userRole');
+              window.location.href = '/';
+            }}
+            title="Logout"
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--color-text-muted)',
+              cursor: 'pointer',
+              padding: '4px'
+            }}
+          >
             <LogOut size={16} />
           </button>
         </div>

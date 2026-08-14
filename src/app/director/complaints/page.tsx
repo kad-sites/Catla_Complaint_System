@@ -70,9 +70,11 @@ export default function AllComplaints() {
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [reassigningId, setReassigningId] = useState<string | null>(null)
   const [now, setNow] = useState(Date.now())
+  const [userRole, setUserRole] = useState<string | null>(null)
 
-  // Timer for dynamic timelapse
+  // Timer for dynamic timelapse and role check
   useEffect(() => {
+    setUserRole(localStorage.getItem('userRole'))
     const timer = setInterval(() => setNow(Date.now()), 1000)
     return () => clearInterval(timer)
   }, [])
@@ -367,13 +369,15 @@ export default function AllComplaints() {
                     <td style={{ padding: '12px 16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <Eye size={14} style={{ color: 'var(--color-text-muted)' }} />
-                        <div 
-                          onClick={(e) => { e.stopPropagation(); handleDelete(ticket.id); }}
-                          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                          title="Delete Complaint"
-                        >
-                          <X size={14} style={{ color: 'var(--color-danger)' }} />
-                        </div>
+                        {userRole === 'admin' && (
+                          <div 
+                            onClick={(e) => { e.stopPropagation(); handleDelete(ticket.id); }}
+                            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            title="Delete Complaint (Admin Only)"
+                          >
+                            <X size={14} style={{ color: 'var(--color-danger)' }} />
+                          </div>
+                        )}
                       </div>
                     </td>
                   </tr>

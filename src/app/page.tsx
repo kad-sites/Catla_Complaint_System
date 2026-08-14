@@ -6,7 +6,7 @@ import { Wifi, Lock, Mail, ArrowRight } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
+  const [role, setRole] = useState('admin')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -14,14 +14,25 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    
+    if (password !== '123') {
+      setError('Invalid password. Please use 123')
+      return
+    }
+
     setLoading(true)
+
+    // Store role for access control
+    localStorage.setItem('userRole', role)
 
     // Simple demo routing
     setTimeout(() => {
       setLoading(false)
-      if (email.includes('director')) router.push('/director')
-      else if (email.includes('tech')) router.push('/technician')
-      else router.push('/operator')
+      if (role === 'admin' || role === 'manager') {
+        router.push('/director')
+      } else {
+        router.push('/operator')
+      }
     }, 800)
   }
 
@@ -98,70 +109,89 @@ export default function LoginPage() {
             fontSize: '13px',
             color: '#64748b',
             marginBottom: '28px',
-          }}>Sign in to access your dashboard</p>
+          }}>Please sign in to your account</p>
 
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '18px' }}>
-              <label style={{
-                display: 'block',
-                fontSize: '12px',
-                fontWeight: 600,
-                color: '#94a3b8',
-                marginBottom: '6px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-              }}>User ID / Email</label>
+          {error && (
+            <div style={{
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.2)',
+              color: '#f87171',
+              padding: '12px',
+              borderRadius: '8px',
+              fontSize: '13px',
+              marginBottom: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              <div style={{ width: '4px', height: '14px', background: '#ef4444', borderRadius: '2px' }} />
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {/* User Dropdown */}
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#94a3b8', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Select Role
+              </label>
               <div style={{ position: 'relative' }}>
-                <Mail size={16} style={{ position: 'absolute', left: '14px', top: '12px', color: '#64748b' }} />
-                <input
-                  type="text"
-                  required
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="admin or operator@catla.local"
-                  className="form-input"
-                  style={{ paddingLeft: '40px', height: '44px' }}
-                />
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  style={{
+                    width: '100%',
+                    background: '#0a0d14',
+                    border: '1px solid #334155',
+                    color: '#f1f5f9',
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    transition: 'border-color 0.2s',
+                    appearance: 'none',
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = '#0ea5e9'}
+                  onBlur={(e) => e.target.style.borderColor = '#334155'}
+                >
+                  <option value="admin">Administrator</option>
+                  <option value="manager">Manager</option>
+                  <option value="operator">Operator</option>
+                </select>
+                <div style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
               </div>
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label style={{
-                display: 'block',
-                fontSize: '12px',
-                fontWeight: 600,
-                color: '#94a3b8',
-                marginBottom: '6px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-              }}>Password (Optional for admin)</label>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#94a3b8', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Password
+              </label>
               <div style={{ position: 'relative' }}>
-                <Lock size={16} style={{ position: 'absolute', left: '14px', top: '12px', color: '#64748b' }} />
+                <Lock size={16} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} />
                 <input
                   type="password"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="form-input"
-                  style={{ paddingLeft: '40px', height: '44px' }}
+                  placeholder="Enter your password"
+                  required
+                  style={{
+                    width: '100%',
+                    background: '#0a0d14',
+                    border: '1px solid #334155',
+                    color: '#f1f5f9',
+                    padding: '12px 16px 12px 42px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    outline: 'none',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = '#0ea5e9'}
+                  onBlur={(e) => e.target.style.borderColor = '#334155'}
                 />
               </div>
             </div>
-
-            {error && (
-              <div style={{
-                marginBottom: '18px',
-                padding: '10px 14px',
-                borderRadius: '8px',
-                background: 'rgba(239, 68, 68, 0.1)',
-                border: '1px solid rgba(239, 68, 68, 0.2)',
-                color: '#f87171',
-                fontSize: '13px',
-                fontWeight: 500,
-              }}>
-                ⚠ {error}
-              </div>
-            )}
 
             <button
               type="submit"
