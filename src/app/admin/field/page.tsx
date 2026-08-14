@@ -3,19 +3,25 @@
 import React, { useState, useEffect } from 'react'
 import AppShell from '@/components/AppShell'
 import { getComplaints } from '@/actions/complaintStore'
+import { getUsers } from '@/actions/userStore'
 import { Wrench, Phone, MapPin, CheckCircle2, AlertCircle } from 'lucide-react'
-
-const STAFF = ['Amit Singh', 'Suresh Pal', 'Vikram Jha', 'Ravi Kumar']
 
 export default function TechnicianManagerView() {
   const [complaints, setComplaints] = useState<any[]>([])
+  const [technicians, setTechnicians] = useState<any[]>([])
 
   useEffect(() => {
     let isMounted = true
     const loadFromStore = async () => {
       try {
-        const stored = await getComplaints()
-        if (isMounted) setComplaints(stored)
+        const [storedComplaints, users] = await Promise.all([
+          getComplaints(),
+          getUsers()
+        ])
+        if (isMounted) {
+          setComplaints(storedComplaints)
+          setTechnicians(users.filter((u: any) => u.role === 'TECHNICIAN' && u.active))
+        }
       } catch {}
     }
     loadFromStore()
@@ -32,12 +38,13 @@ export default function TechnicianManagerView() {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
-          {STAFF.map(tech => {
+          {technicians.map(techObj => {
+            const tech = techObj.name
             const techJobs = complaints.filter(c => c.tech === tech && c.status !== 'RESOLVED' && c.status !== 'BREACHED' && c.status !== 'OPEN')
             const resolvedJobs = complaints.filter(c => c.tech === tech && c.status === 'RESOLVED')
             
             return (
-              <div key={tech} style={{ background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', borderRadius: '12px', overflow: 'hidden' }}>
+              <div key={techObj.id} style={{ background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', borderRadius: '12px', overflow: 'hidden' }}>
                 <div style={{ padding: '16px', borderBottom: '1px solid var(--color-border)', background: 'var(--color-bg-hover)', display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, #0ea5e9, #3b82f6)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>
                     {tech.split(' ').map(n => n[0]).join('')}
