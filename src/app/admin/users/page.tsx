@@ -56,6 +56,41 @@ function StatusBadge({ status }: { status: StaffStatus }) {
   )
 }
 
+const formatName = (val: string) => {
+  let result = '';
+  let inBracket = false;
+  let capitalizeNext = true;
+
+  for (let i = 0; i < val.length; i++) {
+    const char = val[i];
+    
+    if (char === '(' || char === '[' || char === '{') {
+      inBracket = true;
+      result += char;
+      capitalizeNext = true;
+    } else if (char === ')' || char === ']' || char === '}') {
+      inBracket = false;
+      result += char;
+      capitalizeNext = true;
+    } else if (inBracket) {
+      result += char.toUpperCase();
+    } else {
+      if (char === ' ' || char === '-' || char === '.') {
+        capitalizeNext = true;
+        result += char;
+      } else {
+        if (capitalizeNext) {
+          result += char.toUpperCase();
+          capitalizeNext = false;
+        } else {
+          result += char.toLowerCase();
+        }
+      }
+    }
+  }
+  return result;
+}
+
 export default function StaffManagement() {
   const [searchQuery, setSearchQuery] = useState('')
   const [roleFilter, setRoleFilter] = useState<string>('All')
@@ -399,11 +434,11 @@ export default function StaffManagement() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div className="form-group">
                   <label className="form-label">First Name</label>
-                  <input type="text" className="form-input" placeholder="John" value={newStaff.firstName} onChange={e => setNewStaff({...newStaff, firstName: e.target.value})} />
+                  <input type="text" className="form-input" placeholder="John" value={newStaff.firstName} onChange={e => setNewStaff({...newStaff, firstName: formatName(e.target.value)})} />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Last Name</label>
-                  <input type="text" className="form-input" placeholder="Doe" value={newStaff.lastName} onChange={e => setNewStaff({...newStaff, lastName: e.target.value})} />
+                  <input type="text" className="form-input" placeholder="Doe" value={newStaff.lastName} onChange={e => setNewStaff({...newStaff, lastName: formatName(e.target.value)})} />
                 </div>
               </div>
 
