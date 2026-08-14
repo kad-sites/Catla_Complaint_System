@@ -82,15 +82,6 @@ export default function LoginPage() {
       }} />
 
       <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '420px' }}>
-        {/* Logo + Brand */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <img 
-            src="/resonova_logo.png" 
-            alt="Resonova Complaint Management System" 
-            style={{ maxWidth: '100%', height: 'auto', maxHeight: '100px', objectFit: 'contain' }} 
-          />
-        </div>
-
         {/* Login Card */}
         <div style={{
           background: '#111827',
@@ -99,17 +90,30 @@ export default function LoginPage() {
           padding: '32px',
           boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
         }}>
-          <h2 style={{
-            fontSize: '18px',
-            fontWeight: 700,
-            color: '#f1f5f9',
-            marginBottom: '6px',
-          }}>Welcome back</h2>
-          <p style={{
-            fontSize: '13px',
-            color: '#64748b',
-            marginBottom: '28px',
-          }}>Please sign in to your account</p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px' }}>
+            <div>
+              <h2 style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: '#f1f5f9',
+                marginBottom: '6px',
+              }}>Welcome back</h2>
+              <p style={{
+                fontSize: '13px',
+                color: '#64748b',
+              }}>Please sign in to your account</p>
+            </div>
+            
+            <img 
+              src="/resonova_logo.png" 
+              alt="Resonova Complaint Management System" 
+              style={{ 
+                height: '48px', 
+                objectFit: 'contain',
+                mixBlendMode: 'lighten' // This will merge the image's dark background with the card's background
+              }} 
+            />
+          </div>
 
           {error && (
             <div style={{
