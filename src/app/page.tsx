@@ -92,7 +92,7 @@ export default function LoginPage() {
           padding: '36px 32px',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '28px' }}>
             <div>
               <h2 style={{
                 fontSize: '14px',
@@ -111,7 +111,7 @@ export default function LoginPage() {
               src="/resonova_logo.png" 
               alt="Resonova Complaint Management System" 
               style={{ 
-                height: '58px', 
+                height: '70px', 
                 objectFit: 'contain',
                 mixBlendMode: 'lighten' // This will merge the image's dark background with the card's background
               }} 
