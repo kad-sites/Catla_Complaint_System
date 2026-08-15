@@ -62,7 +62,7 @@ export default function TechnicianApp() {
       try {
         const users = await getUsers()
         if (isMounted && users) {
-          const techs = users.filter((u: any) => u.role === 'TECHNICIAN' && u.active).map((u: any) => u.name)
+          const techs = users.filter((u: any) => u.role === 'TECHNICIAN' && u.active !== false).map((u: any) => u.name)
           if (techs.length > 0) {
             setAvailableTechs(techs)
           }

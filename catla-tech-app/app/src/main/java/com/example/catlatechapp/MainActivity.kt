@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
         }
         
         webView = WebView(this)
+        webView.setBackgroundColor(android.graphics.Color.parseColor("#0a0d14"))
         webView.webViewClient = WebViewClient()
         webView.webChromeClient = WebChromeClient()
         
