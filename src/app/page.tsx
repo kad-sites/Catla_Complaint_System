@@ -84,10 +84,10 @@ export default function LoginPage() {
       <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '420px' }}>
         {/* Login Card */}
         <div style={{
-          background: 'linear-gradient(180deg, rgba(24, 45, 96, 0.95) 0%, rgba(12, 23, 52, 0.95) 100%)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          border: '1px solid rgba(54, 96, 194, 0.5)',
+          background: 'linear-gradient(180deg, rgba(24, 45, 96, 0.6) 0%, rgba(12, 23, 52, 0.6) 100%)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
           borderRadius: '24px',
           padding: '36px 32px',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
@@ -95,7 +95,7 @@ export default function LoginPage() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px' }}>
             <div>
               <h2 style={{
-                fontSize: '16px',
+                fontSize: '14px',
                 fontWeight: 600,
                 color: '#f8fafc',
                 marginBottom: '4px',
@@ -111,7 +111,7 @@ export default function LoginPage() {
               src="/resonova_logo.png" 
               alt="Resonova Complaint Management System" 
               style={{ 
-                height: '48px', 
+                height: '58px', 
                 objectFit: 'contain',
                 mixBlendMode: 'lighten' // This will merge the image's dark background with the card's background
               }} 
@@ -148,19 +148,19 @@ export default function LoginPage() {
                   onChange={(e) => setRole(e.target.value)}
                   style={{
                     width: '100%',
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
                     color: '#f1f5f9',
-                    padding: '12px 16px',
-                    borderRadius: '10px',
+                    padding: '14px 16px',
+                    borderRadius: '12px',
                     fontSize: '13px',
                     outline: 'none',
                     transition: 'all 0.2s ease',
                     appearance: 'none',
                     boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
                   }}
-                  onFocus={(e) => { e.target.style.borderColor = 'rgba(14, 165, 233, 0.5)'; e.target.style.background = 'rgba(255,255,255,0.05)' }}
-                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'; e.target.style.background = 'rgba(255,255,255,0.03)' }}
+                  onFocus={(e) => { e.target.style.borderColor = 'rgba(14, 165, 233, 0.5)'; e.target.style.background = 'rgba(255,255,255,0.08)' }}
+                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.target.style.background = 'rgba(255,255,255,0.05)' }}
                 >
                   <option value="admin">Administrator</option>
                   <option value="manager">Manager</option>
@@ -186,18 +186,18 @@ export default function LoginPage() {
                   required
                   style={{
                     width: '100%',
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
                     color: '#f1f5f9',
-                    padding: '12px 16px 12px 42px',
-                    borderRadius: '10px',
+                    padding: '14px 16px 14px 42px',
+                    borderRadius: '12px',
                     fontSize: '13px',
                     outline: 'none',
                     transition: 'all 0.2s ease',
                     boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
                   }}
-                  onFocus={(e) => { e.target.style.borderColor = 'rgba(14, 165, 233, 0.5)'; e.target.style.background = 'rgba(255,255,255,0.05)' }}
-                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'; e.target.style.background = 'rgba(255,255,255,0.03)' }}
+                  onFocus={(e) => { e.target.style.borderColor = 'rgba(14, 165, 233, 0.5)'; e.target.style.background = 'rgba(255,255,255,0.08)' }}
+                  onBlur={(e) => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.target.style.background = 'rgba(255,255,255,0.05)' }}
                 />
               </div>
             </div>
@@ -207,13 +207,13 @@ export default function LoginPage() {
               disabled={loading}
               style={{
                 width: '100%',
-                height: '46px',
+                height: '48px',
                 fontSize: '14px',
                 fontWeight: 600,
                 background: 'linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%)',
                 color: 'white',
                 border: 'none',
-                borderRadius: '10px',
+                borderRadius: '12px',
                 cursor: loading ? 'not-allowed' : 'pointer',
                 display: 'flex',
                 alignItems: 'center',
