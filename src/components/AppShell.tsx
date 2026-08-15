@@ -125,7 +125,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
             width: '36px',
             height: '36px',
             borderRadius: '8px',
-            background: 'linear-gradient(135deg, #0ea5e9, #3b82f6)',
+            background: 'var(--color-accent)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

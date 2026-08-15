@@ -119,8 +119,8 @@ export default function TrackingPage() {
                     padding: '14px 16px',
                     borderBottom: '1px solid var(--color-border)',
                     cursor: 'pointer',
-                    background: selected === tech.id ? 'rgba(14, 165, 233, 0.08)' : 'transparent',
-                    borderLeft: selected === tech.id ? '3px solid #0ea5e9' : '3px solid transparent',
+                    background: selected === tech.id ? 'color-mix(in srgb, var(--color-accent) 8%, transparent)' : 'transparent',
+                    borderLeft: selected === tech.id ? '3px solid var(--color-accent)' : '3px solid transparent',
                     transition: 'all 0.15s',
                   }}
                 >
@@ -153,7 +153,7 @@ export default function TrackingPage() {
                       fontSize: '11px',
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                        <span style={{ fontFamily: 'monospace', color: '#0ea5e9' }}>{tech.activeJob}</span>
+                        <span style={{ fontFamily: 'monospace', color: 'var(--color-accent)' }}>{tech.activeJob}</span>
                         <span style={{ color: 'var(--color-text-muted)' }}>{tech.lastUpdate}</span>
                       </div>
                       <div style={{ color: 'var(--color-text-secondary)' }}>

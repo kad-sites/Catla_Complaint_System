@@ -149,16 +149,16 @@ export default function TechnicianApp() {
 
   if (!loggedInTech) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#0a0d14', color: '#f1f5f9' }}>
-        <div style={{ padding: '32px', background: '#111827', borderRadius: '16px', border: '1px solid #1e293b', width: '90%', maxWidth: '400px', textAlign: 'center' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg-app)', color: 'var(--color-text-primary)' }}>
+        <div style={{ padding: '32px', background: 'var(--color-bg-card)', borderRadius: '16px', border: '1px solid var(--color-border)', width: '90%', maxWidth: '400px', textAlign: 'center' }}>
           <div style={{ width: '64px', height: '64px', background: 'linear-gradient(135deg, #0ea5e9, #3b82f6)', borderRadius: '16px', margin: '0 auto 20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Wrench size={32} color="white" />
           </div>
           <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '8px' }}>Technician App</h1>
-          <p style={{ color: '#94a3b8', marginBottom: '32px', fontSize: '14px' }}>Select your profile to continue</p>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: '32px', fontSize: '14px' }}>Select your profile to continue</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {availableTechs.map(tech => (
-              <button key={tech} onClick={() => setLoggedInTech(tech)} style={{ padding: '16px', background: '#1a2236', border: '1px solid #2d3a4f', borderRadius: '12px', color: '#f1f5f9', fontWeight: 600, fontSize: '16px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
+              <button key={tech} onClick={() => setLoggedInTech(tech)} style={{ padding: '16px', background: '#1a2236', border: '1px solid #2d3a4f', borderRadius: '12px', color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '16px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(14, 165, 233, 0.2)', color: '#0ea5e9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{tech.split(' ').map(n => n[0]).join('')}</div>
                 {tech}
               </button>
@@ -219,8 +219,8 @@ export default function TechnicianApp() {
 
   if (selectedTask) {
     return (
-      <div style={{ minHeight: '100vh', background: '#0a0d14', color: '#f1f5f9', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ background: '#111827', padding: '16px 20px', borderBottom: '1px solid #1e293b', position: 'sticky', top: 0, zIndex: 10 }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-app)', color: 'var(--color-text-primary)', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ background: 'var(--color-bg-card)', padding: '16px 20px', borderBottom: '1px solid var(--color-border)', position: 'sticky', top: 0, zIndex: 10 }}>
           <button onClick={closeJob} style={{ background: 'none', border: 'none', color: '#0ea5e9', fontSize: '13px', fontWeight: 600, cursor: 'pointer', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <ChevronLeft size={16} /> Back to List
           </button>
@@ -236,26 +236,26 @@ export default function TechnicianApp() {
         </div>
 
         <div style={{ flex: 1, overflowY: 'auto', padding: '16px', paddingBottom: '100px' }}>
-          <div style={{ background: '#111827', border: '1px solid #1e293b', borderRadius: '12px', padding: '16px', marginBottom: '16px' }}>
+          <div style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: '12px', padding: '16px', marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'start', gap: '10px', marginBottom: '12px' }}>
               <MapPin size={16} style={{ color: '#64748b', marginTop: '2px', flexShrink: 0 }} />
               <div>
-                <div style={{ fontSize: '13px', color: '#94a3b8' }}>{selectedTask.address}</div>
+                <div style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>{selectedTask.address}</div>
                 <a href={`tel:${selectedTask.phone}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#0ea5e9', textDecoration: 'none', marginTop: '4px' }}>
                   <Phone size={12} /> {selectedTask.phone}
                 </a>
               </div>
             </div>
-            <div style={{ padding: '10px 14px', background: '#0d1117', borderRadius: '8px', fontSize: '12px', color: '#94a3b8', lineHeight: 1.6 }}>
+            <div style={{ padding: '10px 14px', background: '#0d1117', borderRadius: '8px', fontSize: '12px', color: 'var(--color-text-muted)', lineHeight: 1.6 }}>
               <span style={{ display: 'block', fontSize: '10px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Operator Notes</span>
               {selectedTask.notes}
             </div>
           </div>
 
-          <div style={{ background: '#111827', border: `1px solid ${selectedTask.slaPercent > 70 ? 'rgba(239,68,68,0.3)' : '#1e293b'}`, borderRadius: '12px', padding: '16px', marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ background: 'var(--color-bg-card)', border: `1px solid ${selectedTask.slaPercent > 70 ? 'rgba(239,68,68,0.3)' : 'var(--color-border)'}`, borderRadius: '12px', padding: '16px', marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <div style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>SLA Remaining</div>
-              <div style={{ fontSize: '24px', fontWeight: 800, color: selectedTask.slaPercent > 70 ? '#ef4444' : '#f1f5f9' }}>{selectedTask.sla}</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: selectedTask.slaPercent > 70 ? '#ef4444' : 'var(--color-text-primary)' }}>{selectedTask.sla}</div>
             </div>
             <div style={{ width: '80px' }}>
               <div className="progress-bar" style={{ height: '8px' }}>
@@ -282,7 +282,7 @@ export default function TechnicianApp() {
           )}
 
           {(stage === 'arrived' || stage === 'working' || stage === 'resolved') && (
-            <div className="animate-fade-in" style={{ background: '#111827', border: '1px solid rgba(14, 165, 233, 0.2)', borderRadius: '12px', padding: '16px' }}>
+            <div className="animate-fade-in" style={{ background: 'var(--color-bg-card)', border: '1px solid rgba(14, 165, 233, 0.2)', borderRadius: '12px', padding: '16px' }}>
               <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#0ea5e9', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}><Wrench size={16} /> Resolution Details</h3>
               <div className="form-group" style={{ marginBottom: '14px' }}>
                 <label className="form-label">Fault Type Found</label>
@@ -329,8 +329,8 @@ export default function TechnicianApp() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0d14', color: '#f1f5f9', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ background: '#111827', padding: '20px', borderBottom: '1px solid #1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg-app)', color: 'var(--color-text-primary)', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ background: 'var(--color-bg-card)', padding: '20px', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ flex: 1 }}>
           <h1 style={{ fontSize: '18px', fontWeight: 800 }}>TechConsole</h1>
           <p style={{ fontSize: '12px', color: '#64748b' }}>{loggedInTech} · Field Technician</p>
@@ -351,10 +351,10 @@ export default function TechnicianApp() {
       <div style={{
         display: 'flex',
         background: '#0d1117',
-        borderBottom: '1px solid #1e293b',
+        borderBottom: '1px solid var(--color-border)',
       }}>
         {[
-          { label: 'Active', value: String(assignments.length), color: '#f1f5f9' },
+          { label: 'Active', value: String(assignments.length), color: 'var(--color-text-primary)' },
           { label: 'Done Today', value: String(doneJobs.length), color: '#10b981' },
           { label: 'SLA Hit', value: '92%', color: '#0ea5e9' },
         ].map((stat, i) => (
@@ -362,7 +362,7 @@ export default function TechnicianApp() {
             flex: 1,
             textAlign: 'center',
             padding: '14px',
-            borderRight: i < 2 ? '1px solid #1e293b' : 'none',
+            borderRight: i < 2 ? '1px solid var(--color-border)' : 'none',
           }}>
             <div style={{ fontSize: '20px', fontWeight: 800, color: stat.color }}>{stat.value}</div>
             <div style={{ fontSize: '9px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 600 }}>{stat.label}</div>
@@ -383,15 +383,15 @@ export default function TechnicianApp() {
               padding: '60px 20px', textAlign: 'center', gap: '12px',
             }}>
               <CheckCircle2 size={48} style={{ color: '#10b981', opacity: 0.5 }} />
-              <div style={{ fontSize: '16px', fontWeight: 700, color: '#94a3b8' }}>All caught up!</div>
+              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-text-muted)' }}>All caught up!</div>
               <div style={{ fontSize: '12px', color: '#64748b' }}>No active jobs. Check the Done tab for completed work.</div>
             </div>
           )}
 
           {assignments.map(task => (
             <div key={task.id} style={{
-              background: '#111827',
-              border: '1px solid #1e293b',
+              background: 'var(--color-bg-card)',
+              border: '1px solid var(--color-border)',
               borderRadius: '12px',
               padding: '16px',
               transition: 'border-color 0.2s',
@@ -404,7 +404,7 @@ export default function TechnicianApp() {
               </div>
 
               <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '4px' }}>{task.customer}</div>
-              <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '12px' }}>{task.issue}</div>
+              <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', marginBottom: '12px' }}>{task.issue}</div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#64748b', marginBottom: '14px' }}>
                 <MapPin size={12} /> {task.address}
@@ -457,14 +457,14 @@ export default function TechnicianApp() {
               padding: '60px 20px', textAlign: 'center', gap: '12px',
             }}>
               <Clock size={48} style={{ color: '#64748b', opacity: 0.4 }} />
-              <div style={{ fontSize: '16px', fontWeight: 700, color: '#94a3b8' }}>No completed jobs yet</div>
+              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-text-muted)' }}>No completed jobs yet</div>
               <div style={{ fontSize: '12px', color: '#64748b' }}>Resolved jobs will appear here.</div>
             </div>
           )}
 
           {doneJobs.map(job => (
             <div key={job.id} style={{
-              background: '#111827',
+              background: 'var(--color-bg-card)',
               border: '1px solid rgba(16, 185, 129, 0.2)',
               borderRadius: '12px',
               padding: '16px',
@@ -489,14 +489,14 @@ export default function TechnicianApp() {
               </div>
 
               <div style={{ fontSize: '15px', fontWeight: 700, marginBottom: '4px' }}>{job.customer}</div>
-              <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '10px' }}>{job.issue}</div>
+              <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', marginBottom: '10px' }}>{job.issue}</div>
 
               <div style={{
                 padding: '10px 14px',
                 background: '#0d1117',
                 borderRadius: '8px',
                 fontSize: '12px',
-                color: '#94a3b8',
+                color: 'var(--color-text-muted)',
                 lineHeight: 1.6,
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
@@ -505,7 +505,7 @@ export default function TechnicianApp() {
                 </div>
                 <div style={{ color: '#e2e8f0', fontWeight: 600, marginBottom: '4px' }}>{job.resolution}</div>
                 {job.resolutionNotes && (
-                  <div style={{ color: '#94a3b8', fontSize: '11px' }}>{job.resolutionNotes}</div>
+                  <div style={{ color: 'var(--color-text-muted)', fontSize: '11px' }}>{job.resolutionNotes}</div>
                 )}
               </div>
 
@@ -539,7 +539,7 @@ export default function TechnicianApp() {
       {activeTab === 'status' && (
         <div style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: '80px', gap: '12px' }}>
           <Signal size={48} style={{ color: '#0ea5e9', opacity: 0.4 }} />
-          <div style={{ fontSize: '16px', fontWeight: 700, color: '#94a3b8' }}>Network Status</div>
+          <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-text-muted)' }}>Network Status</div>
           <div style={{ fontSize: '12px', color: '#64748b' }}>Coming soon</div>
         </div>
       )}
@@ -550,8 +550,8 @@ export default function TechnicianApp() {
         bottom: 0,
         left: 0,
         right: 0,
-        background: '#111827',
-        borderTop: '1px solid #1e293b',
+        background: 'var(--color-bg-card)',
+        borderTop: '1px solid var(--color-border)',
         display: 'flex',
         justifyContent: 'space-around',
         padding: '10px 0',
