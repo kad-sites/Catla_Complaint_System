@@ -34,6 +34,7 @@ class MainActivity : ComponentActivity() {
         val webSettings: WebSettings = webView.settings
         webSettings.javaScriptEnabled = true
         webSettings.domStorageEnabled = true
+        webSettings.cacheMode = WebSettings.LOAD_NO_CACHE
         
         // Load the technician portal
         webView.loadUrl("https://catla-complaint-system.vercel.app/technician")

@@ -70,7 +70,7 @@ export default function AllComplaints() {
   const [reassigningId, setReassigningId] = useState<string | null>(null)
   const [now, setNow] = useState(Date.now())
   const [userRole, setUserRole] = useState<string | null>(null)
-  const isUpdatingRef = React.useRef(false)
+  const lastMutationTime = React.useRef<number>(0)
 
   // Timer for dynamic timelapse and role check
   useEffect(() => {
@@ -83,12 +83,13 @@ export default function AllComplaints() {
   useEffect(() => {
     let isMounted = true
     const loadFromStore = async () => {
+      const fetchStartTime = Date.now()
       try {
         const [stored, users] = await Promise.all([
           getComplaints(),
           getUsers()
         ])
-        if (isMounted && !isUpdatingRef.current) {
+        if (isMounted && fetchStartTime >= lastMutationTime.current) {
           setComplaints([...stored, ...STATIC_COMPLAINTS])
           setTechnicians(users.filter((u: any) => u.role === 'TECHNICIAN' && u.active))
         }
@@ -107,7 +108,8 @@ export default function AllComplaints() {
     const ticket = complaints.find(t => t.id === ticketId)
     if (!ticket) return
 
-    isUpdatingRef.current = true
+    // Lock out incoming polls from overwriting our optimistic state
+    lastMutationTime.current = Date.now() + 60000 
     const nowTime = Date.now()
     
     const isReassignment = ticket.tech && ticket.tech !== 'Unassigned' && ticket.tech !== techName;
@@ -138,10 +140,9 @@ export default function AllComplaints() {
       status: newStatus
     })
 
-    // Release the update lock after a short buffer
-    setTimeout(() => {
-      isUpdatingRef.current = false
-    }, 1500)
+    // Release the lock by setting it to the exact time the mutation finished.
+    // Any poll that started BEFORE this exact moment will be ignored.
+    lastMutationTime.current = Date.now()
 
     if (res.success) {
       // Send Telegram alert in background
