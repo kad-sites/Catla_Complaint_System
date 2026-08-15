@@ -84,10 +84,10 @@ export default function LoginPage() {
       <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '420px' }}>
         {/* Login Card */}
         <div style={{
-          background: 'linear-gradient(180deg, rgba(24, 45, 96, 0.6) 0%, rgba(12, 23, 52, 0.6) 100%)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          background: 'linear-gradient(180deg, rgba(24, 45, 96, 0.25) 0%, rgba(12, 23, 52, 0.35) 100%)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
           borderRadius: '24px',
           padding: '36px 32px',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
