@@ -6,15 +6,15 @@
    ═══════════════════════════════════════════════════════════════ */
 
 @theme {
-  --color-bg-app: #0a0d14;
-  --color-bg-sidebar: #0f1219;
-  --color-bg-card: #111827;
-  --color-bg-card-alt: #151c2c;
-  --color-bg-input: #1a2236;
-  --color-bg-hover: #1e293b;
-  --color-bg-surface: #0d1117;
-  --color-border: #1e293b;
-  --color-border-light: #2d3a4f;
+  --color-bg-app: #161d2d;
+  --color-bg-sidebar: #1b2336;
+  --color-bg-card: #212b42;
+  --color-bg-card-alt: #26334d;
+  --color-bg-input: #182238;
+  --color-bg-hover: #2d3b59;
+  --color-bg-surface: #192133;
+  --color-border: #344361;
+  --color-border-light: #44567a;
   --color-accent: #0ea5e9;
   --color-accent-dark: #0284c7;
   --color-text-primary: #f1f5f9;
