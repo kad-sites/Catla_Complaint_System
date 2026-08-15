@@ -13,12 +13,24 @@ export default function SettingsPage() {
   const [density, setDensity] = useState('comfortable')
   const [companyName, setCompanyName] = useState('RESONOVA BROADBAND')
 
+  React.useEffect(() => {
+    const savedId = localStorage.getItem('themeAccentId')
+    if (savedId) setAccentColor(savedId)
+  }, [])
+
+  const handleColorChange = (color: any) => {
+    setAccentColor(color.id)
+    document.documentElement.style.setProperty('--color-accent', color.hex)
+    localStorage.setItem('themeAccentId', color.id)
+    localStorage.setItem('themeAccentHex', color.hex)
+  }
+
   const accentColors = [
-    { id: 'sky', bg: 'bg-sky-500', name: 'Sky Blue' },
-    { id: 'indigo', bg: 'bg-indigo-500', name: 'Indigo' },
-    { id: 'emerald', bg: 'bg-emerald-500', name: 'Emerald' },
-    { id: 'rose', bg: 'bg-rose-500', name: 'Rose' },
-    { id: 'amber', bg: 'bg-amber-500', name: 'Amber' },
+    { id: 'sky', bg: 'bg-sky-500', name: 'Sky Blue', hex: '#0ea5e9' },
+    { id: 'indigo', bg: 'bg-indigo-500', name: 'Indigo', hex: '#6366f1' },
+    { id: 'emerald', bg: 'bg-emerald-500', name: 'Emerald', hex: '#10b981' },
+    { id: 'rose', bg: 'bg-rose-500', name: 'Rose', hex: '#f43f5e' },
+    { id: 'amber', bg: 'bg-amber-500', name: 'Amber', hex: '#f59e0b' },
   ]
 
   const tabs = [
@@ -32,7 +44,7 @@ export default function SettingsPage() {
 
   return (
     <AppShell>
-      <div className="animate-fade-in" style={{ padding: '0', maxWidth: '1000px', margin: '0 auto', display: 'flex', gap: '32px' }}>
+      <div className="animate-fade-in" style={{ padding: '0', display: 'flex', gap: '32px' }}>
         
         {/* Sidebar Nav */}
         <div style={{ width: '240px', flexShrink: 0 }}>
@@ -79,7 +91,7 @@ export default function SettingsPage() {
                       {accentColors.map(color => (
                         <button
                           key={color.id}
-                          onClick={() => setAccentColor(color.id)}
+                          onClick={() => handleColorChange(color)}
                           style={{
                             width: '48px', height: '48px', borderRadius: '50%',
                             background: color.id === 'sky' ? '#0ea5e9' : color.id === 'indigo' ? '#6366f1' : color.id === 'emerald' ? '#10b981' : color.id === 'rose' ? '#f43f5e' : '#f59e0b',

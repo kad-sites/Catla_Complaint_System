@@ -142,25 +142,21 @@ export default function DirectorDashboard() {
             <div className="kpi-card-icon"><Inbox size={24} /></div>
             <div className="kpi-card-label">Today&apos;s Received</div>
             <div className="kpi-card-value">{complaints.length}</div>
-            <span className="kpi-card-change up"><TrendingUp size={14} /> Live tracking</span>
           </div>
           <div className="kpi-card yellow">
             <div className="kpi-card-icon"><Clock size={24} /></div>
             <div className="kpi-card-label">In Progress</div>
             <div className="kpi-card-value">{complaints.filter(c => c.status === 'IN_PROGRESS' || c.status === 'ASSIGNED').length}</div>
-            <span className="kpi-card-change down"><Clock size={14} /> Live tracking</span>
           </div>
           <div className="kpi-card purple">
             <div className="kpi-card-icon"><Users size={24} /></div>
             <div className="kpi-card-label">Pending Assignment</div>
             <div className="kpi-card-value">{complaints.filter(c => c.status === 'OPEN').length}</div>
-            <span className="kpi-card-change up"><Users size={14} /> Live tracking</span>
           </div>
           <div className="kpi-card green">
             <div className="kpi-card-icon"><CheckCircle2 size={24} /></div>
             <div className="kpi-card-label">Resolved Today</div>
             <div className="kpi-card-value">{complaints.filter(c => c.status === 'RESOLVED').length}</div>
-            <span className="kpi-card-change up"><CheckCircle2 size={14} /> Live tracking</span>
           </div>
           <div className="kpi-card red">
             <div className="kpi-card-icon"><AlertTriangle size={24} /></div>

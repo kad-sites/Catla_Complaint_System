@@ -6,8 +6,8 @@
    ═══════════════════════════════════════════════════════════════ */
 
 @theme {
-  --color-bg-app: #212b42;
-  --color-bg-sidebar: #212b42;
+  --color-bg-app: #131e37;
+  --color-bg-sidebar: #131e37;
   --color-bg-card: #283550;
   --color-bg-card-alt: #2e3d58;
   --color-bg-input: #1e2840;
@@ -50,7 +50,7 @@ body {
 }
 
 .app-sidebar {
-  width: 260px;
+  width: 208px;
   background: var(--color-bg-sidebar);
   border-right: none;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
@@ -65,7 +65,7 @@ body {
 }
 
 .app-main {
-  margin-left: 260px;
+  margin-left: 208px;
   flex: 1;
   min-height: 100vh;
   display: flex;
@@ -73,8 +73,8 @@ body {
 }
 
 .app-topbar {
-  height: 80px;
-  background: var(--color-bg-app);
+  height: 64px;
+  background: var(--color-bg-sidebar);
   border-bottom: none;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -94,11 +94,13 @@ body {
 
 /* ─── Sidebar Nav ─── */
 .sidebar-brand {
-  padding: 20px 24px;
+  height: 64px;
+  padding: 0 24px;
   border-bottom: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
 }
 
@@ -219,20 +221,23 @@ body {
 }
 
 .kpi-card {
-  background: var(--color-bg-card);
-  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   padding: 20px;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .kpi-card:hover {
-  border-color: var(--color-border-light);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.4);
 }
 
 .kpi-card::before {
@@ -298,11 +303,13 @@ body {
 
 /* ─── Data Cards ─── */
 .data-card {
-  background: var(--color-bg-card);
-  border: none;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .data-card-header {

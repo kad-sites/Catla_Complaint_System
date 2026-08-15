@@ -1,5 +1,7 @@
 'use server'
 
+import { updateTelegramPinnedHeader } from './sendTelegramAlert'
+
 const SUPABASE_URL = process.env.SUPABASE_URL || ''
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 
@@ -60,6 +62,10 @@ export async function saveComplaint(complaint: any) {
       console.error('Supabase POST error:', res.status, errText)
       return { success: false, error: errText }
     }
+    
+    // Fire and forget pinned header update
+    updateTelegramPinnedHeader()
+    
     return { success: true }
   } catch (error: any) {
     console.error('Error saving complaint:', error)
@@ -83,6 +89,10 @@ export async function updateComplaint(id: string, updates: any) {
       console.error('Supabase PATCH error:', res.status, errText)
       return { success: false, error: errText }
     }
+
+    // Fire and forget pinned header update
+    updateTelegramPinnedHeader()
+
     return { success: true }
   } catch (error: any) {
     console.error('Error updating complaint:', error)
@@ -105,6 +115,10 @@ export async function deleteComplaint(id: string) {
       console.error('Supabase DELETE error:', res.status, errText)
       return { success: false, error: errText }
     }
+
+    // Fire and forget pinned header update
+    updateTelegramPinnedHeader()
+
     return { success: true }
   } catch (error: any) {
     console.error('Error deleting complaint:', error)

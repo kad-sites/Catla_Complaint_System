@@ -71,6 +71,7 @@ export default function AllComplaints() {
   const [reassigningId, setReassigningId] = useState<string | null>(null)
   const [now, setNow] = useState(Date.now())
   const [userRole, setUserRole] = useState<string | null>(null)
+  const isUpdatingRef = React.useRef(false)
 
   // Timer for dynamic timelapse and role check
   useEffect(() => {
@@ -88,7 +89,7 @@ export default function AllComplaints() {
           getComplaints(),
           getUsers()
         ])
-        if (isMounted) {
+        if (isMounted && !isUpdatingRef.current) {
           setComplaints([...stored, ...STATIC_COMPLAINTS])
           setTechnicians(users.filter((u: any) => u.role === 'TECHNICIAN' && u.active))
         }
@@ -107,6 +108,7 @@ export default function AllComplaints() {
     const ticket = complaints.find(t => t.id === ticketId)
     if (!ticket) return
 
+    isUpdatingRef.current = true
     const nowTime = Date.now()
     
     const isReassignment = ticket.tech && ticket.tech !== 'Unassigned' && ticket.tech !== techName;
@@ -136,6 +138,11 @@ export default function AllComplaints() {
       tech: techName,
       status: newStatus
     })
+
+    // Release the update lock after a short buffer
+    setTimeout(() => {
+      isUpdatingRef.current = false
+    }, 1500)
 
     if (res.success) {
       // Send Telegram alert in background

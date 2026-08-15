@@ -8,13 +8,15 @@ import {
   Users, Settings, LogOut, Bell, Search, ChevronDown, MapPin, ListTodo, Activity
 } from 'lucide-react'
 
+import { getComplaints } from '@/actions/complaintStore'
+
 const NAV_ITEMS_TEMPLATE = [
   { label: 'DASHBOARD', items: [
-    { href: '/director', icon: LayoutDashboard, label: 'Manager Dashboard', badge: '' },
+    { href: '/director', icon: LayoutDashboard, label: 'Dashboard', badge: '' },
   ]},
   { label: 'COMPLAINTS', items: [
     { href: '/director/complaints', icon: ListTodo, label: 'All Complaints', badge: '' },
-    { href: '/tracking', icon: Activity, label: 'Live Tracking', badge: 'New' },
+    { href: '/tracking', icon: Activity, label: 'Tracking', badge: '' },
   ]},
   { label: 'FIELD', items: [
     { href: '/admin/field', icon: Wrench, label: 'Technician View', badge: '' },
@@ -33,15 +35,31 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
   React.useEffect(() => {
     setUserRole(localStorage.getItem('userRole'))
     
-    // Fetch count
-    fetch('/api/complaints')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
+    // Apply saved theme color
+    const savedThemeHex = localStorage.getItem('themeAccentHex')
+    if (savedThemeHex) {
+      document.documentElement.style.setProperty('--color-accent', savedThemeHex)
+    }
+    
+    let isMounted = true
+    const fetchCount = async () => {
+      try {
+        const data = await getComplaints()
+        if (isMounted && Array.isArray(data)) {
           setComplaintCount(data.length)
         }
-      })
-      .catch(err => console.error("Failed to load complaints count", err))
+      } catch (err) {
+        console.error("Failed to load complaints count", err)
+      }
+    }
+
+    fetchCount()
+    const timer = setInterval(fetchCount, 3000)
+
+    return () => {
+      isMounted = false
+      clearInterval(timer)
+    }
   }, [])
 
   const NAV_ITEMS = NAV_ITEMS_TEMPLATE.map(section => {
@@ -63,11 +81,11 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
     <div className="app-layout">
       {/* Sidebar */}
       <aside className="app-sidebar">
-        <div className="sidebar-brand" style={{ padding: '16px 20px', display: 'flex', justifyContent: 'center' }}>
+        <div className="sidebar-brand" style={{ padding: '16px 0', display: 'flex', justifyContent: 'center' }}>
           <img 
             src="/resonova_logo_horizontal.png" 
             alt="Resonova Complaint Management System" 
-            style={{ maxWidth: '100%', height: '55px', objectFit: 'contain' }} 
+            style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }} 
           />
         </div>
 
@@ -77,7 +95,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
               <div className="sidebar-section-title">{section.label}</div>
               {section.items.map((item) => {
                 const Icon = item.icon
-                const isActive = pathname === item.href || pathname?.startsWith(item.href + '/')
+                const isActive = pathname === item.href || (item.href !== '/director' && pathname?.startsWith(item.href + '/'))
                 return (
                   <Link
                     key={item.href}

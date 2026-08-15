@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import { sendAssignmentSMS } from '@/actions/sendAssignmentSMS'
 import { getComplaints, updateComplaint } from '@/actions/complaintStore'
+import { getUsers } from '@/actions/userStore'
 
 type Assignment = {
   id: string
@@ -43,6 +44,7 @@ const RESOLUTION_TYPES = [
 
 export default function TechnicianApp() {
   const [loggedInTech, setLoggedInTech] = useState<string | null>(null)
+  const [availableTechs, setAvailableTechs] = useState<string[]>(['Amit Singh', 'Suresh Pal', 'Vikram Jha', 'Ravi Kumar'])
   const [assignments, setAssignments] = useState<Assignment[]>([])
   const [doneJobs, setDoneJobs] = useState<DoneJob[]>([])
   const [activeTab, setActiveTab] = useState<'jobs' | 'done' | 'status'>('jobs')
@@ -52,6 +54,25 @@ export default function TechnicianApp() {
   const [photos, setPhotos] = useState<string[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [resolutionNotes, setResolutionNotes] = useState('')
+
+  useEffect(() => {
+    if (loggedInTech) return
+    let isMounted = true
+    const loadTechs = async () => {
+      try {
+        const users = await getUsers()
+        if (isMounted && users) {
+          const techs = users.filter((u: any) => u.role === 'TECHNICIAN' && u.active).map((u: any) => u.name)
+          if (techs.length > 0) {
+            setAvailableTechs(techs)
+          }
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    loadTechs()
+  }, [loggedInTech])
 
   useEffect(() => {
     if (!loggedInTech) return
@@ -136,7 +157,7 @@ export default function TechnicianApp() {
           <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '8px' }}>Technician App</h1>
           <p style={{ color: '#94a3b8', marginBottom: '32px', fontSize: '14px' }}>Select your profile to continue</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {['Amit Singh', 'Suresh Pal', 'Vikram Jha', 'Ravi Kumar'].map(tech => (
+            {availableTechs.map(tech => (
               <button key={tech} onClick={() => setLoggedInTech(tech)} style={{ padding: '16px', background: '#1a2236', border: '1px solid #2d3a4f', borderRadius: '12px', color: '#f1f5f9', fontWeight: 600, fontSize: '16px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(14, 165, 233, 0.2)', color: '#0ea5e9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{tech.split(' ').map(n => n[0]).join('')}</div>
                 {tech}

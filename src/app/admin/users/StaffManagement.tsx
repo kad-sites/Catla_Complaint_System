@@ -249,7 +249,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
 
   return (
     <AppShell>
-      <div className="animate-fade-in" style={{ padding: '0', maxWidth: '1200px', margin: '0 auto' }}>
+      <div className="animate-fade-in" style={{ padding: '0' }}>
         {/* Header Section */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
           <div>
@@ -431,7 +431,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                                   <div style={{ fontSize: '12px', color: job.slaPercent > 80 ? 'var(--color-danger)' : 'var(--color-text-primary)', fontWeight: 600 }}>
                                     {job.sla} left
                                   </div>
-                                  <span style={{ padding: '4px 8px', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', borderRadius: '4px', fontSize: '11px', fontWeight: 600 }}>
+                                  <span style={{ padding: '4px 8px', border: '1px solid var(--color-accent)', color: 'var(--color-accent)', borderRadius: '4px', fontSize: '11px', fontWeight: 600 }}>
                                     {job.status.replace('_', ' ')}
                                   </span>
                                 </div>
