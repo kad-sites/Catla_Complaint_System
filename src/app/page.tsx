@@ -39,7 +39,7 @@ export default function LoginPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#0a0d14',
+      background: '#060d21',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -84,11 +84,11 @@ export default function LoginPage() {
       <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '420px' }}>
         {/* Login Card */}
         <div style={{
-          background: 'rgba(17, 24, 39, 0.65)',
+          background: 'linear-gradient(180deg, rgba(24, 45, 96, 0.95) 0%, rgba(12, 23, 52, 0.95) 100%)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          borderRadius: '20px',
+          border: '1px solid rgba(54, 96, 194, 0.5)',
+          borderRadius: '24px',
           padding: '36px 32px',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
         }}>
