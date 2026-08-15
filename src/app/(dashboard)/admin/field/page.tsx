@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import AppShell from '@/components/AppShell'
 import { getComplaints } from '@/actions/complaintStore'
 import { getUsers } from '@/actions/userStore'
 import { Wrench, Phone, MapPin, CheckCircle2, AlertCircle } from 'lucide-react'
@@ -30,7 +29,7 @@ export default function TechnicianManagerView() {
   }, [])
 
   return (
-    <AppShell role="DIRECTOR">
+    <>
       <div style={{ padding: '0' }}>
         <div style={{ marginBottom: '24px' }}>
           <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--color-text-primary)' }}>Field Operations Overview</h1>
@@ -90,6 +89,6 @@ export default function TechnicianManagerView() {
           })}
         </div>
       </div>
-    </AppShell>
+    </>
   )
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import AppShell from '@/components/AppShell'
 import {
   Search, Filter, Plus, MoreHorizontal, UserCheck, UserX, User, Users,
   Mail, Phone, MapPin, Edit, Trash2, CheckCircle2, X, ChevronDown, ChevronUp
@@ -248,7 +247,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
   })
 
   return (
-    <AppShell>
+    <>
       <div className="animate-fade-in" style={{ padding: '0' }}>
         {/* Header Section */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -545,6 +544,6 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
           </div>
         </div>
       )}
-    </AppShell>
+    </>
   )
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import AppShell from '@/components/AppShell'
 import {
   Search, Filter, Clock, AlertTriangle, CheckCircle2,
   ChevronDown, Eye, MoreHorizontal, MapPin, Phone, ArrowUpDown, X
@@ -194,7 +193,7 @@ export default function AllComplaints() {
   }
 
   return (
-    <AppShell role="DIRECTOR">
+    <>
       <div className="animate-fade-in">
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
@@ -430,6 +429,6 @@ export default function AllComplaints() {
           )}
         </div>
       </div>
-    </AppShell>
+    </>
   )
 }

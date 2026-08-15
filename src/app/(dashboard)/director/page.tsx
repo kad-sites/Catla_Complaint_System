@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import AppShell from '@/components/AppShell'
 import { useRouter } from 'next/navigation'
 import {
   Inbox, TrendingUp, Clock, AlertTriangle, CheckCircle2,
@@ -88,7 +87,7 @@ export default function DirectorDashboard() {
     : complaints.filter(t => t.status === statusFilter)
 
   return (
-    <AppShell role="DIRECTOR">
+    <>
       <div className="animate-fade-in">
         {/* Page Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -402,6 +401,6 @@ export default function DirectorDashboard() {
           </div>
         </div>
       </div>
-    </AppShell>
+    </>
   )
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import AppShell from '@/components/AppShell'
 import {
   Building2, Palette, Clock, Bell, Shield, Webhook,
   Save, Upload, Monitor, Smartphone, Layout
@@ -43,7 +42,7 @@ export default function SettingsPage() {
   ]
 
   return (
-    <AppShell>
+    <>
       <div className="animate-fade-in" style={{ padding: '0', display: 'flex', gap: '32px' }}>
         
         {/* Sidebar Nav */}
@@ -240,6 +239,6 @@ export default function SettingsPage() {
         </div>
 
       </div>
-    </AppShell>
+    </>
   )
 }

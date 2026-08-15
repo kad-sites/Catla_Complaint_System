@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import AppShell from '@/components/AppShell'
 import {
   Search, Phone, MapPin, Wifi, User, Clock,
   CheckCircle2, AlertTriangle, Zap, Send, ChevronRight
@@ -207,7 +206,7 @@ export default function OperatorConsole() {
   }
 
   return (
-    <AppShell role="OPERATOR">
+    <>
       <div className="animate-fade-in">
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -631,6 +630,6 @@ export default function OperatorConsole() {
           </div>
         </div>
       </div>
-    </AppShell>
+    </>
   )
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import AppShell from '@/components/AppShell'
 import dynamic from 'next/dynamic'
 import { Navigation, Phone, Clock, MapPin, Truck, Signal } from 'lucide-react'
 
@@ -71,7 +70,7 @@ export default function TrackingPage() {
     s === 'en-route' ? '🚗 En Route' : s === 'on-site' ? '📍 On Site' : '⏸ Idle'
 
   return (
-    <AppShell role="DIRECTOR">
+    <>
       <div className="animate-fade-in">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div>
@@ -191,6 +190,6 @@ export default function TrackingPage() {
           </div>
         </div>
       </div>
-    </AppShell>
+    </>
   )
 }
