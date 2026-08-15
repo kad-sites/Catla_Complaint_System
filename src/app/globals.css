@@ -6,15 +6,15 @@
    ═══════════════════════════════════════════════════════════════ */
 
 @theme {
-  --color-bg-app: #1e293b;
-  --color-bg-sidebar: #1e293b;
-  --color-bg-card: #334155;
-  --color-bg-card-alt: #475569;
-  --color-bg-input: #0f172a;
-  --color-bg-hover: #475569;
-  --color-bg-surface: #1e293b;
-  --color-border: #475569;
-  --color-border-light: #64748b;
+  --color-bg-app: #161d2d;
+  --color-bg-sidebar: #161d2d;
+  --color-bg-card: #212b42;
+  --color-bg-card-alt: #26334d;
+  --color-bg-input: #182238;
+  --color-bg-hover: #2d3b59;
+  --color-bg-surface: #192133;
+  --color-border: #344361;
+  --color-border-light: #44567a;
   --color-accent: #0ea5e9;
   --color-accent-dark: #0284c7;
   --color-text-primary: #f1f5f9;
@@ -52,8 +52,8 @@ body {
 .app-sidebar {
   width: 260px;
   background: var(--color-bg-sidebar);
-  border-right: none;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+  border-right: 1px solid var(--color-border);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -75,8 +75,8 @@ body {
 .app-topbar {
   height: 80px;
   background: var(--color-bg-app);
-  border-bottom: none;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -95,8 +95,7 @@ body {
 /* ─── Sidebar Nav ─── */
 .sidebar-brand {
   padding: 20px 24px;
-  border-bottom: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -220,7 +219,7 @@ body {
 
 .kpi-card {
   background: var(--color-bg-card);
-  border: none;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 20px;
   position: relative;
@@ -299,16 +298,14 @@ body {
 /* ─── Data Cards ─── */
 .data-card {
   background: var(--color-bg-card);
-  border: none;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .data-card-header {
   padding: 16px 20px;
-  border-bottom: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
