@@ -154,3 +154,29 @@ export async function updateUser(id: string, updates: any, isSync = false, origi
     return { success: false, error: error.message }
   }
 }
+
+import bcrypt from 'bcryptjs'
+
+// Verify technician password
+export async function verifyTechnicianPassword(name: string, password: string) {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/User?name=eq.${encodeURIComponent(name)}`,
+      { headers, cache: 'no-store' }
+    )
+    if (!res.ok) return false
+    const users = await res.json()
+    if (!users || users.length === 0) return false
+    
+    const user = users[0]
+    
+    if (user.passwordHash.startsWith('$2')) {
+       return await bcrypt.compare(password, user.passwordHash)
+    } else {
+       return password === user.passwordHash
+    }
+  } catch (error) {
+    console.error('Password verification error', error)
+    return false
+  }
+}

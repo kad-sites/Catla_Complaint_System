@@ -7,7 +7,7 @@ import {
 } from 'lucide-react'
 import { sendAssignmentSMS } from '@/actions/sendAssignmentSMS'
 import { getComplaints, updateComplaint } from '@/actions/complaintStore'
-import { getUsers } from '@/actions/userStore'
+import { getUsers, verifyTechnicianPassword } from '@/actions/userStore'
 
 type Assignment = {
   id: string
@@ -336,7 +336,7 @@ export default function TechnicianApp() {
           <p style={{ fontSize: '12px', color: '#64748b' }}>{loggedInTech} · Field Technician</p>
         </div>
         <button
-          onClick={() => setLoggedInTech(null)}
+          onClick={() => { localStorage.removeItem('loggedInTech'); setLoggedInTech(null); }}
           title="Switch User"
           style={{
             width: '42px', height: '42px',
