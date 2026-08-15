@@ -44,7 +44,7 @@ const RESOLUTION_TYPES = [
 
 export default function TechnicianApp() {
   const [loggedInTech, setLoggedInTech] = useState<string | null>(null)
-  const [availableTechs, setAvailableTechs] = useState<string[]>(['Amit Singh', 'Suresh Pal', 'Vikram Jha', 'Ravi Kumar'])
+  const [availableTechs, setAvailableTechs] = useState<string[]>([])
   const [assignments, setAssignments] = useState<Assignment[]>([])
   const [doneJobs, setDoneJobs] = useState<DoneJob[]>([])
   const [activeTab, setActiveTab] = useState<'jobs' | 'done' | 'status'>('jobs')
