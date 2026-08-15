@@ -173,10 +173,10 @@ export default function DirectorDashboard() {
         </div>
 
         {/* Main Content Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px' }}>
 
           {/* Ticket Table */}
-          <div className="data-card">
+          <div className="data-card" style={{ gridColumn: 'span 4' }}>
             <div className="data-card-header">
               <div className="data-card-title">
                 <Inbox size={16} /> Active Complaints
@@ -276,7 +276,7 @@ export default function DirectorDashboard() {
           </div>
 
           {/* Right Sidebar */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', gridColumn: 'span 1' }}>
 
             {/* Status Breakdown */}
             <div className="data-card">
