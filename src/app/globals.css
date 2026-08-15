@@ -6,13 +6,13 @@
    ═══════════════════════════════════════════════════════════════ */
 
 @theme {
-  --color-bg-app: #1b2336;
-  --color-bg-sidebar: #1b2336;
-  --color-bg-card: #212b42;
-  --color-bg-card-alt: #26334d;
-  --color-bg-input: #182238;
+  --color-bg-app: #212b42;
+  --color-bg-sidebar: #212b42;
+  --color-bg-card: #283550;
+  --color-bg-card-alt: #2e3d58;
+  --color-bg-input: #1e2840;
   --color-bg-hover: #2d3b59;
-  --color-bg-surface: #192133;
+  --color-bg-surface: #212b42;
   --color-border: #344361;
   --color-border-light: #44567a;
   --color-accent: #0ea5e9;
