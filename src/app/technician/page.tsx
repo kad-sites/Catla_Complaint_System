@@ -207,10 +207,10 @@ export default function TechnicianApp() {
                   No active technicians found.
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {availableTechs.map(tech => (
-                    <button key={tech} onClick={() => setSelectedProfile(tech)} style={{ padding: '16px 20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '17px', display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer', transition: 'all 0.2s' }}>
-                      <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'color-mix(in srgb, var(--color-accent) 20%, transparent)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>{tech.split(' ').map(n => n[0]).join('')}</div>
+                    <button key={tech} onClick={() => setSelectedProfile(tech)} style={{ padding: '10px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'color-mix(in srgb, var(--color-accent) 20%, transparent)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px' }}>{tech.split(' ').map(n => n[0]).join('')}</div>
                       {tech}
                     </button>
                   ))}
@@ -218,13 +218,13 @@ export default function TechnicianApp() {
               )}
             </>
           ) : (
-            <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '24px', textAlign: 'left', marginTop: '32px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 20px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'color-mix(in srgb, var(--color-accent) 20%, transparent)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '15px', fontWeight: 'bold' }}>
+            <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'left', marginTop: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'color-mix(in srgb, var(--color-accent) 20%, transparent)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 'bold' }}>
                   {selectedProfile.split(' ').map(n => n[0]).join('')}
                 </div>
-                <div style={{ flex: 1, fontWeight: 600, fontSize: '17px' }}>{selectedProfile}</div>
-                <button type="button" onClick={() => { setSelectedProfile(null); setPassword(''); setLoginError(''); }} style={{ background: 'none', border: 'none', color: '#0ea5e9', fontSize: '14px', cursor: 'pointer', fontWeight: 600 }}>Change</button>
+                <div style={{ flex: 1, fontWeight: 600, fontSize: '15px' }}>{selectedProfile}</div>
+                <button type="button" onClick={() => { setSelectedProfile(null); setPassword(''); setLoginError(''); }} style={{ background: 'none', border: 'none', color: '#0ea5e9', fontSize: '13px', cursor: 'pointer', fontWeight: 600 }}>Change</button>
               </div>
 
               <div>
@@ -234,15 +234,15 @@ export default function TechnicianApp() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Enter your password" 
                   autoFocus
-                  style={{ width: '100%', padding: '18px 20px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', color: 'var(--color-text-primary)', fontSize: '16px', outline: 'none', transition: 'border-color 0.2s' }}
+                  style={{ width: '100%', padding: '12px 16px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: 'var(--color-text-primary)', fontSize: '15px', outline: 'none', transition: 'border-color 0.2s' }}
                   onFocus={e => e.target.style.borderColor = 'var(--color-accent)'}
                   onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
                 />
               </div>
 
-              {loginError && <div style={{ color: '#ef4444', fontSize: '14px', textAlign: 'center' }}>{loginError}</div>}
+              {loginError && <div style={{ color: '#ef4444', fontSize: '13px', textAlign: 'center' }}>{loginError}</div>}
 
-              <button type="submit" disabled={isVerifying || !password} style={{ width: '100%', padding: '18px', fontSize: '17px', fontWeight: 700, marginTop: '8px', opacity: (isVerifying || !password) ? 0.7 : 1, background: 'var(--color-accent)', color: 'white', borderRadius: '16px', border: 'none', cursor: 'pointer', boxShadow: '0 4px 12px rgba(14, 165, 233, 0.3)' }}>
+              <button type="submit" disabled={isVerifying || !password} style={{ width: '100%', padding: '12px', fontSize: '15px', fontWeight: 700, marginTop: '4px', opacity: (isVerifying || !password) ? 0.7 : 1, background: 'var(--color-accent)', color: 'white', borderRadius: '10px', border: 'none', cursor: 'pointer', boxShadow: '0 4px 12px rgba(14, 165, 233, 0.3)' }}>
                 {isVerifying ? 'Verifying...' : 'Login'}
               </button>
             </form>
