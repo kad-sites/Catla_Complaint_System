@@ -107,15 +107,17 @@ export default function LoginPage() {
               }}>Please sign in to your account</p>
             </div>
             
-            <img 
-              src="/resonova_logo.png" 
-              alt="Resonova Complaint Management System" 
-              style={{ 
-                height: '70px', 
-                objectFit: 'contain',
-                mixBlendMode: 'lighten' // This will merge the image's dark background with the card's background
-              }} 
-            />
+            <div style={{ height: '60px', overflow: 'hidden', display: 'flex', alignItems: 'flex-start' }}>
+              <img 
+                src="/resonova_logo.png" 
+                alt="Resonova Complaint Management System" 
+                style={{ 
+                  height: '85px', 
+                  objectFit: 'contain',
+                  mixBlendMode: 'lighten' // This will merge the image's dark background with the card's background
+                }} 
+              />
+            </div>
           </div>
 
           {error && (
