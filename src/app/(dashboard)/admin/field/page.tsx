@@ -49,11 +49,12 @@ export default function TechnicianManagerView() {
                   href={`/admin/field/${encodeURIComponent(tech)}`} 
                   style={{ padding: '16px', borderBottom: '1px solid var(--color-border)', background: 'var(--color-bg-hover)', display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+                    e.currentTarget.style.background = 'rgba(14, 165, 233, 0.08)'
                     const pill = e.currentTarget.querySelector('.dash-pill') as HTMLElement
                     if (pill) {
-                      pill.style.background = 'rgba(14, 165, 233, 0.25)'
-                      pill.style.borderColor = 'rgba(14, 165, 233, 0.5)'
+                      pill.style.background = '#0ea5e9'
+                      pill.style.borderColor = '#0ea5e9'
+                      pill.style.color = '#ffffff'
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -62,6 +63,7 @@ export default function TechnicianManagerView() {
                     if (pill) {
                       pill.style.background = 'rgba(14, 165, 233, 0.15)'
                       pill.style.borderColor = 'rgba(14, 165, 233, 0.3)'
+                      pill.style.color = '#0ea5e9'
                     }
                   }}
                 >
