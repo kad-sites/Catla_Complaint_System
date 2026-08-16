@@ -90,7 +90,7 @@ export default function TechnicianPerformanceView() {
         </Link>
         <div>
           <h1 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--color-text-primary)', margin: 0, lineHeight: 1.2 }}>{techName}</h1>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '12px', margin: '2px 0 0 0' }}>Performance & History Dashboard</p>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '12px', margin: '2px 0 0 0' }}>Performance & History Report</p>
         </div>
       </div>
 

@@ -75,7 +75,7 @@ export default function TechnicianManagerView() {
                       <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-text-primary)' }}>{tech}</div>
                       <div className="dash-pill" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(14, 165, 233, 0.15)', border: '1px solid rgba(14, 165, 233, 0.3)', color: '#0ea5e9', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, transition: 'all 0.2s' }}>
                         <History size={12} />
-                        Dashboard
+                        Report
                       </div>
                     </div>
                     <div style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>{techJobs.length} Active • {resolvedJobs.length} Done</div>
