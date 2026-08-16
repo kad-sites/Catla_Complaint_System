@@ -28,6 +28,7 @@ type DoneJob = Assignment & {
   resolvedAt: string
   resolution: string
   resolutionNotes: string
+  materialsUsed?: string
   photos: string[]
 }
 
@@ -59,6 +60,7 @@ export default function TechnicianApp() {
   const [photos, setPhotos] = useState<string[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [resolutionNotes, setResolutionNotes] = useState('')
+  const [materialsUsed, setMaterialsUsed] = useState('')
   const lastMutationTime = useRef<number>(0)
 
   useEffect(() => {
@@ -282,6 +284,9 @@ export default function TechnicianApp() {
     setPhotos([])
     setResolutionType('')
     setResolutionNotes('')
+    setMaterialsUsed('')
+    setPhotos([])
+    setActiveTab('jobs')
   }
 
   const closeJob = () => {
@@ -301,7 +306,10 @@ export default function TechnicianApp() {
     setStage('resolved')
     
     await updateComplaint(selectedTask.id, {
-      status: 'RESOLVED'
+      status: 'RESOLVED',
+      resolvedAt: new Date().toISOString(),
+      resolutionNotes,
+      materialsUsed
     })
 
     // Notify customer
@@ -310,9 +318,10 @@ export default function TechnicianApp() {
     setAssignments(prev => prev.filter(a => a.id !== selectedTask.id))
     setDoneJobs(prev => [{
       ...selectedTask,
-      resolvedAt: new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }),
+      resolvedAt: new Date().toISOString(),
       resolution: resolutionType,
       resolutionNotes: resolutionNotes,
+      materialsUsed: materialsUsed,
       photos: [], // Clear photos to prevent Base64 memory leak crashes on mobile WebView
     }, ...prev].slice(0, 10))
     
@@ -373,7 +382,7 @@ export default function TechnicianApp() {
 
           {stage === 'pending' ? (
             <div style={{ marginBottom: '16px' }}>
-              <button onClick={async () => { setStage('enroute'); await sendAssignmentSMS(selectedTask.phone || '+919999999999', selectedTask.id, selectedTask.customer, loggedInTech!); await updateComplaint(selectedTask.id, { status: 'WORKING' }); lastMutationTime.current = Date.now(); }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
+              <button onClick={async () => { setStage('enroute'); await sendAssignmentSMS(selectedTask.phone || '+919999999999', selectedTask.id, selectedTask.customer, loggedInTech!); await updateComplaint(selectedTask.id, { status: 'WORKING', acceptedAt: new Date().toISOString() }); lastMutationTime.current = Date.now(); }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
                 Accept Job
               </button>
             </div>
@@ -420,6 +429,10 @@ export default function TechnicianApp() {
               <div className="form-group" style={{ marginBottom: '16px' }}>
                 <label className="form-label">Resolution Notes</label>
                 <textarea className="form-textarea" rows={3} value={resolutionNotes} onChange={e => setResolutionNotes(e.target.value)} placeholder="Describe the fix applied..." style={{ resize: 'none' }} />
+              </div>
+              <div className="form-group" style={{ marginBottom: '16px' }}>
+                <label className="form-label">Materials Used (Optional)</label>
+                <input type="text" value={materialsUsed} onChange={e => setMaterialsUsed(e.target.value)} placeholder="e.g. 50m wire, 2 connectors" style={{ width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: 'var(--color-text-primary)', fontSize: '14px', outline: 'none', transition: 'border-color 0.2s' }} />
               </div>
               {stage === 'resolved' ? (
                 <div style={{ padding: '14px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', fontSize: '14px', fontWeight: 700, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>

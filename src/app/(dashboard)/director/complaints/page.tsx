@@ -27,6 +27,7 @@ type Complaint = {
   slaHours?: number
   assignedAt?: number
   techAccepted?: boolean
+  photoQualityScore?: number
   previousAssignments?: { tech: string, reassignedAt: number }[]
 }
 
@@ -193,6 +194,11 @@ export default function ComplaintsDirectory() {
         alert('Failed to delete complaint.');
       }
     }
+  }
+
+  const handleRatePhoto = async (ticketId: string, score: number) => {
+    setComplaints(prev => prev.map(t => t.id === ticketId ? { ...t, photoQualityScore: score } : t))
+    await updateComplaint(ticketId, { photoQualityScore: score })
   }
 
   const filtered = complaints
@@ -500,6 +506,29 @@ export default function ComplaintsDirectory() {
                                 />
                               </div>
                               <span style={{ fontSize: '10px', color: 'var(--color-text-muted)' }}>{ticket.slaPercent}%</span>
+                            </div>
+                          )}
+                          {ticket.status === 'RESOLVED' && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <span style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>Photo Quality:</span>
+                              <div style={{ display: 'flex', gap: '4px' }}>
+                                {[1, 2, 3, 4, 5].map(star => (
+                                  <button
+                                    key={star}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleRatePhoto(ticket.id, star);
+                                    }}
+                                    style={{
+                                      background: 'none', border: 'none', cursor: 'pointer',
+                                      padding: '0', fontSize: '16px',
+                                      color: (ticket.photoQualityScore || 0) >= star ? '#facc15' : 'rgba(255,255,255,0.1)'
+                                    }}
+                                  >
+                                    ★
+                                  </button>
+                                ))}
+                              </div>
                             </div>
                           )}
                         </div>
