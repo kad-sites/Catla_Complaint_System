@@ -270,8 +270,9 @@ export default function OperatorConsole() {
 
     // Send Telegram alert in background
     const isPremium = ['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(customer.category?.toUpperCase());
-    const premiumBadge = isPremium ? `\n👑 <b>[ VIP / PREMIUM CUSTOMER ]</b>` : '';
-    const telegramMessage = `🚨 <b>New Complaint Registered</b>${premiumBadge}\n\n<b>Ticket:</b> ${ticketNum}\n<b>Customer:</b> ${customer.name} (${customer.category})\nPhone: ${customer.phone}\nCategory: ${category}\nIssue: ${subType}\nSLA: ${formattedSla}`;
+    const catTitle = customer.category ? customer.category.charAt(0).toUpperCase() + customer.category.slice(1).toLowerCase() : '';
+    const premiumBadge = isPremium ? `\n👑 (${catTitle})` : '';
+    const telegramMessage = `🚨 <b>New Complaint Registered</b>${premiumBadge}\n\n<b>Ticket:</b> ${ticketNum}\n<b>Customer:</b> ${customer.name}\nPhone: ${customer.phone}\nCategory: ${category}\nIssue: ${subType}\nSLA: ${formattedSla}`;
     sendTelegramAlert(telegramMessage);
 
     setSuccess(ticketNum)
