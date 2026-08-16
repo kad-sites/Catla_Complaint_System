@@ -94,7 +94,6 @@ export default function TechnicianManagerView() {
             )
           })}
         </div>
-        </div>
       </div>
 
       {selectedTechHistory && (
