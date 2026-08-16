@@ -355,7 +355,7 @@ export default function TechnicianApp() {
 
           {stage === 'pending' ? (
             <div style={{ marginBottom: '16px' }}>
-              <button onClick={async () => { setStage('enroute'); sendAssignmentSMS(selectedTask.phone || '+919999999999', selectedTask.id, selectedTask.customer, loggedInTech!); await updateComplaint(selectedTask.id, { status: 'WORKING' }); lastMutationTime.current = Date.now(); }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
+              <button onClick={async () => { setStage('enroute'); await sendAssignmentSMS(selectedTask.phone || '+919999999999', selectedTask.id, selectedTask.customer, loggedInTech!); await updateComplaint(selectedTask.id, { status: 'WORKING' }); lastMutationTime.current = Date.now(); }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
                 Accept Job
               </button>
             </div>
@@ -513,7 +513,7 @@ export default function TechnicianApp() {
                   </button>
                   <button className="btn btn-primary" style={{ flex: 1, fontSize: '12px', background: '#10b981', color: '#fff', border: 'none' }} onClick={async () => {
                     setAssignments(prev => prev.map(t => t.id === task.id ? { ...t, status: 'WORKING' } : t))
-                    sendAssignmentSMS(task.phone || '+919999999999', task.id, task.customer, loggedInTech!)
+                    await sendAssignmentSMS(task.phone || '+919999999999', task.id, task.customer, loggedInTech!)
                     await updateComplaint(task.id, { status: 'WORKING' })
                     lastMutationTime.current = Date.now()
                   }}>
