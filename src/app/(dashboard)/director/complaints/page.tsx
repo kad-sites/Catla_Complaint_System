@@ -197,6 +197,7 @@ export default function ComplaintsDirectory() {
       if (statusFilter === 'ALL') return true;
       if (statusFilter === 'OPEN') return t.status === 'OPEN' || t.status === 'REJECTED';
       if (statusFilter === 'IN_PROGRESS') return t.status === 'IN_PROGRESS' || t.status === 'ASSIGNED' || t.status === 'WORKING';
+      if (statusFilter === 'PREMIUM_OPEN') return (t.status === 'OPEN' || t.status === 'REJECTED') && ['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(t.category?.toUpperCase() || '');
       return t.status === statusFilter;
     })
     .filter(t => {
@@ -208,12 +209,13 @@ export default function ComplaintsDirectory() {
         t.phone.includes(q)
     })
 
-  const counts = {
+  const counts: Record<string, number> = {
     ALL: complaints.length,
     OPEN: complaints.filter(t => t.status === 'OPEN' || t.status === 'REJECTED').length,
     IN_PROGRESS: complaints.filter(t => t.status === 'IN_PROGRESS' || t.status === 'ASSIGNED' || t.status === 'WORKING').length,
     RESOLVED: complaints.filter(t => t.status === 'RESOLVED').length,
     BREACHED: complaints.filter(t => t.status === 'BREACHED').length,
+    PREMIUM_OPEN: complaints.filter(t => (t.status === 'OPEN' || t.status === 'REJECTED') && ['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(t.category?.toUpperCase() || '')).length,
   }
 
   const renderIssue = (ticket: Complaint) => {
@@ -298,21 +300,30 @@ export default function ComplaintsDirectory() {
           </div>
 
           <div style={{ display: 'flex', gap: '6px' }}>
-            {(['ALL', 'OPEN', 'IN_PROGRESS', 'RESOLVED', 'BREACHED'] as const).map(s => (
+            {(['ALL', 'OPEN', 'IN_PROGRESS', 'RESOLVED', 'BREACHED', 'PREMIUM_OPEN'] as const).map(s => {
+              const isPremium = s === 'PREMIUM_OPEN';
+              const premiumStyle = isPremium ? {
+                background: statusFilter === s ? 'rgba(239, 68, 68, 0.9)' : 'rgba(239, 68, 68, 0.15)',
+                color: statusFilter === s ? '#fff' : '#ef4444',
+                borderColor: 'rgba(239, 68, 68, 0.5)',
+                animation: 'premium-glow 1.2s infinite ease-in-out'
+              } : {};
+
+              return (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
-                className={`btn btn-sm ${statusFilter === s ? 'btn-primary' : 'btn-secondary'}`}
-                style={{ fontSize: '11px', position: 'relative' }}
+                className={`btn btn-sm ${statusFilter === s && !isPremium ? 'btn-primary' : !isPremium ? 'btn-secondary' : ''}`}
+                style={{ fontSize: '11px', position: 'relative', ...premiumStyle }}
               >
-                {s === 'ALL' ? 'All' : s === 'IN_PROGRESS' ? 'Working' : s.charAt(0) + s.slice(1).toLowerCase()}
+                {s === 'ALL' ? 'All' : s === 'IN_PROGRESS' ? 'Working' : s === 'PREMIUM_OPEN' ? 'VIP Open' : s.charAt(0) + s.slice(1).toLowerCase()}
                 <span style={{
                   marginLeft: '6px', padding: '1px 6px', borderRadius: '10px',
                   background: statusFilter === s ? 'rgba(255,255,255,0.2)' : 'rgba(100,116,139,0.2)',
                   fontSize: '10px',
                 }}>{counts[s] ?? 0}</span>
               </button>
-            ))}
+            )})}
           </div>
         </div>
 
