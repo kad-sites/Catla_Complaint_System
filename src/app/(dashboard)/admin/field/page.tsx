@@ -45,20 +45,20 @@ export default function TechnicianManagerView() {
             
             return (
               <div key={techObj.id} style={{ background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', borderRadius: '12px', overflow: 'hidden' }}>
-                <div style={{ padding: '16px', borderBottom: '1px solid var(--color-border)', background: 'var(--color-bg-hover)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Link href={`/admin/field/${encodeURIComponent(tech)}`} style={{ padding: '16px', borderBottom: '1px solid var(--color-border)', background: 'var(--color-bg-hover)', display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', cursor: 'pointer' }}>
                   <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--color-accent)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
                     {tech.split(' ').map((n: string) => n[0]).join('')}
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
                       <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-text-primary)' }}>{tech}</div>
-                      <Link href={`/admin/field/${encodeURIComponent(tech)}`} style={{ background: 'transparent', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)', padding: '4px 8px', borderRadius: '6px', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', textDecoration: 'none' }}>
-                        <History size={12} /> History
-                      </Link>
+                      <div style={{ color: 'var(--color-text-muted)', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        History <History size={12} />
+                      </div>
                     </div>
                     <div style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>{techJobs.length} Active • {resolvedJobs.length} Done</div>
                   </div>
-                </div>
+                </Link>
                 
                 <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', minHeight: '300px' }}>
                   {techJobs.length === 0 ? (

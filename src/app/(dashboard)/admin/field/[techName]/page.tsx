@@ -4,9 +4,11 @@ import React, { useState, useEffect } from 'react'
 import { getComplaints } from '@/actions/complaintStore'
 import { ArrowLeft, CheckCircle2, Clock, Star, Zap, Package, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
-export default function TechnicianPerformanceView({ params }: { params: { techName: string } }) {
-  const techName = decodeURIComponent(params.techName)
+export default function TechnicianPerformanceView() {
+  const params = useParams()
+  const techName = params?.techName ? decodeURIComponent(params.techName as string) : 'Loading...'
   const [complaints, setComplaints] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -82,13 +84,13 @@ export default function TechnicianPerformanceView({ params }: { params: { techNa
 
   return (
     <div style={{ padding: '0 0 40px' }}>
-      <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <Link href="/admin/field" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', borderRadius: '50%', color: 'var(--color-text-primary)' }}>
-          <ArrowLeft size={20} />
+      <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <Link href="/admin/field" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', borderRadius: '50%', color: 'var(--color-text-primary)', textDecoration: 'none' }}>
+          <ArrowLeft size={18} />
         </Link>
         <div>
-          <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--color-text-primary)' }}>{techName}</h1>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '14px' }}>Performance & History Dashboard</p>
+          <h1 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--color-text-primary)', margin: 0, lineHeight: 1.2 }}>{techName}</h1>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '12px', margin: '2px 0 0 0' }}>Performance & History Dashboard</p>
         </div>
       </div>
 
