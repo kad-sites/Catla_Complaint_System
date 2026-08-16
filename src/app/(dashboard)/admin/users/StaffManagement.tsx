@@ -8,7 +8,7 @@ import {
 import { getComplaints } from '@/actions/complaintStore'
 import { getUsers, createUser, deleteUser, updateUser } from '@/actions/userStore'
 
-type StaffRole = 'Manager' | 'Sales Manager' | 'Operator' | 'Technician' | 'Administrator' | 'Fiber Technician' | 'Support Staff' | 'Telecaller' | 'Bill Collector' | string
+type StaffRole = 'Manager' | 'Sales Manager' | 'Operator' | 'Technician' | 'Administrator' | 'Fiber Technician' | 'Support Staff' | 'Telecaller' | 'Bill Collector' | 'Accountant' | string
 type StaffStatus = 'Active' | 'Inactive' | 'On Leave'
 
 type StaffMember = {
@@ -36,6 +36,7 @@ function RoleBadge({ role }: { role: StaffRole }) {
     'Support Staff': 'text-pink-400',
     Telecaller: 'text-orange-400',
     'Bill Collector': 'text-rose-400',
+    'Accountant': 'text-teal-400',
   }
   return (
     <span className={`text-xs font-medium ${styles[displayRole] || 'text-slate-400'}`}>
@@ -318,7 +319,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                 />
               </div>
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', flex: 1 }}>
-              {['All', 'Manager', 'Sales Manager', 'Technician', 'Fiber Technician', 'Operator', 'Telecaller', 'Bill Collector'].map(role => (
+              {['All', 'Manager', 'Sales Manager', 'Technician', 'Fiber Technician', 'Operator', 'Telecaller', 'Bill Collector', 'Accountant'].map(role => (
                   <button
                     key={role}
                     onClick={() => setRoleFilter(role)}
@@ -527,6 +528,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                     <option value="Support Staff">Support Staff</option>
                     <option value="Telecaller">Telecaller</option>
                     <option value="Bill Collector">Bill Collector</option>
+                    <option value="Accountant">Accountant</option>
                   </select>
                 </div>
                 <div className="form-group" style={{ opacity: 0.5 }}>
