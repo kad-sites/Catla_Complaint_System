@@ -396,9 +396,10 @@ export default function TechnicianApp() {
                   <span style={{ color: '#f59e0b', fontSize: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}><CloudOff size={10} /> Queued: {photos.length}</span>
                 </label>
                 <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
-                  <label style={{ width: '72px', height: '72px', flexShrink: 0, background: '#1a2236', border: '2px dashed #2d3a4f', borderRadius: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px', color: '#64748b', cursor: 'pointer', fontSize: '10px' }}>
-                    <input type="file" accept="image/*" onChange={handleCapture} style={{ display: 'none' }} />
-                    <Camera size={20} /> Capture
+                  <label style={{ position: 'relative', width: '72px', height: '72px', flexShrink: 0, background: '#1a2236', border: '2px dashed #2d3a4f', borderRadius: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px', color: '#64748b', cursor: 'pointer', fontSize: '10px', overflow: 'hidden' }}>
+                    <input type="file" accept="image/*" onChange={handleCapture} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer' }} />
+                    <Camera size={20} style={{ position: 'relative', zIndex: 1 }} />
+                    <span style={{ position: 'relative', zIndex: 1 }}>Capture</span>
                   </label>
                   {photos.map((dataUrl, i) => (
                     <div key={i} style={{ width: '72px', height: '72px', flexShrink: 0, borderRadius: '10px', position: 'relative', border: '1px solid #2d3a4f', overflow: 'hidden' }}>
