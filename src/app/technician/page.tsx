@@ -297,12 +297,11 @@ export default function TechnicianApp() {
       if (!proceedWithoutPhoto) return
     }
     
+    lastMutationTime.current = Date.now() + 60000;
     setStage('resolved')
     
     await updateComplaint(selectedTask.id, {
-      status: 'RESOLVED',
-      resolutionNotes,
-      resolvedAt: Date.now()
+      status: 'RESOLVED'
     })
 
     // Notify customer
@@ -316,6 +315,8 @@ export default function TechnicianApp() {
       resolutionNotes: resolutionNotes,
       photos: [], // Clear photos to prevent Base64 memory leak crashes on mobile WebView
     }, ...prev].slice(0, 10))
+    
+    lastMutationTime.current = Date.now();
     
     setTimeout(() => {
       closeJob()
