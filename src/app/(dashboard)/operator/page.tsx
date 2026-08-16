@@ -91,6 +91,7 @@ const MOCK_CUSTOMERS = [
   { id: 'c9', smartguardId: 'CID-6044', name: 'Utpal Das', phone: '+91-9854051520', address: 'C-7, Dum Dum Park, Kolkata', category: 'RESIDENTIAL', plan: '100 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c10', smartguardId: 'CID-6055', name: 'Zoheb Aziz', phone: '+91-9854051522', address: 'Rajarhat, New Town, Kolkata', category: 'RESIDENTIAL', plan: '300 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c11', smartguardId: 'CID-6066', name: 'Daviaan Aziz', phone: '+91-9365241910', address: 'Dummy Address, Sector 1, City', category: 'RESIDENTIAL', plan: '200 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
+  { id: 'c12', smartguardId: 'CID-VIP1', name: 'Dummy Govt Client (Test)', phone: '+91-9988776655', address: 'Secretariat, Block B', category: 'GOVERNMENT', plan: '1 Gbps Lease', status: 'ACTIVE', openTickets: 0 },
 ]
 
 
