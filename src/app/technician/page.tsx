@@ -372,15 +372,15 @@ export default function TechnicianApp() {
             </div>
           ) : (
             <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-              {['enroute', 'arrived', 'working'].map((s, i) => (
-                <button key={s} onClick={() => { const stages: ('enroute' | 'arrived' | 'working')[] = ['enroute', 'arrived', 'working']; const idx = stages.indexOf(stage as any); if (i <= idx + 1) setStage(stages[i]) }} className={`btn ${stage === s || (['enroute','arrived','working'].indexOf(stage) >= i) ? 'btn-primary' : 'btn-secondary'}`} style={{ flex: 1, fontSize: '11px', padding: '10px 8px' }}>
-                  {s === 'enroute' ? '🚗 En Route' : s === 'arrived' ? '📍 Arrived' : '🔧 Working'}
+              {['enroute', 'working'].map((s, i) => (
+                <button key={s} onClick={() => { const stages: ('enroute' | 'working')[] = ['enroute', 'working']; const idx = stages.indexOf(stage as any); if (i <= idx + 1) setStage(stages[i]) }} className={`btn ${stage === s || (['enroute','working'].indexOf(stage) >= i) ? 'btn-primary' : 'btn-secondary'}`} style={{ flex: 1, fontSize: '11px', padding: '10px 8px' }}>
+                  {s === 'enroute' ? '🚗 En Route' : '🔧 Working'}
                 </button>
               ))}
             </div>
           )}
 
-          {(stage === 'arrived' || stage === 'working' || stage === 'resolved') && (
+          {(stage === 'working' || stage === 'resolved') && (
             <div className="animate-fade-in" style={{ background: 'var(--color-bg-card)', border: '1px solid rgba(14, 165, 233, 0.2)', borderRadius: '12px', padding: '16px' }}>
               <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#0ea5e9', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}><Wrench size={16} /> Resolution Details</h3>
               <div className="form-group" style={{ marginBottom: '14px' }}>
@@ -396,10 +396,10 @@ export default function TechnicianApp() {
                   <span style={{ color: '#f59e0b', fontSize: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}><CloudOff size={10} /> Queued: {photos.length}</span>
                 </label>
                 <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
-                  <input ref={fileInputRef} type="file" accept="image/*" capture="environment" onChange={handleCapture} style={{ display: 'none' }} />
-                  <button type="button" onClick={() => fileInputRef.current?.click()} style={{ width: '72px', height: '72px', flexShrink: 0, background: '#1a2236', border: '2px dashed #2d3a4f', borderRadius: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px', color: '#64748b', cursor: 'pointer', fontSize: '10px' }}>
+                  <label style={{ width: '72px', height: '72px', flexShrink: 0, background: '#1a2236', border: '2px dashed #2d3a4f', borderRadius: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px', color: '#64748b', cursor: 'pointer', fontSize: '10px' }}>
+                    <input type="file" accept="image/*" onChange={handleCapture} style={{ display: 'none' }} />
                     <Camera size={20} /> Capture
-                  </button>
+                  </label>
                   {photos.map((dataUrl, i) => (
                     <div key={i} style={{ width: '72px', height: '72px', flexShrink: 0, borderRadius: '10px', position: 'relative', border: '1px solid #2d3a4f', overflow: 'hidden' }}>
                       <img src={dataUrl} alt={`Photo ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
