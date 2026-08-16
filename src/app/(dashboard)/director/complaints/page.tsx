@@ -302,11 +302,12 @@ export default function ComplaintsDirectory() {
           <div style={{ display: 'flex', gap: '6px' }}>
             {(['ALL', 'OPEN', 'IN_PROGRESS', 'RESOLVED', 'BREACHED', 'PREMIUM'] as const).map(s => {
               const isPremium = s === 'PREMIUM';
+              const pCount = counts['PREMIUM'] ?? 0;
               const premiumStyle = isPremium ? {
                 background: statusFilter === s ? 'rgba(239, 68, 68, 0.9)' : 'rgba(239, 68, 68, 0.15)',
                 color: statusFilter === s ? '#fff' : '#ef4444',
                 borderColor: 'rgba(239, 68, 68, 0.5)',
-                animation: 'premium-glow 2s infinite ease-in-out'
+                animation: pCount > 0 ? 'premium-glow 2s infinite ease-in-out' : 'none'
               } : {};
 
               return (
