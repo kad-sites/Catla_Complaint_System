@@ -59,6 +59,7 @@ export default function TechnicianApp() {
   const [photos, setPhotos] = useState<string[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [resolutionNotes, setResolutionNotes] = useState('')
+  const lastMutationTime = useRef<number>(0)
 
   useEffect(() => {
     const saved = localStorage.getItem('loggedInTech')
@@ -96,6 +97,7 @@ export default function TechnicianApp() {
     if (!loggedInTech) return
     let isMounted = true
     const loadFromStore = async () => {
+      if (Date.now() - lastMutationTime.current < 2000) return
       try {
         const stored = await getComplaints()
         if (isMounted) {
@@ -353,7 +355,7 @@ export default function TechnicianApp() {
 
           {stage === 'pending' ? (
             <div style={{ marginBottom: '16px' }}>
-              <button onClick={async () => { setStage('enroute'); sendAssignmentSMS(selectedTask.phone || '+919999999999', selectedTask.id, selectedTask.customer, loggedInTech!); await updateComplaint(selectedTask.id, { status: 'WORKING' }) }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
+              <button onClick={async () => { setStage('enroute'); sendAssignmentSMS(selectedTask.phone || '+919999999999', selectedTask.id, selectedTask.customer, loggedInTech!); await updateComplaint(selectedTask.id, { status: 'WORKING' }); lastMutationTime.current = Date.now(); }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
                 Accept Job
               </button>
             </div>
@@ -503,14 +505,17 @@ export default function TechnicianApp() {
               ) : (
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
                   <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)' }} onClick={async () => {
-                    await updateComplaint(task.id, { status: 'REJECTED', tech: 'Unassigned' })
                     setAssignments(prev => prev.filter(t => t.id !== task.id))
+                    await updateComplaint(task.id, { status: 'REJECTED', tech: 'Unassigned' })
+                    lastMutationTime.current = Date.now()
                   }}>
                     ❌ Reject
                   </button>
                   <button className="btn btn-primary" style={{ flex: 1, fontSize: '12px', background: '#10b981', color: '#fff', border: 'none' }} onClick={async () => {
                     setAssignments(prev => prev.map(t => t.id === task.id ? { ...t, status: 'WORKING' } : t))
+                    sendAssignmentSMS(task.phone || '+919999999999', task.id, task.customer, loggedInTech!)
                     await updateComplaint(task.id, { status: 'WORKING' })
+                    lastMutationTime.current = Date.now()
                   }}>
                     ✅ Accept
                   </button>
