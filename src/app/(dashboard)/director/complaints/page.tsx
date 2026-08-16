@@ -169,7 +169,9 @@ export default function ComplaintsDirectory() {
 
     if (res.success) {
       // Send Telegram alert in background
-      const telegramMessage = `👨‍🔧 <b>Task Assigned</b>\n\nTicket: ${ticket.id}\nCustomer: ${ticket.customer}\nAddress: ${ticket.address}\nAssigned To: <code>${techName}</code>\nStatus: ${newStatus}`;
+      const isPremium = ['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(ticket.category?.toUpperCase() || '');
+      const premiumBadge = isPremium ? `\n👑 <b>[ VIP / PREMIUM CUSTOMER ]</b>` : '';
+      const telegramMessage = `👨‍🔧 <b>Task Assigned</b>${premiumBadge}\n\nTicket: ${ticket.id}\nCustomer: ${ticket.customer} (${ticket.category})\nAddress: ${ticket.address}\nAssigned To: <code>${techName}</code>\nStatus: ${newStatus}`;
       sendTelegramAlert(telegramMessage);
 
       // Send Firebase Push Notification
