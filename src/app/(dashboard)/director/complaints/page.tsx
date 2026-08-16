@@ -146,7 +146,7 @@ export default function AllComplaints() {
 
     if (res.success) {
       // Send Telegram alert in background
-      const telegramMessage = `👨‍🔧 <b>Task Assigned</b>\n\n<b>Ticket:</b> ${ticket.id}\n<b>Customer:</b> ${ticket.customer}\n<b>Address:</b> ${ticket.address}\n<b>Assigned To:</b> ${techName}\n<b>Status:</b> ${newStatus}`;
+      const telegramMessage = `👨‍🔧 <b>Task Assigned</b>\n\nTicket: ${ticket.id}\nCustomer: ${ticket.customer}\nAddress: ${ticket.address}\nAssigned To: <code>${techName}</code>\nStatus: ${newStatus}`;
       sendTelegramAlert(telegramMessage);
 
       // Send Firebase Push Notification
