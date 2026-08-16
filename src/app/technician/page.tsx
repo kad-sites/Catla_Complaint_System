@@ -6,6 +6,7 @@ import {
   ChevronLeft, Phone, Wrench, CloudOff, Signal, ArrowRight
 } from 'lucide-react'
 import { sendAssignmentSMS } from '@/actions/sendAssignmentSMS'
+import { sendResolutionSMS } from '@/actions/sendTicketSMS'
 import { getComplaints, updateComplaint } from '@/actions/complaintStore'
 import { getUsers, verifyTechnicianPassword } from '@/actions/userStore'
 
@@ -285,6 +286,9 @@ export default function TechnicianApp() {
       resolutionNotes,
       resolvedAt: Date.now()
     })
+
+    // Notify customer
+    sendResolutionSMS(selectedTask.phone || '+919999999999', selectedTask.id, selectedTask.customer);
 
     setAssignments(prev => prev.filter(a => a.id !== selectedTask.id))
     setDoneJobs(prev => [{
