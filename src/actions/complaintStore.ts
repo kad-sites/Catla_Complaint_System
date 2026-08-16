@@ -1,6 +1,6 @@
 'use server'
 
-import { updateTelegramPinnedHeader } from './sendTelegramAlert'
+
 
 const SUPABASE_URL = process.env.SUPABASE_URL || ''
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
@@ -63,8 +63,7 @@ export async function saveComplaint(complaint: any) {
       return { success: false, error: errText }
     }
     
-    // Fire and forget pinned header update
-    updateTelegramPinnedHeader()
+
     
     return { success: true }
   } catch (error: any) {
@@ -90,8 +89,7 @@ export async function updateComplaint(id: string, updates: any) {
       return { success: false, error: errText }
     }
 
-    // Fire and forget pinned header update
-    updateTelegramPinnedHeader()
+
 
     return { success: true }
   } catch (error: any) {
@@ -116,8 +114,7 @@ export async function deleteComplaint(id: string) {
       return { success: false, error: errText }
     }
 
-    // Fire and forget pinned header update
-    updateTelegramPinnedHeader()
+
 
     return { success: true }
   } catch (error: any) {
