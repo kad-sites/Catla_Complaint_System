@@ -155,14 +155,22 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
       if (e.key === 'Escape') {
         setIsAddModalOpen(false)
         setEditingStaffId(null)
+        setExpandedId(null)
       }
     }
+
+    const handleClickOutside = () => {
+      setExpandedId(null)
+    }
+
     window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('click', handleClickOutside)
 
     return () => {
       isMounted = false
       clearInterval(timer)
       window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('click', handleClickOutside)
     }
   }, [])
 
@@ -356,7 +364,12 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                 <React.Fragment key={staff.id}>
                   <tr 
                     style={{ background: isExpanded ? 'var(--color-bg-hover)' : 'transparent', cursor: staff.role === 'Technician' ? 'pointer' : 'default', transition: 'background 0.2s' }}
-                    onClick={() => staff.role === 'Technician' && setExpandedId(isExpanded ? null : staff.id)}
+                    onClick={(e) => {
+                      if (staff.role === 'Technician') {
+                        e.stopPropagation()
+                        setExpandedId(isExpanded ? null : staff.id)
+                      }
+                    }}
                   >
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -392,12 +405,12 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                   <td style={{ textAlign: 'right' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
                       <button 
-                        onClick={() => handleEditClick(staff)}
+                        onClick={(e) => { e.stopPropagation(); handleEditClick(staff); }}
                         style={{ padding: '8px', background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', borderRadius: '8px' }} title="Edit Staff">
                         <Edit size={16} />
                       </button>
                       <button 
-                        onClick={() => handleDeleteStaff(staff.id, staff.phone)}
+                        onClick={(e) => { e.stopPropagation(); handleDeleteStaff(staff.id, staff.phone); }}
                         style={{ padding: '8px', background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', borderRadius: '8px' }} title="Remove Staff"
                       >
                         <Trash2 size={16} />
@@ -412,7 +425,7 @@ export default function StaffManagement({ initialStaffRaw, initialComplaints }: 
                 </tr>
                 
                 {isExpanded && staff.role === 'Technician' && (
-                  <tr style={{ background: 'rgba(14, 165, 233, 0.03)' }}>
+                  <tr style={{ background: 'rgba(14, 165, 233, 0.03)' }} onClick={(e) => e.stopPropagation()}>
                     <td colSpan={5} style={{ padding: '20px' }}>
                       <div style={{ background: 'var(--color-bg-app)', borderRadius: '8px', border: '1px solid var(--color-border)', padding: '16px' }}>
                         <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '12px' }}>Active Assignments & Flow</h4>
