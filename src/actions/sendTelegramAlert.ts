@@ -79,7 +79,7 @@ export async function sendTelegramAlert(message: string) {
       },
       body: JSON.stringify({
         chat_id: chatId,
-        text: message + '\n\n&#8203;\n&#8203;\n&#8203;',
+        text: message + '\n\n&#8203;\n&#8203;',
         parse_mode: 'HTML',
       }),
     });
