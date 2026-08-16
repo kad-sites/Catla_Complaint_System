@@ -496,8 +496,10 @@ export default function TechnicianApp() {
             </div>
           )}
 
-          {assignments.map(task => (
-            <div key={task.id} style={{
+          {assignments.map(task => {
+            const isPremiumCritical = task.priority === 'CRITICAL' && ['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(task.category?.toUpperCase() || '');
+            return (
+            <div key={task.id} className={isPremiumCritical ? 'premium-critical-card' : ''} style={{
               background: 'var(--color-bg-card)',
               border: '1px solid var(--color-border)',
               borderRadius: '12px',
@@ -507,11 +509,14 @@ export default function TechnicianApp() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '10px' }}>
                 <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#0ea5e9' }}>{task.id}</span>
                 <span className={`status-badge ${task.priority === 'CRITICAL' ? 'breached' : 'open'}`} style={{ fontSize: '10px' }}>
-                  {task.priority === 'CRITICAL' ? `🔴 SLA: ${task.sla} left` : `🟡 SLA: ${task.sla} left`}
+                  {task.priority === 'CRITICAL' ? `🚨 SLA: ${task.sla} left` : `⏳ SLA: ${task.sla} left`}
                 </span>
               </div>
 
-              <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '4px' }}>{task.customer}</div>
+              <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '4px', display: 'flex', alignItems: 'center' }}>
+                {task.customer}
+                {isPremiumCritical && <span className="premium-badge">★ VIP CRITICAL</span>}
+              </div>
               <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', marginBottom: '12px' }}>{task.issue}</div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#64748b', marginBottom: '6px' }}>
@@ -551,7 +556,7 @@ export default function TechnicianApp() {
                 </div>
               )}
             </div>
-          ))}
+          )})}
         </div>
       )}
 

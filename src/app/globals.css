@@ -782,3 +782,29 @@ select option {
   .app-sidebar { transform: translateX(-100%); }
   .app-main { margin-left: 0; }
 }
+
+@keyframes premium-glow {
+  0% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.4), inset 0 0 10px rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); }
+  50% { box-shadow: 0 0 25px rgba(239, 68, 68, 0.9), inset 0 0 25px rgba(239, 68, 68, 0.5); border-color: rgba(239, 68, 68, 1); }
+  100% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.4), inset 0 0 10px rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); }
+}
+
+.premium-critical-card {
+  animation: premium-glow 1.2s infinite ease-in-out !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.premium-badge {
+  background: linear-gradient(90deg, #ef4444, #f97316);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-left: 8px;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+  animation: premium-glow 1.2s infinite ease-in-out;
+}
+
