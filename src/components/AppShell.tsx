@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, Headphones, Wrench, BarChart3,
-  Users, Settings, LogOut, Bell, Search, ChevronDown, MapPin, ListTodo, Activity
+  Users, Settings, LogOut, Bell, Search, ChevronDown, MapPin, ListTodo, Activity, UserPlus
 } from 'lucide-react'
 
 import { getComplaints } from '@/actions/complaintStore'
@@ -24,6 +24,7 @@ const NAV_ITEMS_TEMPLATE = [
   { label: 'ADMINISTRATION', items: [
     { href: '/admin/users', icon: Users, label: 'Staff Management', badge: '' },
     { href: '/admin/settings', icon: Settings, label: 'Settings', badge: '' },
+    { href: '/admin/customers', icon: UserPlus, label: 'Add Customer', badge: '' },
   ]},
 ]
 
@@ -63,18 +64,23 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
   }, [])
 
   const NAV_ITEMS = NAV_ITEMS_TEMPLATE.map(section => {
-    if (section.label === 'COMPLAINTS') {
-      return {
-        ...section,
-        items: section.items.map(item => {
-          if (item.label === 'All Complaints') {
-            return { ...item, badge: complaintCount > 0 ? complaintCount.toString() : '' }
-          }
-          return item
-        })
-      }
+    let newItems = section.items;
+    
+    // Filter out Add Customer if not admin
+    if (section.label === 'ADMINISTRATION') {
+      newItems = newItems.filter(item => !(item.label === 'Add Customer' && userRole !== 'admin'));
     }
-    return section
+
+    if (section.label === 'COMPLAINTS') {
+      newItems = newItems.map(item => {
+        if (item.label === 'All Complaints') {
+          return { ...item, badge: complaintCount > 0 ? complaintCount.toString() : '' }
+        }
+        return item
+      });
+    }
+    
+    return { ...section, items: newItems };
   })
 
   return (

@@ -95,10 +95,24 @@ const MOCK_CUSTOMERS = [
 
 
 export default function OperatorConsole() {
+  const [allCustomers, setAllCustomers] = useState<typeof MOCK_CUSTOMERS>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<typeof MOCK_CUSTOMERS>([])
   const [searching, setSearching] = useState(false)
   const [customer, setCustomer] = useState<(typeof MOCK_CUSTOMERS)[0] | null>(null)
+  
+  useEffect(() => {
+    try {
+      const custom = localStorage.getItem('custom_customers')
+      if (custom) {
+        setAllCustomers([...MOCK_CUSTOMERS, ...JSON.parse(custom)])
+      } else {
+        setAllCustomers(MOCK_CUSTOMERS)
+      }
+    } catch {
+      setAllCustomers(MOCK_CUSTOMERS)
+    }
+  }, [])
   
   // Keyboard navigation
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -144,7 +158,7 @@ export default function OperatorConsole() {
     if (searchTimeout.current) clearTimeout(searchTimeout.current)
     searchTimeout.current = setTimeout(() => {
       const q = searchQuery.toLowerCase()
-      const results = MOCK_CUSTOMERS.filter(c =>
+      const results = allCustomers.filter(c =>
         c.name.toLowerCase().includes(q) ||
         c.phone.includes(q) ||
         c.smartguardId.toLowerCase().includes(q)
