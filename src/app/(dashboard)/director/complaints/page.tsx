@@ -8,7 +8,6 @@ import {
 import { getComplaints, updateComplaint, deleteComplaint } from '@/actions/complaintStore'
 import { getUsers } from '@/actions/userStore'
 import { sendTelegramAlert } from '@/actions/sendTelegramAlert'
-import { sendAssignmentSMS } from '@/actions/sendTicketSMS'
 
 type Complaint = {
   id: string
@@ -152,9 +151,6 @@ export default function AllComplaints() {
       // Send Firebase Push Notification
       const pushMessage = `Ticket ${ticket.id} assigned to ${techName} at ${ticket.address}`;
       import('@/actions/sendPushNotification').then(m => m.sendPushNotification(ticket.id, pushMessage));
-
-      // Send SMS to customer
-      sendAssignmentSMS(ticket.phone || '+919999999999', ticket.id, ticket.customer, techName);
     } else {
       console.error('Failed to assign in DB:', res.error);
     }

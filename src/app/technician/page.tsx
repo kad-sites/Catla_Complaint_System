@@ -5,8 +5,7 @@ import {
   MapPin, Navigation, Clock, Camera, CheckCircle2,
   ChevronLeft, Phone, Wrench, CloudOff, Signal, ArrowRight
 } from 'lucide-react'
-import { sendAssignmentSMS } from '@/actions/sendAssignmentSMS'
-import { sendResolutionSMS } from '@/actions/sendTicketSMS'
+import { sendAssignmentSMS, sendResolutionSMS } from '@/actions/sendTicketSMS'
 import { getComplaints, updateComplaint } from '@/actions/complaintStore'
 import { getUsers, verifyTechnicianPassword } from '@/actions/userStore'
 
@@ -354,7 +353,7 @@ export default function TechnicianApp() {
 
           {stage === 'pending' ? (
             <div style={{ marginBottom: '16px' }}>
-              <button onClick={async () => { setStage('enroute'); sendAssignmentSMS(selectedTask.phone, selectedTask.id, loggedInTech!, selectedTask.sla); await updateComplaint(selectedTask.id, { status: 'WORKING' }) }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
+              <button onClick={async () => { setStage('enroute'); sendAssignmentSMS(selectedTask.phone || '+919999999999', selectedTask.id, selectedTask.customer, loggedInTech!); await updateComplaint(selectedTask.id, { status: 'WORKING' }) }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
                 Accept Job
               </button>
             </div>
