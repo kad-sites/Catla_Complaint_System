@@ -45,14 +45,33 @@ export default function TechnicianManagerView() {
             
             return (
               <div key={techObj.id} style={{ background: 'var(--color-bg-surface)', border: '1px solid var(--color-border)', borderRadius: '12px', overflow: 'hidden' }}>
-                <Link href={`/admin/field/${encodeURIComponent(tech)}`} style={{ padding: '16px', borderBottom: '1px solid var(--color-border)', background: 'var(--color-bg-hover)', display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', cursor: 'pointer' }}>
+                <Link 
+                  href={`/admin/field/${encodeURIComponent(tech)}`} 
+                  style={{ padding: '16px', borderBottom: '1px solid var(--color-border)', background: 'var(--color-bg-hover)', display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+                    const pill = e.currentTarget.querySelector('.dash-pill') as HTMLElement
+                    if (pill) {
+                      pill.style.background = 'rgba(14, 165, 233, 0.25)'
+                      pill.style.borderColor = 'rgba(14, 165, 233, 0.5)'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'var(--color-bg-hover)'
+                    const pill = e.currentTarget.querySelector('.dash-pill') as HTMLElement
+                    if (pill) {
+                      pill.style.background = 'rgba(14, 165, 233, 0.15)'
+                      pill.style.borderColor = 'rgba(14, 165, 233, 0.3)'
+                    }
+                  }}
+                >
                   <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--color-accent)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
                     {tech.split(' ').map((n: string) => n[0]).join('')}
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
                       <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-text-primary)' }}>{tech}</div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(14, 165, 233, 0.15)', border: '1px solid rgba(14, 165, 233, 0.3)', color: '#0ea5e9', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, transition: 'all 0.2s' }}>
+                      <div className="dash-pill" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(14, 165, 233, 0.15)', border: '1px solid rgba(14, 165, 233, 0.3)', color: '#0ea5e9', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, transition: 'all 0.2s' }}>
                         <History size={12} />
                         Dashboard
                       </div>
