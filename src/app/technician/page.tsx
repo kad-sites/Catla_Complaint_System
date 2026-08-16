@@ -527,9 +527,9 @@ export default function TechnicianApp() {
               </div>
 
               {task.status === 'WORKING' ? (
-                <div style={{ padding: '10px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '8px', color: '#10b981', textAlign: 'center', fontWeight: 600, fontSize: '12px', marginBottom: '0px' }}>
-                  ✅ Job Accepted
-                </div>
+                <button className="btn btn-primary" style={{ width: '100%', fontSize: '14px', background: '#0ea5e9', color: '#fff', border: 'none', padding: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }} onClick={() => openJob(task)}>
+                  Proceed <ArrowRight size={16} />
+                </button>
               ) : (
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '0px' }}>
                   <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)' }} onClick={async () => {
