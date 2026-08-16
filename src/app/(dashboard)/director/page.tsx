@@ -117,7 +117,7 @@ export default function DirectorDashboard() {
     <>
       <div className="animate-fade-in">
         {/* Page Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div>
             <h1 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px' }}>
               Dashboard
@@ -163,29 +163,29 @@ export default function DirectorDashboard() {
         </div>
 
         {/* KPI Row */}
-        <div className="kpi-grid" style={{ marginBottom: '24px' }}>
+        <div className="kpi-grid" style={{ marginBottom: '16px' }}>
           <div className="kpi-card blue">
-            <div className="kpi-card-icon"><Inbox size={24} /></div>
+            <div className="kpi-card-icon"><Inbox size={20} /></div>
             <div className="kpi-card-label">Today&apos;s Received</div>
             <div className="kpi-card-value">{complaints.length}</div>
           </div>
           <div className="kpi-card yellow">
-            <div className="kpi-card-icon"><Clock size={24} /></div>
+            <div className="kpi-card-icon"><Clock size={20} /></div>
             <div className="kpi-card-label">In Progress</div>
             <div className="kpi-card-value">{complaints.filter(c => c.status === 'IN_PROGRESS' || c.status === 'ASSIGNED').length}</div>
           </div>
           <div className="kpi-card purple">
-            <div className="kpi-card-icon"><Users size={24} /></div>
+            <div className="kpi-card-icon"><Users size={20} /></div>
             <div className="kpi-card-label">Pending Assignment</div>
             <div className="kpi-card-value">{complaints.filter(c => c.status === 'OPEN').length}</div>
           </div>
           <div className="kpi-card green">
-            <div className="kpi-card-icon"><CheckCircle2 size={24} /></div>
+            <div className="kpi-card-icon"><CheckCircle2 size={20} /></div>
             <div className="kpi-card-label">Resolved Today</div>
             <div className="kpi-card-value">{complaints.filter(c => c.status === 'RESOLVED').length}</div>
           </div>
           <div className="kpi-card red">
-            <div className="kpi-card-icon"><AlertTriangle size={24} /></div>
+            <div className="kpi-card-icon"><AlertTriangle size={20} /></div>
             <div className="kpi-card-label">SLA Breached</div>
             <div className="kpi-card-value">{complaints.filter(c => c.status === 'BREACHED').length}</div>
             <span className="kpi-card-change up" style={{ color: 'var(--color-danger)' }}>

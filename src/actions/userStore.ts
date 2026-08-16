@@ -44,7 +44,7 @@ export async function createUser(userData: any, isSync = false) {
           phone: userData.phone,
           role: userData.role,
           active: userData.active ?? true,
-          passwordHash: 'catla123' // default password since it's required
+          passwordHash: '123' // default password since it's required
         }),
       }
     )

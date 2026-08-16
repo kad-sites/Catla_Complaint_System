@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.catlabroadband.complaints',
-  appName: 'Catla Technician',
+  appName: 'NetDesk',
   webDir: 'out',
   server: {
     androidScheme: 'https'
