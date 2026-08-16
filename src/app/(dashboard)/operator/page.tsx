@@ -93,12 +93,6 @@ const MOCK_CUSTOMERS = [
   { id: 'c11', smartguardId: 'CID-6066', name: 'Daviaan Aziz', phone: '+91-9365241910', address: 'Dummy Address, Sector 1, City', category: 'RESIDENTIAL', plan: '200 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
 ]
 
-const SLA_HOURS: Record<string, Record<string, number>> = {
-  CRITICAL: { RESIDENTIAL: 4, COMMERCIAL: 2, ENTERPRISE: 1, GOVERNMENT: 2 },
-  HIGH:     { RESIDENTIAL: 8, COMMERCIAL: 4, ENTERPRISE: 2, GOVERNMENT: 4 },
-  MEDIUM:   { RESIDENTIAL: 24, COMMERCIAL: 12, ENTERPRISE: 8, GOVERNMENT: 12 },
-  LOW:      { RESIDENTIAL: 48, COMMERCIAL: 24, ENTERPRISE: 12, GOVERNMENT: 24 },
-}
 
 export default function OperatorConsole() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -133,7 +127,7 @@ export default function OperatorConsole() {
   const [description, setDescription] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState('')
-  const [testSla, setTestSla] = useState('')
+  const [selectedSla, setSelectedSla] = useState('')
 
   // Reset snippet index when subtype changes
   useEffect(() => {
@@ -197,15 +191,11 @@ export default function OperatorConsole() {
     }
   }
 
-  const baseSlaHours = priority && customer
-    ? SLA_HOURS[priority]?.[customer.category] || 24
-    : 0
-
-  const slaHours = testSla ? parseInt(testSla) / 60 : baseSlaHours
+  const slaHours = selectedSla ? parseInt(selectedSla) : 0
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!customer || !category || !subType || !description) return
+    if (!customer || !category || !subType || !description || !selectedSla) return
     setSubmitting(true)
     
     // Simulate slight delay for registering
@@ -549,15 +539,16 @@ export default function OperatorConsole() {
                     <div>
                       <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>SLA Deadline</div>
                       <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-accent)' }}>
-                        {testSla ? `${testSla} Mins (Test)` : `${slaHours} Hours`}
+                        {selectedSla ? `${selectedSla} Hours` : `Select SLA`}
                       </div>
                     </div>
                     <div>
-                      <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Test Override</div>
+                      <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>SLA Duration *</div>
                       <select 
                         ref={testSlaSelectRef}
-                        value={testSla} 
-                        onChange={e => setTestSla(e.target.value)}
+                        value={selectedSla} 
+                        onChange={e => setSelectedSla(e.target.value)}
+                        required
                         onKeyDown={e => {
                           if (e.key === 'Enter') {
                             e.preventDefault()
@@ -567,11 +558,15 @@ export default function OperatorConsole() {
                         className="form-input" 
                         style={{ padding: '2px 8px', fontSize: '12px', height: 'auto', background: 'transparent' }}
                       >
-                        <option value="">Default SLA</option>
-                        <option value="1">1 Min SLA</option>
-                        <option value="2">2 Min SLA</option>
-                        <option value="5">5 Min SLA</option>
-                        <option value="10">10 Min SLA</option>
+                        <option value="">Select SLA</option>
+                        <option value="1">1 Hour</option>
+                        <option value="2">2 Hours</option>
+                        <option value="4">4 Hours</option>
+                        <option value="6">6 Hours</option>
+                        <option value="8">8 Hours</option>
+                        <option value="12">12 Hours</option>
+                        <option value="24">24 Hours</option>
+                        <option value="48">48 Hours</option>
                       </select>
                     </div>
                     <div>
