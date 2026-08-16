@@ -180,11 +180,40 @@ export default function OperatorConsole() {
     }
   }
 
+  // Dynamically assign priority based on Customer Type and Issue Category
+  useEffect(() => {
+    if (!category) return;
+
+    let newPriority = 'LOW';
+    const cat = CATEGORIES.find(c => c.name === category);
+    
+    if (!customer) {
+      if (cat) newPriority = cat.priority;
+    } else if (customer.category === 'RESIDENTIAL') {
+      if (category === 'Fiber / Cable Damage' || category === 'No Internet') {
+        newPriority = 'CRITICAL';
+      } else if (category === 'ONT / Hardware Fault') {
+        newPriority = 'MEDIUM';
+      } else {
+        newPriority = 'LOW'; // Slow Speed, WiFi Issue, Billing
+      }
+    } else if (['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(customer.category)) {
+      // Premium Customers
+      if (category === 'Fiber / Cable Damage' || category === 'No Internet') {
+        newPriority = 'CRITICAL';
+      } else if (category === 'ONT / Hardware Fault' || category === 'Slow Speed') {
+        newPriority = 'HIGH';
+      } else {
+        newPriority = 'MEDIUM'; // WiFi Issue, Billing
+      }
+    }
+    
+    setPriority(newPriority);
+  }, [category, customer]);
+
   const handleCategoryChange = (val: string) => {
     setCategory(val)
     setSubType('')
-    const cat = CATEGORIES.find(c => c.name === val)
-    if (cat) setPriority(cat.priority)
     // Auto-advance to sub-type
     if (val) {
       setTimeout(() => subTypeSelectRef.current?.focus(), 50)
