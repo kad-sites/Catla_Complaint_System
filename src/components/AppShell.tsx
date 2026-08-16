@@ -81,11 +81,16 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
     <div className="app-layout">
       {/* Sidebar */}
       <aside className="app-sidebar">
-        <div className="sidebar-brand" style={{ padding: '16px 0', display: 'flex', justifyContent: 'center' }}>
+        <div className="sidebar-brand" style={{ padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '12px' }}>
+          <img 
+            src="/dashboard-logo.png" 
+            alt="Support"
+            style={{ width: '40px', height: '40px', objectFit: 'contain' }}
+          />
           <img 
             src="/resonova_logo_horizontal.png" 
             alt="Resonova Complaint Management System" 
-            style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }} 
+            style={{ maxWidth: '120px', height: 'auto', objectFit: 'contain' }} 
           />
         </div>
 

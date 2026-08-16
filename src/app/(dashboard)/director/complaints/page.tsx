@@ -1,9 +1,10 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   Search, Filter, Clock, AlertTriangle, CheckCircle2,
-  ChevronDown, Eye, MoreHorizontal, MapPin, Phone, ArrowUpDown, X
+  ChevronDown, Eye, MoreHorizontal, MapPin, Phone, ArrowUpDown, X, ArrowRight
 } from 'lucide-react'
 import { getComplaints, updateComplaint, deleteComplaint } from '@/actions/complaintStore'
 import { getUsers } from '@/actions/userStore'
@@ -60,16 +61,39 @@ function CategoryBadge({ category }: { category: string }) {
   return <span className={`category-badge ${map[category] || 'residential'}`}>{category}</span>
 }
 
-export default function AllComplaints() {
+export default function ComplaintsDirectory() {
+  const router = useRouter()
   const [complaints, setComplaints] = useState<Complaint[]>(STATIC_COMPLAINTS)
   const [technicians, setTechnicians] = useState<any[]>([])
   const [statusFilter, setStatusFilter] = useState('ALL')
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [reassigningId, setReassigningId] = useState<string | null>(null)
+  const [reassignState, setReassignState] = useState<{ id: string, tech: string, reason: string } | null>(null)
   const [now, setNow] = useState(Date.now())
   const [userRole, setUserRole] = useState<string | null>(null)
   const lastMutationTime = React.useRef<number>(0)
+
+  // Press Enter anywhere (outside inputs) to open New Complaint
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setReassignState(null)
+        setExpandedId(null)
+        return
+      }
+
+      const tag = (e.target as HTMLElement)?.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+      
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        router.push('/operator')
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [router])
 
   // Timer for dynamic timelapse and role check
   useEffect(() => {
@@ -103,31 +127,30 @@ export default function AllComplaints() {
     }
   }, [])
 
-  const handleAssign = async (ticketId: string, techName: string) => {
+  const handleAssign = async (ticketId: string, techName: string, reason?: string) => {
     const ticket = complaints.find(t => t.id === ticketId)
     if (!ticket) return
 
     // Lock out incoming polls from overwriting our optimistic state
     lastMutationTime.current = Date.now() + 60000 
     const nowTime = Date.now()
-    
     const isReassignment = ticket.tech && ticket.tech !== 'Unassigned' && ticket.tech !== techName;
-    const newPrevious = ticket.previousAssignments ? [...ticket.previousAssignments] : [];
     
-    if (isReassignment && ticket.techAccepted) {
-      newPrevious.push({ tech: ticket.tech, reassignedAt: nowTime })
+    let newIssue = ticket.issue;
+    if (isReassignment) {
+      newIssue = `[REASSIGNED: ${reason || 'Unknown'} | ${ticket.tech}] ` + newIssue;
     }
-    
+
     // Optimistic update
-    const newStatus = (ticket.status === 'OPEN' || ticket.status === 'REJECTED') ? 'ASSIGNED' : ticket.status;
+    const newStatus = (ticket.status === 'OPEN' || ticket.status === 'REJECTED' || isReassignment) ? 'ASSIGNED' : ticket.status;
     const updatedComplaints = complaints.map(t => 
       t.id === ticketId ? { 
         ...t, 
         tech: techName, 
         status: newStatus, 
+        issue: newIssue,
         assignedAt: nowTime, 
-        techAccepted: false,
-        previousAssignments: newPrevious
+        techAccepted: false
       } : t
     )
     setComplaints(updatedComplaints)
@@ -136,7 +159,8 @@ export default function AllComplaints() {
     // Ensure we only send fields that exist in the Supabase UIComplaint table
     const res = await updateComplaint(ticketId, {
       tech: techName,
-      status: newStatus
+      status: newStatus,
+      issue: newIssue
     })
 
     // Release the lock by setting it to the exact time the mutation finished.
@@ -192,6 +216,37 @@ export default function AllComplaints() {
     BREACHED: complaints.filter(t => t.status === 'BREACHED').length,
   }
 
+  const renderIssue = (ticket: Complaint) => {
+    const issueStr = ticket.issue || '';
+    const cleanIssue = issueStr.replace(/\[REASSIGNED:.*?\]/g, '').trim();
+    // Matches [REASSIGNED: reason] or [REASSIGNED: reason | oldTech]
+    const reassignMatches = [...issueStr.matchAll(/\[REASSIGNED:\s*(.*?)(?:\s*\|\s*(.*?))?\]/g)];
+
+    if (reassignMatches.length === 0) return cleanIssue;
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <div>{cleanIssue}</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {reassignMatches.slice(0, 1).map((match, i) => {
+            const reason = match[1];
+            const oldTech = match[2] || 'Unknown Tech';
+            const nextTech = ticket.tech;
+
+            return (
+              <div key={i} style={{ fontSize: '10px', background: 'rgba(239, 68, 68, 0.1)', borderLeft: '2px solid #ef4444', padding: '4px 6px', borderRadius: '0 4px 4px 0' }}>
+                <div style={{ color: '#ef4444', fontWeight: 600, marginBottom: '2px' }}>[Reassigned: {reason}]</div>
+                <div style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  {oldTech} <ArrowRight size={10} /> {nextTech}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="animate-fade-in">
@@ -204,6 +259,27 @@ export default function AllComplaints() {
             <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>
               {complaints.length} total · {counts.OPEN} open · {counts.BREACHED} breached
             </p>
+          </div>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <style>{`
+              @keyframes blink-border {
+                0% { box-shadow: 0 0 5px #0ea5e9; border-color: #0ea5e9; }
+                50% { box-shadow: 0 0 15px #38bdf8, inset 0 0 5px #38bdf8; border-color: #38bdf8; background-color: rgba(2, 132, 199, 0.9); }
+                100% { box-shadow: 0 0 5px #0ea5e9; border-color: #0ea5e9; }
+              }
+              .blink-button {
+                animation: blink-border 1.6s infinite ease-in-out;
+                border: 2px solid #0ea5e9 !important;
+                font-weight: 600 !important;
+                transition: none;
+              }
+            `}</style>
+            <button 
+              className="btn btn-primary btn-sm blink-button"
+              onClick={() => router.push('/operator')}
+            >
+              + New Complaint
+            </button>
           </div>
         </div>
 
@@ -278,7 +354,7 @@ export default function AllComplaints() {
                       <div style={{ fontWeight: 600 }}>{ticket.customer}</div>
                       <CategoryBadge category={ticket.category} />
                     </td>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-text-secondary)', maxWidth: '200px' }}>{ticket.issue}</td>
+                    <td style={{ padding: '12px 16px', color: 'var(--color-text-secondary)', maxWidth: '200px' }}>{renderIssue(ticket)}</td>
                     <td style={{ padding: '12px 16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <PriorityDot priority={ticket.priority} />
@@ -318,15 +394,13 @@ export default function AllComplaints() {
                       })()}
                     </td>
                     <td style={{ padding: '12px 16px' }}>
-                      {(ticket.tech === 'Unassigned' || reassigningId === ticket.id) ? (
+                      {ticket.tech === 'Unassigned' ? (
                         <select
                           onClick={e => e.stopPropagation()}
                           onChange={e => handleAssign(ticket.id, e.target.value)}
-                          onBlur={() => setReassigningId(null)}
                           className="form-input"
                           style={{ padding: '4px 8px', fontSize: '11px', height: 'auto', minWidth: '110px' }}
-                          value={ticket.tech !== 'Unassigned' ? ticket.tech : ""}
-                          autoFocus={reassigningId === ticket.id}
+                          value=""
                         >
                           <option value="" disabled>Assign Tech...</option>
                           {technicians.length === 0 && <option disabled>Loading...</option>}
@@ -337,7 +411,7 @@ export default function AllComplaints() {
                       ) : (
                         <div 
                           style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', padding: '4px', borderRadius: '4px', margin: '-4px' }}
-                          onClick={e => { e.stopPropagation(); setReassigningId(ticket.id) }}
+                          onClick={e => { e.stopPropagation(); setReassignState({ id: ticket.id, tech: '', reason: '' }) }}
                           title="Click to reassign"
                           onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
                           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
@@ -429,6 +503,88 @@ export default function AllComplaints() {
           )}
         </div>
       </div>
+
+      {/* Reassign Modal */}
+      {reassignState && (
+        <div 
+          style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            zIndex: 9999
+          }}
+          onClick={() => setReassignState(null)}
+        >
+          <div 
+            style={{
+              background: '#0f172a', padding: '24px', borderRadius: '12px',
+              border: '1px solid rgba(255,255,255,0.1)', width: '400px', maxWidth: '90%',
+              display: 'flex', flexDirection: 'column', gap: '16px',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <h3 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--color-text-primary)', margin: 0 }}>
+              Reassign Technician
+            </h3>
+            <p style={{ fontSize: '13px', color: 'var(--color-text-muted)', margin: '-8px 0 0 0' }}>
+              Select a new technician and provide a reason.
+            </p>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>New Technician</label>
+              <select 
+                className="form-input" 
+                value={reassignState.tech}
+                onChange={e => setReassignState({ ...reassignState, tech: e.target.value })}
+              >
+                <option value="" disabled>Select New Tech...</option>
+                {technicians.filter(t => t.name !== complaints.find(c => c.id === reassignState.id)?.tech).map(tech => (
+                  <option key={tech.id} value={tech.name}>{tech.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Reason for Change</label>
+              <select 
+                className="form-input" 
+                value={reassignState.reason}
+                onChange={e => setReassignState({ ...reassignState, reason: e.target.value })}
+              >
+                <option value="" disabled>Select Reason...</option>
+                <option value="Technician Unavailable">Technician Unavailable</option>
+                <option value="Customer Request">Customer Request</option>
+                <option value="Skill Mismatch">Skill Mismatch</option>
+                <option value="Delay in Arrival">Delay in Arrival</option>
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+              <button 
+                className="btn btn-secondary" 
+                style={{ flex: 1 }} 
+                onClick={() => setReassignState(null)}
+              >
+                Cancel
+              </button>
+              <button 
+                className="btn btn-primary" 
+                style={{ flex: 1 }} 
+                onClick={() => {
+                  if (reassignState.tech && reassignState.reason) {
+                    handleAssign(reassignState.id, reassignState.tech, reassignState.reason);
+                    setReassignState(null);
+                  }
+                }}
+                disabled={!reassignState.tech || !reassignState.reason}
+              >
+                Confirm Reassignment
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

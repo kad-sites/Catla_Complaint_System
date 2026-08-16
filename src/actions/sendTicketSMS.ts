@@ -42,6 +42,23 @@ export async function sendAssignmentSMS(phone: string, ticketNum: string, name: 
   }
 }
 
+export async function sendReassignmentSMS(phone: string, ticketNum: string, name: string, techName: string) {
+  try {
+    if (!accountSid || !authToken || !twilioNumber) return { success: false, error: 'Twilio not configured' }
+    
+    const message = await client.messages.create({
+      body: `Hi ${name}, we have reassigned your ticket no: *${ticketNum}* to ${techName} due to a technical issue, Our technician will reach out to you shortly. We apologize for the inconvenience.`,
+      from: `whatsapp:${twilioNumber}`,
+      to: `whatsapp:${phone.startsWith('+') ? phone : '+91' + phone.replace(/\D/g, '').slice(-10)}`
+    })
+    console.log('WhatsApp reassignment sent successfully:', message.sid)
+    return { success: true, sid: message.sid }
+  } catch (error: any) {
+    console.error('Error sending Twilio reassignment WhatsApp:', error)
+    return { success: false, error: error.message }
+  }
+}
+
 export async function sendResolutionSMS(phone: string, ticketNum: string, name: string) {
   try {
     if (!accountSid || !authToken || !twilioNumber) return { success: false, error: 'Twilio not configured' }

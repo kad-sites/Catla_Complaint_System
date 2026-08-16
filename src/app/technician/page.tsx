@@ -5,7 +5,7 @@ import {
   MapPin, Navigation, Clock, Camera, CheckCircle2,
   ChevronLeft, Phone, Wrench, CloudOff, Signal, ArrowRight
 } from 'lucide-react'
-import { sendAssignmentSMS, sendResolutionSMS } from '@/actions/sendTicketSMS'
+import { sendAssignmentSMS, sendResolutionSMS, sendReassignmentSMS } from '@/actions/sendTicketSMS'
 import { getComplaints, updateComplaint } from '@/actions/complaintStore'
 import { getUsers, verifyTechnicianPassword } from '@/actions/userStore'
 
@@ -195,25 +195,36 @@ export default function TechnicianApp() {
 
     return (
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg-app)', color: 'var(--color-text-primary)', padding: '20px' }}>
-        <div style={{ padding: '32px 20px', background: 'transparent', width: '100%', maxWidth: '400px', textAlign: 'center' }}>
-          <div style={{ width: '72px', height: '72px', background: 'var(--color-accent)', borderRadius: '20px', margin: '0 auto 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.2)' }}>
-            <Wrench size={36} color="white" />
+        <div style={{ 
+          padding: '24px 24px', 
+          background: 'rgba(0, 0, 0, 0.15)', 
+          backdropFilter: 'blur(24px)', 
+          WebkitBackdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255, 255, 255, 0.04)',
+          borderRadius: '24px',
+          boxShadow: '0 24px 48px rgba(0,0,0,0.4)',
+          width: '100%', 
+          maxWidth: '320px', 
+          textAlign: 'center' 
+        }}>
+          <div style={{ width: '80px', height: '80px', margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+            <img src="/support-logo.png" alt="On Site Support" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
-          <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '8px', letterSpacing: '-0.5px' }}>Technician App</h1>
+          <h1 style={{ fontSize: '18px', fontWeight: 300, marginBottom: '4px', letterSpacing: '0.5px' }}>On Site</h1>
           
           {!selectedProfile ? (
             <>
-              <p style={{ color: 'var(--color-text-muted)', marginBottom: '40px', fontSize: '15px' }}>Select your profile to continue</p>
+              <p style={{ color: 'var(--color-text-muted)', marginBottom: '24px', fontSize: '12px', fontWeight: 300 }}>Select your profile to continue</p>
               {availableTechs.length === 0 ? (
                 <div style={{ padding: '20px', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', borderRadius: '12px' }}>
                   No active technicians found.
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {availableTechs.map(tech => (
-                    <button key={tech} onClick={() => setSelectedProfile(tech)} style={{ padding: '10px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', transition: 'all 0.2s' }}>
-                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'color-mix(in srgb, var(--color-accent) 20%, transparent)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px' }}>{tech.split(' ').map(n => n[0]).join('')}</div>
-                      {tech}
+                    <button key={tech} onClick={() => setSelectedProfile(tech)} style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '10px', color: 'var(--color-text-primary)', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                      <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: 'color-mix(in srgb, var(--color-accent) 20%, transparent)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 'normal' }}>{tech.split(' ').map(n => n[0]).join('')}</div>
+                      <span style={{ fontWeight: 300, fontSize: '12px', opacity: 0.9 }}>{tech}</span>
                     </button>
                   ))}
                 </div>
@@ -221,12 +232,12 @@ export default function TechnicianApp() {
             </>
           ) : (
             <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'left', marginTop: '24px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'color-mix(in srgb, var(--color-accent) 20%, transparent)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 'bold' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: 'color-mix(in srgb, var(--color-accent) 20%, transparent)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 'normal' }}>
                   {selectedProfile.split(' ').map(n => n[0]).join('')}
                 </div>
-                <div style={{ flex: 1, fontWeight: 600, fontSize: '15px' }}>{selectedProfile}</div>
-                <button type="button" onClick={() => { setSelectedProfile(null); setPassword(''); setLoginError(''); }} style={{ background: 'none', border: 'none', color: '#0ea5e9', fontSize: '13px', cursor: 'pointer', fontWeight: 600 }}>Change</button>
+                <div style={{ flex: 1, fontWeight: 300, fontSize: '12px', opacity: 0.9 }}>{selectedProfile}</div>
+                <button type="button" onClick={() => { setSelectedProfile(null); setPassword(''); setLoginError(''); }} style={{ background: 'none', border: 'none', color: '#0ea5e9', fontSize: '12px', cursor: 'pointer', fontWeight: 300 }}>Change</button>
               </div>
 
               <div>
@@ -236,15 +247,15 @@ export default function TechnicianApp() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Enter your password" 
                   autoFocus
-                  style={{ width: '100%', padding: '12px 16px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: 'var(--color-text-primary)', fontSize: '15px', outline: 'none', transition: 'border-color 0.2s' }}
+                  style={{ width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: 'var(--color-text-primary)', fontSize: '14px', outline: 'none', transition: 'border-color 0.2s' }}
                   onFocus={e => e.target.style.borderColor = 'var(--color-accent)'}
                   onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
                 />
               </div>
 
-              {loginError && <div style={{ color: '#ef4444', fontSize: '13px', textAlign: 'center' }}>{loginError}</div>}
+              {loginError && <div style={{ color: '#ef4444', fontSize: '12px', textAlign: 'center' }}>{loginError}</div>}
 
-              <button type="submit" disabled={isVerifying || !password} style={{ width: '100%', padding: '12px', fontSize: '15px', fontWeight: 700, marginTop: '4px', opacity: (isVerifying || !password) ? 0.7 : 1, background: 'var(--color-accent)', color: 'white', borderRadius: '10px', border: 'none', cursor: 'pointer', boxShadow: '0 4px 12px rgba(14, 165, 233, 0.3)' }}>
+              <button type="submit" disabled={isVerifying || !password} style={{ width: '100%', padding: '10px', fontSize: '14px', fontWeight: 500, marginTop: '4px', opacity: (isVerifying || !password) ? 0.7 : 1, background: 'var(--color-accent)', color: 'white', borderRadius: '10px', border: 'none', cursor: 'pointer', boxShadow: '0 4px 12px rgba(14, 165, 233, 0.3)' }}>
                 {isVerifying ? 'Verifying...' : 'Login'}
               </button>
             </form>
@@ -424,7 +435,16 @@ export default function TechnicianApp() {
           <p style={{ fontSize: '12px', color: '#64748b' }}>{loggedInTech} · Field Technician</p>
         </div>
         <button
-          onClick={() => { localStorage.removeItem('loggedInTech'); setLoggedInTech(null); }}
+          onClick={() => { 
+            setIsLoadingApp(true);
+            localStorage.removeItem('loggedInTech'); 
+            setLoggedInTech(null); 
+            setSelectedProfile(null);
+            setAssignments([]);
+            setDoneJobs([]);
+            setStage('list');
+            setSelectedTask(null);
+          }}
           title="Switch User"
           style={{
             width: '42px', height: '42px',
@@ -487,24 +507,28 @@ export default function TechnicianApp() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '10px' }}>
                 <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#0ea5e9' }}>{task.id}</span>
                 <span className={`status-badge ${task.priority === 'CRITICAL' ? 'breached' : 'open'}`} style={{ fontSize: '10px' }}>
-                  {task.priority === 'CRITICAL' ? `🔴 ${task.sla} left` : `🟡 ${task.sla} left`}
+                  {task.priority === 'CRITICAL' ? `🔴 SLA: ${task.sla} left` : `🟡 SLA: ${task.sla} left`}
                 </span>
               </div>
 
               <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '4px' }}>{task.customer}</div>
               <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', marginBottom: '12px' }}>{task.issue}</div>
 
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#64748b', marginBottom: '6px' }}>
+                <Phone size={12} /> {task.phone || 'N/A'}
+              </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#64748b', marginBottom: '14px' }}>
                 <MapPin size={12} /> {task.address}
               </div>
 
               {task.status === 'WORKING' ? (
-                <div style={{ padding: '10px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '8px', color: '#10b981', textAlign: 'center', fontWeight: 600, fontSize: '12px', marginBottom: '12px' }}>
+                <div style={{ padding: '10px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '8px', color: '#10b981', textAlign: 'center', fontWeight: 600, fontSize: '12px', marginBottom: '0px' }}>
                   ✅ Job Accepted
                 </div>
               ) : (
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '0px' }}>
                   <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)' }} onClick={async () => {
+                    lastMutationTime.current = Date.now() + 60000;
                     setAssignments(prev => prev.filter(t => t.id !== task.id))
                     await updateComplaint(task.id, { status: 'REJECTED', tech: 'Unassigned' })
                     lastMutationTime.current = Date.now()
@@ -512,8 +536,13 @@ export default function TechnicianApp() {
                     ❌ Reject
                   </button>
                   <button className="btn btn-primary" style={{ flex: 1, fontSize: '12px', background: '#10b981', color: '#fff', border: 'none' }} onClick={async () => {
+                    lastMutationTime.current = Date.now() + 60000;
                     setAssignments(prev => prev.map(t => t.id === task.id ? { ...t, status: 'WORKING' } : t))
-                    await sendAssignmentSMS(task.phone || '+919999999999', task.id, task.customer, loggedInTech!)
+                    if (task.issue?.includes('[REASSIGNED:')) {
+                      await sendReassignmentSMS(task.phone || '+919999999999', task.id, task.customer, loggedInTech!)
+                    } else {
+                      await sendAssignmentSMS(task.phone || '+919999999999', task.id, task.customer, loggedInTech!)
+                    }
                     await updateComplaint(task.id, { status: 'WORKING' })
                     lastMutationTime.current = Date.now()
                   }}>
@@ -521,15 +550,6 @@ export default function TechnicianApp() {
                   </button>
                 </div>
               )}
-
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px' }}>
-                  <Navigation size={13} /> Navigate
-                </button>
-                <button className="btn btn-secondary" style={{ flex: 1, fontSize: '12px', border: '1px solid #0ea5e9', color: '#0ea5e9' }} onClick={() => openJob(task)}>
-                  View Details <ArrowRight size={13} />
-                </button>
-              </div>
             </div>
           ))}
         </div>

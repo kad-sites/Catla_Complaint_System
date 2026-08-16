@@ -4,19 +4,13 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Inbox, TrendingUp, Clock, AlertTriangle, CheckCircle2,
-  Users, ArrowUpRight, ArrowDownRight, Eye, MoreHorizontal, Filter
+  Users, ArrowUpRight, ArrowDownRight, Eye, MoreHorizontal, Filter, ArrowRight
 } from 'lucide-react'
 import { getComplaints } from '@/actions/complaintStore'
+import { getUsers } from '@/actions/userStore'
 
 const TICKETS: any[] = []
 
-// Static technicians list, but stats will be computed dynamically
-const BASE_TECHNICIANS = [
-  { name: 'Amit Singh', status: 'online' },
-  { name: 'Suresh Pal', status: 'online' },
-  { name: 'Vikram Jha', status: 'busy' },
-  { name: 'Ravi Kumar', status: 'offline' },
-]
 
 function PriorityDot({ priority }: { priority: string }) {
   const cls = priority === 'CRITICAL' ? 'critical' : priority === 'HIGH' ? 'high' : priority === 'MEDIUM' ? 'medium' : 'low'
@@ -48,23 +42,56 @@ function CategoryBadge({ category }: { category: string }) {
 export default function DirectorDashboard() {
   const [statusFilter, setStatusFilter] = useState('ALL')
   const [complaints, setComplaints] = useState<any[]>([])
+  const [technicians, setTechnicians] = useState<any[]>([])
   const router = useRouter()
 
-  // Fetch live complaints
+  const renderIssue = (ticket: any) => {
+    const issueStr = ticket.issue || '';
+    const cleanIssue = issueStr.replace(/\[REASSIGNED:.*?\]/g, '').trim();
+    // Matches [REASSIGNED: reason] or [REASSIGNED: reason | oldTech]
+    const reassignMatches = [...issueStr.matchAll(/\[REASSIGNED:\s*(.*?)(?:\s*\|\s*(.*?))?\]/g)];
+
+    if (reassignMatches.length === 0) return cleanIssue;
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <div>{cleanIssue}</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {reassignMatches.slice(0, 1).map((match, i) => {
+            const reason = match[1];
+            const oldTech = match[2] || 'Unknown Tech';
+            const nextTech = ticket.tech;
+
+            return (
+              <div key={i} style={{ fontSize: '10px', background: 'rgba(239, 68, 68, 0.1)', borderLeft: '2px solid #ef4444', padding: '4px 6px', borderRadius: '0 4px 4px 0' }}>
+                <div style={{ color: '#ef4444', fontWeight: 600, marginBottom: '2px' }}>[Reassigned: {reason}]</div>
+                <div style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  {oldTech} <ArrowRight size={10} /> {nextTech}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
+  // Fetch live complaints & users
   useEffect(() => {
     let isMounted = true
-    const loadFromStore = async () => {
-      try {
-        const stored = await getComplaints()
-        if (isMounted) setComplaints(stored)
-      } catch {}
+    const fetchData = async () => {
+      const data = await getComplaints()
+      const users = await getUsers()
+      if (isMounted) {
+        setComplaints(data)
+        setTechnicians(users.filter((u: any) => u.role === 'TECHNICIAN' && u.active !== false))
+      }
     }
-    
-    loadFromStore()
-    const timer = setInterval(loadFromStore, 3000)
+    fetchData()
+    const interval = setInterval(fetchData, 4000)
     return () => {
       isMounted = false
-      clearInterval(timer)
+      clearInterval(interval)
     }
   }, [])
 
@@ -223,7 +250,7 @@ export default function DirectorDashboard() {
                         </div>
                       </td>
                       <td style={{ maxWidth: '180px' }}>
-                        <span style={{ fontSize: '12px' }}>{t.issue}</span>
+                        <span style={{ fontSize: '12px' }}>{renderIssue(t)}</span>
                       </td>
                       <td>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -334,18 +361,19 @@ export default function DirectorDashboard() {
                 </div>
               </div>
               <div className="data-card-body" style={{ padding: '12px 0' }}>
-                {BASE_TECHNICIANS.map(tech => ({
+                {technicians.map(tech => ({
                   ...tech,
                   resolved: complaints.filter(c => c.tech === tech.name && c.status === 'RESOLVED').length,
                   active: complaints.filter(c => c.tech === tech.name && c.status !== 'RESOLVED' && c.status !== 'OPEN').length,
-                  avgTime: '0.0h'
+                  avgTime: '0.0h',
+                  status: 'online' // or compute from recent activity
                 })).map((tech, i) => (
                   <div key={tech.name} style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '12px',
                     padding: '10px 16px',
-                    borderBottom: i < BASE_TECHNICIANS.length - 1 ? '1px solid rgba(30, 41, 59, 0.4)' : 'none',
+                    borderBottom: i < technicians.length - 1 ? '1px solid rgba(30, 41, 59, 0.4)' : 'none',
                     transition: 'background 0.15s ease',
                   }}>
                     <span style={{

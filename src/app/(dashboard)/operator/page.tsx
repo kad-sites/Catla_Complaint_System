@@ -27,14 +27,57 @@ const SUBTYPES: Record<string, string[]> = {
   'Billing & Payment': ['Payment Not Reflected', 'Plan Change Request', 'Refund Request', 'Invoice Error'],
 }
 
-const SNIPPETS = [
-  "Customer reports no signal since morning",
-  "Red light blinking on ONT device",
-  "Speed drops significantly after 8 PM",
-  "Wire found broken near street pole",
-  "Router not connecting after power cut",
-  "Payment made via UPI but plan not renewed",
-]
+const DYNAMIC_SNIPPETS: Record<string, string[]> = {
+  'No Internet': [
+    "Customer reports no signal since morning",
+    "Completely offline after power fluctuation",
+    "LOS Red light is stable on the ONT",
+    "Internet disconnected, showing authentication failed",
+    "Wire found broken near street pole"
+  ],
+  'Slow Speed': [
+    "Speed drops significantly after 8 PM",
+    "Getting only 10 Mbps on a 100 Mbps plan",
+    "High ping/latency while gaming or video calling",
+    "Frequent buffering on streaming services",
+    "Upload speed is extremely low compared to download"
+  ],
+  'WiFi / Router Issue': [
+    "Router not connecting after power cut",
+    "WiFi signal is very weak in the next room",
+    "Customer forgot WiFi password and needs reset",
+    "Router keeps rebooting automatically",
+    "Devices connecting to WiFi but no internet access"
+  ],
+  'ONT / Hardware Fault': [
+    "Red light blinking on ONT device",
+    "ONT device is completely dead/not powering on",
+    "Optical port seems physically damaged",
+    "Device overheating and dropping connection",
+    "Patch cord bent or broken by pet/cleaning"
+  ],
+  'Fiber / Cable Damage': [
+    "Fiber cut due to road construction work",
+    "Cable snapped by passing truck/heavy vehicle",
+    "Monkey/animal damaged the fiber on the roof",
+    "Connector broken at the distribution box",
+    "Fiber wire hanging dangerously low on the street"
+  ],
+  'Billing & Payment': [
+    "Payment made via UPI but plan not renewed",
+    "Customer requesting refund for downtime",
+    "Amount deducted twice from bank account",
+    "Wants to upgrade/downgrade to a different plan",
+    "Did not receive invoice for the latest payment"
+  ],
+  'Default': [
+    "Customer requesting a callback from technical team",
+    "Issue persisting for more than 48 hours",
+    "Customer highly dissatisfied with service",
+    "Needs technician visit urgently",
+    "General inquiry about account status"
+  ]
+}
 
 const MOCK_CUSTOMERS = [
   { id: 'c1', smartguardId: 'CID-1042', name: 'Rajesh Kumar', phone: '+91-9876543210', address: 'B-42, Sector 15, Noida', category: 'RESIDENTIAL', plan: '100 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
@@ -42,11 +85,12 @@ const MOCK_CUSTOMERS = [
   { id: 'c3', smartguardId: 'CID-3010', name: 'Priya Sharma', phone: '+91-9988776655', address: 'D-15, Green Valley, Sector 12', category: 'RESIDENTIAL', plan: '50 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c4', smartguardId: 'CID-4055', name: 'Govt Office Sec-5', phone: '+91-1120304050', address: 'Block A, Govt Complex, Sector 5', category: 'GOVERNMENT', plan: '200 Mbps Dedicated', status: 'ACTIVE', openTickets: 0 },
   { id: 'c5', smartguardId: 'CID-5023', name: 'DataStream Ltd', phone: '+91-9090909090', address: 'Unit 7, Industrial Area', category: 'ENTERPRISE', plan: '1 Gbps Leased Line', status: 'ACTIVE', openTickets: 0 },
-  { id: 'c6', smartguardId: 'CID-6011', name: 'Deep Das', phone: '+91-9854051521', address: 'H-12, Laketown, Kolkata', category: 'RESIDENTIAL', plan: '100 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
+  { id: 'c6', smartguardId: 'CID-6011', name: 'Deep Das', phone: '+91-9864980087', address: 'H-12, Laketown, Kolkata', category: 'RESIDENTIAL', plan: '100 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c7', smartguardId: 'CID-6022', name: 'Anupam Das', phone: '+91-9854051519', address: 'Flat 4B, Salt Lake, Sector V, Kolkata', category: 'RESIDENTIAL', plan: '200 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c8', smartguardId: 'CID-6033', name: 'Deep Singh', phone: '+91-9854051525', address: 'A-22, Rajouri Garden, New Delhi', category: 'RESIDENTIAL', plan: '50 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c9', smartguardId: 'CID-6044', name: 'Utpal Das', phone: '+91-9854051520', address: 'C-7, Dum Dum Park, Kolkata', category: 'RESIDENTIAL', plan: '100 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c10', smartguardId: 'CID-6055', name: 'Zoheb Aziz', phone: '+91-9854051522', address: 'Rajarhat, New Town, Kolkata', category: 'RESIDENTIAL', plan: '300 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
+  { id: 'c11', smartguardId: 'CID-6066', name: 'Daviaan Aziz', phone: '+91-9365241910', address: 'Dummy Address, Sector 1, City', category: 'RESIDENTIAL', plan: '200 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
 ]
 
 const SLA_HOURS: Record<string, Record<string, number>> = {
@@ -537,50 +581,51 @@ export default function OperatorConsole() {
                   </div>
                 )}
 
-                {/* Quick Snippets */}
-                {subType && (
-                  <div className="form-group animate-fade-in" style={{ marginBottom: '20px' }}>
-                    <label className="form-label">Quick Insert Snippets</label>
-                    <div 
-                      ref={snippetsWrapperRef}
-                      tabIndex={0}
-                      onKeyDown={e => {
-                        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-                          e.preventDefault()
-                          setSelectedSnippetIdx(p => p < SNIPPETS.length - 1 ? p + 1 : p)
-                        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-                          e.preventDefault()
-                          setSelectedSnippetIdx(p => p > 0 ? p - 1 : 0)
-                        } else if (e.key === 'Enter') {
-                          e.preventDefault()
-                          const snippet = SNIPPETS[selectedSnippetIdx]
+              {/* Quick Snippets */}
+              {subType && (
+                <div className="form-group animate-fade-in" style={{ marginBottom: '20px' }}>
+                  <label className="form-label">Quick Insert Snippets</label>
+                  <div 
+                    ref={snippetsWrapperRef}
+                    tabIndex={0}
+                    onKeyDown={e => {
+                      const currentSnippets = category ? (DYNAMIC_SNIPPETS[category] || DYNAMIC_SNIPPETS['Default']) : DYNAMIC_SNIPPETS['Default'];
+                      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                        e.preventDefault()
+                        setSelectedSnippetIdx(p => p < currentSnippets.length - 1 ? p + 1 : p)
+                      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault()
+                        setSelectedSnippetIdx(p => p > 0 ? p - 1 : 0)
+                      } else if (e.key === 'Enter') {
+                        e.preventDefault()
+                        const snippet = currentSnippets[selectedSnippetIdx]
+                        setDescription(prev => prev ? `${prev}\n${snippet}` : snippet)
+                        descRef.current?.focus()
+                      }
+                    }}
+                    style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', outline: 'none' }}
+                  >
+                    {(category ? (DYNAMIC_SNIPPETS[category] || DYNAMIC_SNIPPETS['Default']) : DYNAMIC_SNIPPETS['Default']).map((snippet, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        className="snippet-pill"
+                        style={{
+                          background: selectedSnippetIdx === i ? 'rgba(14, 165, 233, 0.2)' : undefined,
+                          border: selectedSnippetIdx === i ? '1px solid rgba(14, 165, 233, 0.6)' : undefined,
+                        }}
+                        onClick={() => {
                           setDescription(prev => prev ? `${prev}\n${snippet}` : snippet)
                           descRef.current?.focus()
-                        }
-                      }}
-                      style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', outline: 'none' }}
-                    >
-                      {SNIPPETS.map((snippet, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          className="snippet-pill"
-                          style={{
-                            background: selectedSnippetIdx === i ? 'rgba(14, 165, 233, 0.2)' : undefined,
-                            border: selectedSnippetIdx === i ? '1px solid rgba(14, 165, 233, 0.6)' : undefined,
-                          }}
-                          onClick={() => {
-                            setDescription(prev => prev ? `${prev}\n${snippet}` : snippet)
-                            descRef.current?.focus()
-                          }}
-                          onMouseEnter={() => setSelectedSnippetIdx(i)}
-                        >
-                          + {snippet}
-                        </button>
-                      ))}
-                    </div>
+                        }}
+                        onMouseEnter={() => setSelectedSnippetIdx(i)}
+                      >
+                        + {snippet}
+                      </button>
+                    ))}
                   </div>
-                )}
+                </div>
+              )}
 
                 {/* Description */}
                 <div className="form-group" style={{ marginBottom: '24px' }}>

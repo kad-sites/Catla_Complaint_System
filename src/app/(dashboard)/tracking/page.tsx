@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
 import { Navigation, Phone, Clock, MapPin, Truck, Signal } from 'lucide-react'
 
 // Dynamically import map to avoid SSR issues with Leaflet
@@ -41,8 +42,23 @@ const TECHNICIANS = [
 export type Technician = typeof TECHNICIANS[number]
 
 export default function TrackingPage() {
+  const router = useRouter()
   const [selected, setSelected] = useState<string | null>(null)
   const [techs, setTechs] = useState(TECHNICIANS)
+
+  // Press Enter anywhere (outside inputs) to open New Complaint
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        router.push('/operator')
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [router])
 
   // Simulate movement every 3s
   useEffect(() => {
@@ -81,24 +97,42 @@ export default function TrackingPage() {
               Real-time technician locations · {techs.filter(t => t.status !== 'idle').length} active in field
             </p>
           </div>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '6px',
-            padding: '6px 12px', borderRadius: '6px',
-            background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)',
-            fontSize: '12px', fontWeight: 600, color: '#34d399',
-          }}>
-            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)' }} />
-            GPS Live
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '6px',
+              padding: '6px 12px', borderRadius: '6px',
+              background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)',
+              fontSize: '12px', fontWeight: 600, color: '#34d399',
+            }}>
+              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)' }} />
+              Live System
+            </div>
+            
+            <style>{`
+              @keyframes blink-border {
+                0% { box-shadow: 0 0 5px #0ea5e9; border-color: #0ea5e9; }
+                50% { box-shadow: 0 0 15px #38bdf8, inset 0 0 5px #38bdf8; border-color: #38bdf8; background-color: rgba(2, 132, 199, 0.9); }
+                100% { box-shadow: 0 0 5px #0ea5e9; border-color: #0ea5e9; }
+              }
+              .blink-button {
+                animation: blink-border 1.6s infinite ease-in-out;
+                border: 2px solid #0ea5e9 !important;
+                font-weight: 600 !important;
+                transition: none;
+              }
+            `}</style>
+            <button 
+              className="btn btn-primary btn-sm blink-button"
+              onClick={() => router.push('/operator')}
+            >
+              + New Complaint
+            </button>
           </div>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: '16px', height: 'calc(100vh - 160px)' }}>
           {/* Technician List */}
-          <div style={{
-            background: 'var(--color-bg-card)',
-            border: '1px solid var(--color-border)',
-            borderRadius: '12px',
-            overflow: 'hidden',
+          <div className="data-card" style={{
             display: 'flex',
             flexDirection: 'column',
           }}>
