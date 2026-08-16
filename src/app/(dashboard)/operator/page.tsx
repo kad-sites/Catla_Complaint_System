@@ -192,7 +192,7 @@ export default function OperatorConsole() {
     sendTicketSMS(customer.phone, ticketNum, customer.name)
 
     // Send Telegram alert in background
-    const telegramMessage = `🚨 <b>New Complaint Registered</b>\n\n<b>Ticket:</b> ${ticketNum}\n<b>Customer:</b> ${customer.name}\n<b>Phone:</b> ${customer.phone}\n<b>Category:</b> ${category}\n<b>Issue:</b> ${subType}\n<b>SLA:</b> ${formattedSla}`;
+    const telegramMessage = `🚨 <b>New Complaint Registered</b>\n\n<b>Ticket:</b> ${ticketNum}\n<b>Customer:</b> ${customer.name}\nPhone: ${customer.phone}\nCategory: ${category}\nIssue: ${subType}\nSLA: ${formattedSla}`;
     sendTelegramAlert(telegramMessage);
 
     setSuccess(ticketNum)
