@@ -73,12 +73,12 @@ function LiveTechStatus({ ticket }: { ticket: any }) {
   }, [ticket.techAccepted]);
   
   if (ticket.techAccepted) {
-    return <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>{ticket.tech} ✓</span>
+    return <span style={{ color: 'var(--color-success)', fontWeight: 500 }}>{ticket.tech} ✓</span>
   }
   if (ticket.assignedAt) {
     const waitMs = now - ticket.assignedAt;
     const waitColor = waitMs > 15 * 60000 ? 'var(--color-danger)' : waitMs > 5 * 60000 ? 'var(--color-warning)' : '#3b82f6';
-    return <span style={{ color: waitColor, fontWeight: 600 }}>{ticket.tech}</span>
+    return <span style={{ color: waitColor, fontWeight: 500 }}>{ticket.tech}</span>
   }
   return <span style={{ color: 'var(--color-text-primary)' }}>{ticket.tech}</span>
 }
@@ -106,18 +106,18 @@ function LiveElapsed({ ticket }: { ticket: any }) {
     
     return (
       <div className={isBreached ? 'animate-pulse' : ''} style={{
-        fontWeight: 700,
+        fontWeight: 600,
         color: isBreached ? 'var(--color-danger)' : 'var(--color-text-primary)'
       }}>
-        <div style={{ fontSize: '13px' }}>{elapsedStr}</div>
-        <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontWeight: 400 }}>SLA: {ticket.slaHours}h</div>
+        <div style={{ fontSize: '11px' }}>{elapsedStr}</div>
+        <div style={{ fontSize: '8px', color: 'var(--color-text-muted)', fontWeight: 400 }}>SLA: {ticket.slaHours}h</div>
       </div>
     )
   }
   
   return (
     <span style={{
-      fontWeight: 700,
+      fontWeight: 600,
       color: ticket.slaPercent > 80 ? 'var(--color-danger)' : ticket.slaPercent > 50 ? 'var(--color-warning)' : 'var(--color-text-primary)',
     }}>{ticket.sla}</span>
   )
@@ -393,7 +393,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
             <h1 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color-text-primary)', marginBottom: '4px' }}>
               Resolved History
             </h1>
-            <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>
+            <p style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>
               {filtered.length} resolved complaints
             </p>
           </div>
@@ -420,7 +420,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                     <label style={{ display: 'block', fontSize: '11px', color: 'var(--color-text-muted)', marginBottom: '4px' }}>Filter By</label>
                     <select 
                       className="form-input" 
-                      style={{ height: '36px', fontSize: '13px', width: '100%', padding: '0 12px' }} 
+                      style={{ height: '36px', fontSize: '11px', width: '100%', padding: '0 12px' }} 
                       value={filterType} 
                       onChange={e => { setFilterType(e.target.value); setFilterValue(''); }}
                     >
@@ -436,11 +436,11 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                   {filterType !== 'ALL' && (
                     <div>
                       <label style={{ display: 'block', fontSize: '11px', color: 'var(--color-text-muted)', marginBottom: '4px' }}>Value</label>
-                      {filterType === 'DATE' && <input type="date" className="form-input" style={{ height: '36px', width: '100%', fontSize: '13px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
-                      {filterType === 'MONTH' && <input type="month" className="form-input" style={{ height: '36px', width: '100%', fontSize: '13px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
-                      {filterType === 'YEAR' && <input type="number" placeholder="YYYY" className="form-input" style={{ height: '36px', width: '100%', fontSize: '13px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
-                      {filterType === 'NAME' && <input type="text" placeholder="Enter name..." className="form-input" style={{ height: '36px', width: '100%', fontSize: '13px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
-                      {filterType === 'TICKET' && <input type="text" placeholder="Enter ticket ID..." className="form-input" style={{ height: '36px', width: '100%', fontSize: '13px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'DATE' && <input type="date" className="form-input" style={{ height: '36px', width: '100%', fontSize: '11px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'MONTH' && <input type="month" className="form-input" style={{ height: '36px', width: '100%', fontSize: '11px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'YEAR' && <input type="number" placeholder="YYYY" className="form-input" style={{ height: '36px', width: '100%', fontSize: '11px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'NAME' && <input type="text" placeholder="Enter name..." className="form-input" style={{ height: '36px', width: '100%', fontSize: '11px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'TICKET' && <input type="text" placeholder="Enter ticket ID..." className="form-input" style={{ height: '36px', width: '100%', fontSize: '11px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
                     </div>
                   )}
                   
@@ -473,20 +473,20 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search by ID, name, issue, phone..."
               className="form-input"
-              style={{ paddingLeft: '36px', height: '40px', fontSize: '13px' }}
+              style={{ paddingLeft: '36px', height: '40px', fontSize: '11px' }}
             />
           </div>
         </div>
 
         {/* Table */}
         <div className="data-card" style={{ overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
                 {['TICKET', 'CUSTOMER', 'ISSUE', 'PRIORITY', 'ELAPSED / SLA', 'TECHNICIAN', 'STATUS', ''].map(h => (
                   <th key={h} style={{
                     padding: '12px 16px', textAlign: 'left',
-                    fontSize: '10px', fontWeight: 600,
+                    fontSize: '8px', fontWeight: 500,
                     color: 'var(--color-text-muted)',
                     textTransform: 'uppercase', letterSpacing: '1px',
                     background: 'var(--color-bg-surface)',
@@ -510,10 +510,10 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                   >
                     <td style={{ padding: '12px 16px' }}>
                       <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#0ea5e9' }}>{ticket.id}</span>
-                      <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', marginTop: '2px' }}>{/^\d+$/.test(ticket.time) ? new Date(parseInt(ticket.time)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ticket.time}</div>
+                      <div style={{ fontSize: '8px', color: 'var(--color-text-muted)', marginTop: '2px' }}>{/^\d+$/.test(ticket.time) ? new Date(parseInt(ticket.time)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ticket.time}</div>
                     </td>
                     <td style={{ padding: '12px 16px' }}>
-                      <div style={{ fontWeight: 600 }}>{ticket.customer}</div>
+                      <div style={{ fontWeight: 500 }}>{ticket.customer}</div>
                       <CategoryBadge category={ticket.category} />
                     </td>
                     <td style={{ padding: '12px 16px', color: 'var(--color-text-secondary)', maxWidth: '200px' }}>{renderIssue(ticket)}</td>
@@ -670,7 +670,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
             <h3 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--color-text-primary)', margin: 0 }}>
               Reassign Technician
             </h3>
-            <p style={{ fontSize: '13px', color: 'var(--color-text-muted)', margin: '-8px 0 0 0' }}>
+            <p style={{ fontSize: '11px', color: 'var(--color-text-muted)', margin: '-8px 0 0 0' }}>
               Select a new technician and provide a reason.
             </p>
             

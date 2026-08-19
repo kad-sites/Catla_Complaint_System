@@ -345,8 +345,8 @@ body {
 
 .ticket-table th {
   padding: 12px 16px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 8px;
+  font-weight: 500;
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -357,7 +357,7 @@ body {
 
 .ticket-table td {
   padding: 14px 16px;
-  font-size: 13px;
+  font-size: 11px;
   color: var(--color-text-secondary);
   border-bottom: 1px solid rgba(30, 41, 59, 0.5);
   vertical-align: middle;
@@ -405,16 +405,17 @@ body {
 }
 
 /* ─── Status Badge ─── */
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  white-space: nowrap;
-}
+  /* ✨ Status Badge ✨ */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
 
 .status-badge.open {
   background: rgba(59, 130, 246, 0.15);
@@ -458,8 +459,8 @@ body {
   align-items: center;
   padding: 3px 8px;
   border-radius: 4px;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 8px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }

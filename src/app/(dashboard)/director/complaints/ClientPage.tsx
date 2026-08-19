@@ -85,12 +85,12 @@ function LiveTechStatus({ ticket }: { ticket: any }) {
   }, [ticket.techAccepted]);
   
   if (ticket.techAccepted) {
-    return <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>{ticket.tech} ✓</span>
+    return <span style={{ color: 'var(--color-success)', fontWeight: 500 }}>{ticket.tech} ✓</span>
   }
   if (ticket.assignedAt) {
     const waitMs = now - ticket.assignedAt;
     const waitColor = waitMs > 15 * 60000 ? 'var(--color-danger)' : waitMs > 5 * 60000 ? 'var(--color-warning)' : '#3b82f6';
-    return <span style={{ color: waitColor, fontWeight: 600 }}>{ticket.tech}</span>
+    return <span style={{ color: waitColor, fontWeight: 500 }}>{ticket.tech}</span>
   }
   return <span style={{ color: 'var(--color-text-primary)' }}>{ticket.tech}</span>
 }
@@ -118,18 +118,18 @@ function LiveElapsed({ ticket }: { ticket: any }) {
     
     return (
       <div className={isBreached ? 'animate-pulse' : ''} style={{
-        fontWeight: 700,
+        fontWeight: 600,
         color: isBreached ? 'var(--color-danger)' : 'var(--color-text-primary)'
       }}>
-        <div style={{ fontSize: '13px' }}>{elapsedStr}</div>
-        <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontWeight: 400 }}>SLA: {ticket.slaHours}h</div>
+        <div style={{ fontSize: '11px' }}>{elapsedStr}</div>
+        <div style={{ fontSize: '8px', color: 'var(--color-text-muted)', fontWeight: 400 }}>SLA: {ticket.slaHours}h</div>
       </div>
     )
   }
   
   return (
     <span style={{
-      fontWeight: 700,
+      fontWeight: 600,
       color: ticket.slaPercent > 80 ? 'var(--color-danger)' : ticket.slaPercent > 50 ? 'var(--color-warning)' : 'var(--color-text-primary)',
     }}>{ticket.sla}</span>
   )
@@ -359,7 +359,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
 
             return (
               <div key={i} style={{ fontSize: '10px', background: 'rgba(239, 68, 68, 0.1)', borderLeft: '2px solid #ef4444', padding: '4px 6px', borderRadius: '0 4px 4px 0' }}>
-                <div style={{ color: '#ef4444', fontWeight: 600, marginBottom: '2px' }}>[Reassigned: {reason}]</div>
+                <div style={{ color: '#ef4444', fontWeight: 500, marginBottom: '2px' }}>[Reassigned: {reason}]</div>
                 <div style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   {oldTech} <ArrowRight size={10} /> {nextTech}
                 </div>
@@ -380,7 +380,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
             <h1 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color-text-primary)', marginBottom: '4px' }}>
               {userRole === 'desk' ? 'Resolved History' : 'All Complaints'}
             </h1>
-            <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>
+            <p style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>
               {complaints.length} total · {counts.OPEN} open · {counts.BREACHED} breached
             </p>
           </div>
@@ -424,7 +424,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search by ID, name, issue, phone..."
                 className="form-input"
-                style={{ paddingLeft: '36px', height: '40px', fontSize: '13px' }}
+                style={{ paddingLeft: '36px', height: '40px', fontSize: '11px' }}
               />
             </div>
 
@@ -472,13 +472,13 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
 
         {/* Table */}
         <div className="data-card" style={{ overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
                 {['TICKET', 'CUSTOMER', 'ISSUE', 'PRIORITY', 'ELAPSED / SLA', 'TECHNICIAN', 'STATUS', ''].map(h => (
                   <th key={h} style={{
                     padding: '12px 16px', textAlign: 'left',
-                    fontSize: '10px', fontWeight: 600,
+                    fontSize: '8px', fontWeight: 500,
                     color: 'var(--color-text-muted)',
                     textTransform: 'uppercase', letterSpacing: '1px',
                     background: 'var(--color-bg-surface)',
@@ -502,10 +502,10 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                   >
                     <td style={{ padding: '12px 16px' }}>
                       <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#0ea5e9' }}>{ticket.id}</span>
-                      <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', marginTop: '2px' }}>{/^\d+$/.test(ticket.time) ? new Date(parseInt(ticket.time)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ticket.time}</div>
+                      <div style={{ fontSize: '8px', color: 'var(--color-text-muted)', marginTop: '2px' }}>{/^\d+$/.test(ticket.time) ? new Date(parseInt(ticket.time)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ticket.time}</div>
                     </td>
                     <td style={{ padding: '12px 16px' }}>
-                      <div style={{ fontWeight: 600 }}>{ticket.customer}</div>
+                      <div style={{ fontWeight: 500 }}>{ticket.customer}</div>
                       <CategoryBadge category={ticket.category} />
                     </td>
                     <td style={{ padding: '12px 16px', color: 'var(--color-text-secondary)', maxWidth: '200px' }}>{renderIssue(ticket)}</td>
@@ -662,7 +662,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
             <h3 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--color-text-primary)', margin: 0 }}>
               Reassign Technician
             </h3>
-            <p style={{ fontSize: '13px', color: 'var(--color-text-muted)', margin: '-8px 0 0 0' }}>
+            <p style={{ fontSize: '11px', color: 'var(--color-text-muted)', margin: '-8px 0 0 0' }}>
               Select a new technician and provide a reason.
             </p>
             

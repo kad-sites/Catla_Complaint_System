@@ -317,7 +317,7 @@ export default function OperatorConsole() {
             <h1 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color-text-primary)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Zap size={22} style={{ color: 'var(--color-accent)' }} /> Complaint Registration
             </h1>
-            <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>
+            <p style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>
               Zero-error entry · Drop-down driven · Smart SLA
             </p>
           </div>
@@ -399,11 +399,11 @@ export default function OperatorConsole() {
                         }}
                         onMouseEnter={() => setSelectedIndex(i)}
                       >
-                        <div className={`customer-avatar ${c.category.toLowerCase()}`} style={{ width: '36px', height: '36px', fontSize: '13px', borderRadius: '8px' }}>
+                        <div className={`customer-avatar ${c.category.toLowerCase()}`} style={{ width: '36px', height: '36px', fontSize: '11px', borderRadius: '8px' }}>
                           {c.name.charAt(0)}
                         </div>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: '13px', fontWeight: 600 }}>{c.name}</div>
+                          <div style={{ fontSize: '11px', fontWeight: 600 }}>{c.name}</div>
                           <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>{c.smartguardId} · {c.phone}</div>
                         </div>
                         <ChevronRight size={14} style={{ color: 'var(--color-text-muted)' }} />
@@ -433,7 +433,7 @@ export default function OperatorConsole() {
                     border: 'none',
                     width: '24px', height: '24px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer', color: '#64748b', fontSize: '16px', fontWeight: 700,
+                    cursor: 'pointer', color: '#64748b', fontSize: '16px', fontWeight: 600,
                     transition: 'color 0.15s ease',
                     zIndex: 10,
                   }}
@@ -447,7 +447,7 @@ export default function OperatorConsole() {
                     {customer.name.charAt(0)}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--color-text-primary)' }}>{customer.name}</div>
+                    <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--color-text-primary)' }}>{customer.name}</div>
                     <div style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>{customer.smartguardId}</div>
                   </div>
                   <span className={`category-badge ${customer.category.toLowerCase()}`}>{customer.category}</span>
@@ -520,7 +520,7 @@ export default function OperatorConsole() {
                       background: 'rgba(14, 165, 233, 0.1)',
                       color: 'var(--color-accent)',
                       fontSize: '11px',
-                      fontWeight: 700,
+                      fontWeight: 600,
                     }}>
                       <Clock size={11} style={{ display: 'inline', verticalAlign: '-1px', marginRight: '3px' }} />
                       SLA: {slaHours}h
@@ -602,12 +602,12 @@ export default function OperatorConsole() {
                       <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Priority</div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span className={`priority-dot ${priority.toLowerCase()}`} />
-                        <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-text-primary)' }}>{priority}</span>
+                        <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-text-primary)' }}>{priority}</span>
                       </div>
                     </div>
                     <div>
                       <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>SLA Deadline</div>
-                      <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-accent)' }}>
+                      <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-accent)' }}>
                         {selectedSla ? `${selectedSla} Hours` : `Select SLA`}
                       </div>
                     </div>
