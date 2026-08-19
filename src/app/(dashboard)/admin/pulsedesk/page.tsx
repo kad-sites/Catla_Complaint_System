@@ -98,7 +98,7 @@ export default function PulseDesk() {
   const techPanel2 = techFeed.slice(Math.max(0, techFeed.length - 5))
 
   return (
-    <div className="-m-[28px] px-6 pb-12 h-[100dvh] font-sans text-slate-300 flex flex-col" style={{ backgroundColor: 'var(--color-bg-app)' }}>
+    <div className="fixed inset-0 z-40 p-6 pb-8 font-sans text-slate-300 flex flex-col" style={{ backgroundColor: 'var(--color-bg-app)' }}>
       {/* KPI Banner */}
       <div className="flex justify-center items-center gap-6 shrink-0" style={{ paddingTop: '6px', paddingBottom: '20px' }}>
         <div className="flex items-center gap-2 h-[36px] rounded-md bg-red-950/80 border border-red-900/50" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
