@@ -221,7 +221,7 @@ function CustomerCard({ item }: { item: FeedItem }) {
         <div className="text-[9px] text-red-400 font-medium">{item.issue}</div>
       </div>
 
-      <div className="mt-3 pt-2 border-t border-slate-800 flex justify-between items-center">
+      <div className="mt-3 pt-2 flex justify-between items-center">
         <div className="text-[8px] text-slate-500 flex items-center gap-1">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
           NEW COMPLAINT
@@ -235,15 +235,48 @@ function CustomerCard({ item }: { item: FeedItem }) {
 }
 
 function TechCard({ item }: { item: FeedItem }) {
-  const isResolved = item.status === 'RESOLVED'
   const isWorking = item.status === 'IN_PROGRESS' || item.status === 'PREMIUM'
+  const isResolved = item.status === 'RESOLVED' || item.status === 'CLOSED'
   
-  // Custom Tailwind arbitrary values don't always work nicely in dynamic class strings without a full safelist, 
-  // so we'll use style objects or static maps if we want to be safe. But we can use predefined utility strings safely.
-  const borderColor = isResolved ? 'border-emerald-500/20' : isWorking ? 'border-blue-500/20' : 'border-slate-500/20'
-  const bgColor = isResolved ? 'bg-emerald-500/5' : isWorking ? 'bg-blue-500/5' : 'bg-slate-500/5'
-  const textColor = isResolved ? 'text-emerald-400' : isWorking ? 'text-blue-400' : 'text-slate-400'
-  const dotColor = isResolved ? 'bg-emerald-500' : isWorking ? 'bg-blue-500' : 'bg-slate-500'
+  let borderColor = 'border-slate-500/20'
+  let bgColor = 'bg-slate-500/5'
+  let textColor = 'text-slate-400'
+  let dotColor = 'bg-slate-500'
+
+  switch (item.status) {
+    case 'ASSIGNED':
+      borderColor = 'border-amber-500/20'
+      bgColor = 'bg-amber-500/5'
+      textColor = 'text-amber-400'
+      dotColor = 'bg-amber-500'
+      break
+    case 'ACCEPTED':
+      borderColor = 'border-fuchsia-500/20'
+      bgColor = 'bg-fuchsia-500/5'
+      textColor = 'text-fuchsia-400'
+      dotColor = 'bg-fuchsia-500'
+      break
+    case 'WORKING':
+    case 'IN_PROGRESS':
+      borderColor = 'border-blue-500/20'
+      bgColor = 'bg-blue-500/5'
+      textColor = 'text-blue-400'
+      dotColor = 'bg-blue-500'
+      break
+    case 'PREMIUM':
+      borderColor = 'border-red-500/20'
+      bgColor = 'bg-red-500/5'
+      textColor = 'text-red-400'
+      dotColor = 'bg-red-500'
+      break
+    case 'RESOLVED':
+    case 'CLOSED':
+      borderColor = 'border-emerald-500/20'
+      bgColor = 'bg-emerald-500/5'
+      textColor = 'text-emerald-400'
+      dotColor = 'bg-emerald-500'
+      break
+  }
   
   return (
     <motion.div
@@ -279,7 +312,7 @@ function TechCard({ item }: { item: FeedItem }) {
         <div className="text-[9px] text-slate-400 truncate">{item.location || 'Unknown'}</div>
       </div>
 
-      <div className="mt-3 pt-2 border-t border-slate-800 flex justify-between items-center">
+      <div className="mt-3 pt-2 flex justify-between items-center">
         <div className="text-[8px] text-slate-500 flex items-center gap-1">
           <div className={`w-1.5 h-1.5 rounded-full ${dotColor} ${isWorking ? 'animate-pulse' : ''}`}></div>
           {isResolved ? 'JOB COMPLETED' : 'DISPATCH EVENT'}
