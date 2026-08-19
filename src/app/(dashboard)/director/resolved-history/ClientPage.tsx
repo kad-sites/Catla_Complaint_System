@@ -68,7 +68,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
   const router = useRouter()
   const [complaints, setComplaints] = useState<Complaint[]>([...initialComplaints, ...STATIC_COMPLAINTS])
   const [technicians, setTechnicians] = useState<any[]>(initialTechnicians)
-  const [statusFilter, setStatusFilter] = useState('ALL')
+  const [statusFilter, setStatusFilter] = useState('RESOLVED')
 
   const [searchQuery, setSearchQuery] = useState('')
   const [dateFilter, setDateFilter] = useState('')
@@ -302,10 +302,10 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div>
             <h1 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px' }}>
-              {userRole === 'desk' ? 'Resolved History' : 'All Complaints'}
+              Resolved History
             </h1>
             <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>
-              {complaints.length} total · {counts.OPEN} open · {counts.BREACHED} breached
+              {filtered.length} resolved complaints
             </p>
           </div>
           
@@ -326,90 +326,23 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
               <Download size={14} />
               Export
             </button>
-
-            {userRole !== 'desk' && (
-              <>
-                <style>{`
-                  @keyframes blink-border {
-                    0% { box-shadow: 0 0 5px #0ea5e9; border-color: #0ea5e9; }
-                    50% { box-shadow: 0 0 15px #38bdf8, inset 0 0 5px #38bdf8; border-color: #38bdf8; background-color: rgba(2, 132, 199, 0.9); }
-                    100% { box-shadow: 0 0 5px #0ea5e9; border-color: #0ea5e9; }
-                  }
-                  .blink-button {
-                    animation: blink-border 1.6s infinite ease-in-out;
-                    border: 2px solid #0ea5e9 !important;
-                    font-weight: 600 !important;
-                    transition: none;
-                  }
-                `}</style>
-                <button 
-                  className="btn btn-primary btn-sm blink-button"
-                  onClick={() => router.push('/operator')}
-                  style={{ height: '32px', padding: '0 12px', display: 'flex', alignItems: 'center' }}
-                >
-                  + New Complaint
-                </button>
-              </>
-            )}
           </div>
         </div>
 
         {/* Filters */}
-        {userRole !== 'desk' && (
-          <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', alignItems: 'center' }}>
-            <div style={{ position: 'relative', flex: 1, maxWidth: '360px' }}>
-              <Search size={16} style={{ position: 'absolute', left: '12px', top: '11px', color: 'var(--color-text-muted)' }} />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search by ID, name, issue, phone..."
-                className="form-input"
-                style={{ paddingLeft: '36px', height: '40px', fontSize: '13px' }}
-              />
-            </div>
-
-            <div style={{ display: 'flex', gap: '6px', flex: 1 }}>
-              {(['ALL', 'OPEN', 'IN_PROGRESS', 'BREACHED', 'PREMIUM'] as const).map(s => {
-                const isPremium = s === 'PREMIUM';
-                const pCount = counts['PREMIUM'] ?? 0;
-                const premiumStyle = isPremium ? {
-                  background: statusFilter === s ? 'rgba(239, 68, 68, 0.9)' : 'rgba(239, 68, 68, 0.15)',
-                  color: statusFilter === s ? '#fff' : '#ef4444',
-                  borderColor: 'rgba(239, 68, 68, 0.5)',
-                  animation: pCount > 0 ? 'premium-glow 2s infinite ease-in-out' : 'none'
-                } : {};
-
-                return (
-                <button
-                  key={s}
-                  onClick={() => setStatusFilter(s)}
-                  className={`btn btn-sm ${statusFilter === s && !isPremium ? 'btn-primary' : !isPremium ? 'btn-secondary' : ''}`}
-                  style={{ fontSize: '11px', position: 'relative', ...premiumStyle }}
-                >
-                  {s === 'ALL' ? 'All' : s === 'IN_PROGRESS' ? 'Working' : s === 'PREMIUM' ? 'Premium' : s.charAt(0) + s.slice(1).toLowerCase()}
-                  <span style={{
-                    marginLeft: '6px', padding: '1px 6px', borderRadius: '10px',
-                    background: statusFilter === s ? 'rgba(255,255,255,0.2)' : 'rgba(100,116,139,0.2)',
-                    fontSize: '10px',
-                  }}>{counts[s] ?? 0}</span>
-                </button>
-              )})}
-            </div>
-
-            <div>
-              <button
-                onClick={() => router.push('/director/resolved-history')}
-                className="btn btn-sm btn-secondary"
-                style={{
-                  position: 'relative'
-                }}
-              >
-                Resolved History
-              </button>
-            </div>
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', alignItems: 'center' }}>
+          <div style={{ position: 'relative', flex: 1, maxWidth: '360px' }}>
+            <Search size={16} style={{ position: 'absolute', left: '12px', top: '11px', color: 'var(--color-text-muted)' }} />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search by ID, name, issue, phone..."
+              className="form-input"
+              style={{ paddingLeft: '36px', height: '40px', fontSize: '13px' }}
+            />
           </div>
-        )}
+        </div>
 
         {/* Table */}
         <div className="data-card" style={{ overflow: 'hidden' }}>

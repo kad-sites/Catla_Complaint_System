@@ -116,7 +116,7 @@ export default function PulseDesk() {
         </div>
 
         <div 
-          onClick={() => router.push('/director/complaints?tab=RESOLVED')}
+          onClick={() => router.push('/director/resolved-history')}
           className="flex items-center gap-2 h-[36px] rounded-md bg-emerald-950/80 border border-emerald-900/50 cursor-pointer hover:bg-emerald-900 transition-colors" 
           style={{ paddingLeft: '40px', paddingRight: '40px' }}
         >

@@ -67,6 +67,8 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
   }, [])
 
   const isPulseDesk = pathname === '/admin/pulsedesk';
+  const isResolvedHistory = pathname === '/director/resolved-history';
+  const isFullScreenPage = isPulseDesk || isResolvedHistory;
   const isDeskUser = userRole === 'desk';
   
   let NAV_ITEMS = NAV_ITEMS_TEMPLATE.map(section => {
@@ -93,25 +95,28 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
     NAV_ITEMS = [
       { label: 'PULSE DESK', items: [
         { href: '/admin/pulsedesk', icon: Activity, label: 'PulseDesk Live', badge: '' },
-        { href: '/director/complaints?tab=RESOLVED', icon: ListTodo, label: 'Resolved History', badge: '' }
+        { href: '/director/resolved-history', icon: ListTodo, label: 'Resolved History', badge: '' }
       ]}
     ];
   }
 
-  const isCollapsed = isPulseDesk && !isHovered;
+  const isCollapsed = isFullScreenPage && !isHovered;
 
   return (
     <div className="app-layout">
       {/* Sidebar */}
       <aside 
-        className="app-sidebar" 
-        style={{ 
-          width: isCollapsed ? '80px' : '208px', 
-          background: isCollapsed ? 'transparent' : 'var(--color-bg-sidebar)',
+        className="app-sidebar"
+        style={{
+          width: isCollapsed ? '0px' : '208px',
+          overflow: 'hidden',
+          opacity: isCollapsed ? 0 : 1,
+          pointerEvents: isCollapsed ? 'none' : 'auto',
+          borderRight: isCollapsed ? 'none' : '1px solid var(--color-border)',
+          background: 'var(--color-bg-sidebar)',
           boxShadow: isCollapsed ? 'none' : '4px 0 24px rgba(0, 0, 0, 0.35)',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', 
           zIndex: 50,
-          overflowX: 'hidden',
           whiteSpace: 'nowrap'
         }}
         onMouseEnter={() => setIsHovered(true)}
@@ -233,9 +238,9 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
       </aside>
 
       {/* Main Content */}
-      <div className="app-main" style={{ marginLeft: isPulseDesk ? '0px' : '208px', transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
+      <div className="app-main" style={{ marginLeft: isFullScreenPage ? '0px' : '208px', transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
         {/* Top Bar */}
-        {pathname !== '/admin/pulsedesk' && (
+        {!isFullScreenPage && (
           <header className="app-topbar">
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div style={{
