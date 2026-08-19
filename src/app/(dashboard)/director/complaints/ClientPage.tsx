@@ -310,23 +310,6 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
           </div>
           
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <input 
-              type="date"
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-              className="form-input"
-              style={{ height: '32px', fontSize: '12px', padding: '0 12px', width: 'auto', background: 'var(--color-bg-card)' }}
-            />
-            <button
-              onClick={exportPDF}
-              className="btn btn-secondary btn-sm"
-              title="Export to PDF"
-              style={{ padding: '0 12px', height: '32px', display: 'flex', alignItems: 'center', gap: '6px' }}
-            >
-              <Download size={14} />
-              Export
-            </button>
-
             {userRole !== 'desk' && (
               <>
                 <style>{`
