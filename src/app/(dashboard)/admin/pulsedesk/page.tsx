@@ -127,7 +127,7 @@ export default function PulseDesk() {
         
         {/* PANEL 1: CUSTOMERS (Older) */}
         <div className="flex flex-col rounded-xl shadow-lg relative h-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
-          <div className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 py-5 text-center bg-black/20">
+          <div className="h-16 shrink-0 flex items-center justify-center text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 bg-black/20">
             Customer Complaints
           </div>
           <div className="flex-1 overflow-hidden relative p-3">
@@ -141,7 +141,7 @@ export default function PulseDesk() {
 
         {/* PANEL 2: TECHNICIANS (Older) */}
         <div className="flex flex-col rounded-xl shadow-lg relative h-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
-          <div className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 py-5 text-center bg-black/20">
+          <div className="h-16 shrink-0 flex items-center justify-center text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 bg-black/20">
             Technician Assignment
           </div>
           <div className="flex-1 overflow-hidden relative p-3">
@@ -155,9 +155,9 @@ export default function PulseDesk() {
 
         {/* PANEL 3: CUSTOMERS (Newer) */}
         <div className="flex flex-col rounded-xl shadow-lg relative h-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
-          <div className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 py-5 text-center relative bg-black/20">
+          <div className="h-16 shrink-0 flex items-center justify-center text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 relative bg-black/20">
             <span>Customer Complaints</span>
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 animate-pulse text-emerald-500 text-[8px]">● LIVE</span>
+            <span className="absolute right-4 animate-pulse text-emerald-500 text-[8px]">● LIVE</span>
           </div>
           <div className="flex-1 overflow-hidden relative p-3">
             <div className="absolute inset-x-3 inset-y-3 flex flex-col gap-3 justify-start">
@@ -170,9 +170,9 @@ export default function PulseDesk() {
 
         {/* PANEL 4: TECHNICIANS (Newer) */}
         <div className="flex flex-col rounded-xl shadow-lg relative h-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
-          <div className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 py-5 text-center relative bg-black/20">
+          <div className="h-16 shrink-0 flex items-center justify-center text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 relative bg-black/20">
             <span>Technician Assignment</span>
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 animate-pulse text-blue-500 text-[8px]">● LIVE</span>
+            <span className="absolute right-4 animate-pulse text-blue-500 text-[8px]">● LIVE</span>
           </div>
           <div className="flex-1 overflow-hidden relative p-3">
             <div className="absolute inset-x-3 inset-y-3 flex flex-col gap-3 justify-start">
