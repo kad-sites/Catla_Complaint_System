@@ -412,15 +412,15 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
               {isFilterMenuOpen && (
                 <div style={{
                   position: 'absolute', right: 0, top: '100%', marginTop: '8px',
-                  background: 'var(--color-bg-card)', border: '1px solid var(--color-border)',
+                  background: '#1e293b', border: '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '8px', padding: '16px', width: '260px', zIndex: 100,
-                  boxShadow: '0 10px 25px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', gap: '12px'
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', gap: '16px'
                 }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '11px', color: 'var(--color-text-muted)', marginBottom: '4px' }}>Filter By</label>
                     <select 
                       className="form-input" 
-                      style={{ height: '32px', fontSize: '12px', width: '100%' }} 
+                      style={{ height: '36px', fontSize: '13px', width: '100%', padding: '0 12px' }} 
                       value={filterType} 
                       onChange={e => { setFilterType(e.target.value); setFilterValue(''); }}
                     >
@@ -436,16 +436,16 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                   {filterType !== 'ALL' && (
                     <div>
                       <label style={{ display: 'block', fontSize: '11px', color: 'var(--color-text-muted)', marginBottom: '4px' }}>Value</label>
-                      {filterType === 'DATE' && <input type="date" className="form-input" style={{ height: '32px', width: '100%' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
-                      {filterType === 'MONTH' && <input type="month" className="form-input" style={{ height: '32px', width: '100%' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
-                      {filterType === 'YEAR' && <input type="number" placeholder="YYYY" className="form-input" style={{ height: '32px', width: '100%' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
-                      {filterType === 'NAME' && <input type="text" placeholder="Enter name..." className="form-input" style={{ height: '32px', width: '100%' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
-                      {filterType === 'TICKET' && <input type="text" placeholder="Enter ticket ID..." className="form-input" style={{ height: '32px', width: '100%' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'DATE' && <input type="date" className="form-input" style={{ height: '36px', width: '100%', fontSize: '13px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'MONTH' && <input type="month" className="form-input" style={{ height: '36px', width: '100%', fontSize: '13px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'YEAR' && <input type="number" placeholder="YYYY" className="form-input" style={{ height: '36px', width: '100%', fontSize: '13px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'NAME' && <input type="text" placeholder="Enter name..." className="form-input" style={{ height: '36px', width: '100%', fontSize: '13px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'TICKET' && <input type="text" placeholder="Enter ticket ID..." className="form-input" style={{ height: '36px', width: '100%', fontSize: '13px' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
                     </div>
                   )}
                   
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4px' }}>
-                    <button className="btn btn-primary btn-sm" style={{ padding: '0 16px', height: '28px' }} onClick={() => setIsFilterMenuOpen(false)}>Apply</button>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <button className="btn btn-primary btn-sm" style={{ padding: '0 20px', height: '32px' }} onClick={() => setIsFilterMenuOpen(false)}>Close</button>
                   </div>
                 </div>
               )}

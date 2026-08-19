@@ -83,8 +83,13 @@ export default function DirectorDashboard() {
       const data = await getComplaints()
       const users = await getUsers()
       if (isMounted) {
-        setComplaints(data)
-        setTechnicians(users.filter((u: any) => u.role === 'TECHNICIAN' && u.active !== false))
+        setComplaints(prev => {
+          return JSON.stringify(prev) === JSON.stringify(data) ? prev : data;
+        })
+        setTechnicians(prev => {
+          const next = users.filter((u: any) => u.role === 'TECHNICIAN' && u.active !== false)
+          return JSON.stringify(prev) === JSON.stringify(next) ? prev : next;
+        })
       }
     }
     fetchData()
