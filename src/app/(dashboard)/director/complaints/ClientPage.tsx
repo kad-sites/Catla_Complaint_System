@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Search, Filter, Clock, AlertTriangle, CheckCircle2,
-  ChevronDown, Eye, MoreHorizontal, MapPin, Phone, ArrowUpDown, X, ArrowRight
+  ChevronDown, Eye, MoreHorizontal, MapPin, Phone, ArrowUpDown, X, ArrowRight, Download
 } from 'lucide-react'
+import { jsPDF } from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import { getComplaints, updateComplaint, deleteComplaint } from '@/actions/complaintStore'
 import { getUsers } from '@/actions/userStore'
 import { sendTelegramAlert } from '@/actions/sendTelegramAlert'
@@ -80,6 +82,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
   }, [])
 
   const [searchQuery, setSearchQuery] = useState('')
+  const [dateFilter, setDateFilter] = useState('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [reassigningId, setReassigningId] = useState<string | null>(null)
   const [reassignState, setReassignState] = useState<{ id: string, tech: string, reason: string } | null>(null)
@@ -219,7 +222,14 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
       if (statusFilter === 'OPEN') return t.status === 'OPEN' || t.status === 'REJECTED';
       if (statusFilter === 'IN_PROGRESS') return t.status === 'IN_PROGRESS' || t.status === 'ASSIGNED' || t.status === 'WORKING';
       if (statusFilter === 'PREMIUM') return t.status !== 'RESOLVED' && ['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(t.category?.toUpperCase() || '');
+      if (statusFilter === 'RESOLVED') return t.status === 'RESOLVED' || t.status === 'CLOSED';
       return t.status === statusFilter;
+    })
+    .filter(t => {
+      if (!dateFilter) return true;
+      if (!t.createdAt) return false;
+      const dateString = new Date(t.createdAt).toISOString().split('T')[0];
+      return dateString === dateFilter;
     })
     .filter(t => {
       if (!searchQuery) return true
@@ -229,6 +239,32 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
         t.issue.toLowerCase().includes(q) ||
         t.phone.includes(q)
     })
+
+  const exportPDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text(`Complaints Report - ${statusFilter}${dateFilter ? ` (${dateFilter})` : ''}`, 14, 22);
+    
+    const tableData = filtered.map(t => [
+      t.id,
+      t.customer,
+      t.issue,
+      t.priority,
+      t.status,
+      t.tech || 'Unassigned',
+      new Date(t.createdAt || Date.now()).toLocaleDateString()
+    ]);
+
+    autoTable(doc, {
+      head: [['ID', 'Customer', 'Issue', 'Priority', 'Status', 'Technician', 'Date']],
+      body: tableData,
+      startY: 30,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [14, 165, 233] },
+    });
+
+    doc.save(`complaints-${statusFilter.toLowerCase()}${dateFilter ? `-${dateFilter}` : ''}.pdf`);
+  };
 
   const counts: Record<string, number> = {
     ALL: complaints.filter(t => t.status !== 'RESOLVED' && t.status !== 'CLOSED').length,
@@ -284,29 +320,49 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
             </p>
           </div>
           
-          {userRole !== 'desk' && (
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <style>{`
-                @keyframes blink-border {
-                  0% { box-shadow: 0 0 5px #0ea5e9; border-color: #0ea5e9; }
-                  50% { box-shadow: 0 0 15px #38bdf8, inset 0 0 5px #38bdf8; border-color: #38bdf8; background-color: rgba(2, 132, 199, 0.9); }
-                  100% { box-shadow: 0 0 5px #0ea5e9; border-color: #0ea5e9; }
-                }
-                .blink-button {
-                  animation: blink-border 1.6s infinite ease-in-out;
-                  border: 2px solid #0ea5e9 !important;
-                  font-weight: 600 !important;
-                  transition: none;
-                }
-              `}</style>
-              <button 
-                className="btn btn-primary btn-sm blink-button"
-                onClick={() => router.push('/operator')}
-              >
-                + New Complaint
-              </button>
-            </div>
-          )}
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <input 
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="form-input"
+              style={{ height: '32px', fontSize: '12px', padding: '0 12px', width: 'auto', background: 'var(--color-bg-card)' }}
+            />
+            <button
+              onClick={exportPDF}
+              className="btn btn-secondary btn-sm"
+              title="Export to PDF"
+              style={{ padding: '0 12px', height: '32px', display: 'flex', alignItems: 'center', gap: '6px' }}
+            >
+              <Download size={14} />
+              Export
+            </button>
+
+            {userRole !== 'desk' && (
+              <>
+                <style>{`
+                  @keyframes blink-border {
+                    0% { box-shadow: 0 0 5px #0ea5e9; border-color: #0ea5e9; }
+                    50% { box-shadow: 0 0 15px #38bdf8, inset 0 0 5px #38bdf8; border-color: #38bdf8; background-color: rgba(2, 132, 199, 0.9); }
+                    100% { box-shadow: 0 0 5px #0ea5e9; border-color: #0ea5e9; }
+                  }
+                  .blink-button {
+                    animation: blink-border 1.6s infinite ease-in-out;
+                    border: 2px solid #0ea5e9 !important;
+                    font-weight: 600 !important;
+                    transition: none;
+                  }
+                `}</style>
+                <button 
+                  className="btn btn-primary btn-sm blink-button"
+                  onClick={() => router.push('/operator')}
+                  style={{ height: '32px', padding: '0 12px', display: 'flex', alignItems: 'center' }}
+                >
+                  + New Complaint
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Filters */}
