@@ -359,12 +359,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                 } : {})
               }}
             >
-              Resolved
-              <span style={{
-                marginLeft: '6px', padding: '2px 6px', borderRadius: '10px',
-                background: statusFilter === 'RESOLVED' ? 'rgba(255,255,255,0.2)' : 'rgba(100,116,139,0.2)',
-                fontSize: '11px',
-              }}>{counts['RESOLVED'] ?? 0}</span>
+              Resolved History
             </button>
           </div>
         </div>
