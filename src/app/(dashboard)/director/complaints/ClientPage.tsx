@@ -67,6 +67,15 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
   const [complaints, setComplaints] = useState<Complaint[]>([...initialComplaints, ...STATIC_COMPLAINTS])
   const [technicians, setTechnicians] = useState<any[]>(initialTechnicians)
   const [statusFilter, setStatusFilter] = useState('ALL')
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab');
+      if (tab) setStatusFilter(tab);
+    }
+  }, [])
+
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [reassigningId, setReassigningId] = useState<string | null>(null)

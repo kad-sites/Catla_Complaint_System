@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getComplaints } from '@/actions/complaintStore'
 import { CheckCircle2, CircleDashed, Users, MapPin, Phone, Clock, FileWarning, Zap } from 'lucide-react'
@@ -21,6 +22,7 @@ type FeedItem = {
 }
 
 export default function PulseDesk() {
+  const router = useRouter()
   const [complaints, setComplaints] = useState<any[]>([])
   
   // KPI Counters
@@ -113,7 +115,11 @@ export default function PulseDesk() {
           <span className="text-[15px] font-black text-white ml-1">{workingCount}</span>
         </div>
 
-        <div className="flex items-center gap-2 h-[36px] rounded-md bg-emerald-950/80 border border-emerald-900/50" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
+        <div 
+          onClick={() => router.push('/director/complaints?tab=RESOLVED')}
+          className="flex items-center gap-2 h-[36px] rounded-md bg-emerald-950/80 border border-emerald-900/50 cursor-pointer hover:bg-emerald-900 transition-colors" 
+          style={{ paddingLeft: '40px', paddingRight: '40px' }}
+        >
           <CheckCircle2 size={14} className="text-emerald-400" />
           <span className="text-[10px] text-emerald-100 uppercase tracking-widest font-bold">Closed</span>
           <span className="text-[15px] font-black text-white ml-1">{closedCount}</span>
