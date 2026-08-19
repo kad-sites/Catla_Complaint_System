@@ -105,6 +105,23 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
+        {/* Hidden Panel Indicator */}
+        <div style={{
+          position: 'absolute',
+          left: 0,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          width: '6px',
+          height: isCollapsed ? '64px' : '0px',
+          background: 'var(--color-accent)',
+          borderTopRightRadius: '8px',
+          borderBottomRightRadius: '8px',
+          opacity: isCollapsed ? 0.8 : 0,
+          transition: 'all 0.3s ease',
+          boxShadow: '0 0 12px var(--color-accent)',
+          pointerEvents: 'none'
+        }} />
+
         <div className="sidebar-brand" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <img 
             src="/dashboard-logo.png" 
