@@ -58,7 +58,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
     }
 
     fetchCount()
-    const timer = setInterval(fetchCount, 3000)
+    const timer = setInterval(fetchCount, 15000)
 
     return () => {
       isMounted = false

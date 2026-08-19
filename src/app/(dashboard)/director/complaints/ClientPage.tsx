@@ -6,8 +6,6 @@ import {
   Search, Filter, Clock, AlertTriangle, CheckCircle2,
   ChevronDown, Eye, MoreHorizontal, MapPin, Phone, ArrowUpDown, X, ArrowRight, Download
 } from 'lucide-react'
-import { jsPDF } from 'jspdf'
-import autoTable from 'jspdf-autotable'
 import { getComplaints, updateComplaint, deleteComplaint } from '@/actions/complaintStore'
 import { getUsers } from '@/actions/userStore'
 import { sendTelegramAlert } from '@/actions/sendTelegramAlert'
@@ -305,7 +303,9 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
         t.phone.includes(q)
     })
 
-  const exportPDF = () => {
+  const exportPDF = async () => {
+    const { jsPDF } = await import('jspdf');
+    const autoTable = (await import('jspdf-autotable')).default;
     const doc = new jsPDF();
     doc.setFontSize(18);
     doc.text(`Complaints Report - ${statusFilter}${dateFilter ? ` (${dateFilter})` : ''}`, 14, 22);
