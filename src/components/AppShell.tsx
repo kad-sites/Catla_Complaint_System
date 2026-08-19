@@ -98,7 +98,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
     ];
   }
 
-  const isCollapsed = isPulseDesk && !isHovered && !isDeskUser;
+  const isCollapsed = isPulseDesk && !isHovered;
 
   return (
     <div className="app-layout">
