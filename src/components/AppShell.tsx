@@ -95,7 +95,9 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
         className="app-sidebar" 
         style={{ 
           width: isCollapsed ? '80px' : '208px', 
-          transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)', 
+          background: isCollapsed ? 'transparent' : 'var(--color-bg-sidebar)',
+          boxShadow: isCollapsed ? 'none' : '4px 0 24px rgba(0, 0, 0, 0.35)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', 
           zIndex: 50,
           overflowX: 'hidden',
           whiteSpace: 'nowrap'
@@ -117,10 +119,10 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
           />
         </div>
 
-        <nav className="sidebar-nav" style={{ padding: '16px 12px' }}>
+        <nav className="sidebar-nav" style={{ padding: '16px 12px', transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1, pointerEvents: isCollapsed ? 'none' : 'auto' }}>
           {NAV_ITEMS.map((section) => (
             <React.Fragment key={section.label}>
-              <div className="sidebar-section-title" style={{ transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1 }}>
+              <div className="sidebar-section-title">
                 {section.label}
               </div>
               {section.items.map((item) => {
@@ -132,12 +134,11 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
                     href={item.href}
                     className={`sidebar-link ${isActive ? 'active' : ''}`}
                     style={{ position: 'relative', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '12px' }}
-                    title={isCollapsed ? item.label : undefined}
                   >
                     <Icon style={{ flexShrink: 0 }} />
-                    <span style={{ transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1, flex: 1 }}>{item.label}</span>
+                    <span style={{ flex: 1 }}>{item.label}</span>
                     {item.badge && (
-                      <span className="sidebar-badge" style={{ transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1 }}>
+                      <span className="sidebar-badge">
                         {item.badge}
                       </span>
                     )}
@@ -151,11 +152,14 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
         {/* User at bottom */}
         <div style={{
           padding: '16px 20px',
-          borderTop: '1px solid var(--color-border)',
+          borderTop: isCollapsed ? 'none' : '1px solid var(--color-border)',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          gap: '12px'
+          gap: '12px',
+          transition: 'opacity 0.2s ease, border 0.3s ease',
+          opacity: isCollapsed ? 0 : 1,
+          pointerEvents: isCollapsed ? 'none' : 'auto'
         }}>
           <div style={{
             width: '36px',
@@ -173,7 +177,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
           }}>
             {userRole ? userRole.substring(0, 2) : 'ZA'}
           </div>
-          <div style={{ flex: 1, transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1, overflow: 'hidden' }}>
+          <div style={{ flex: 1, overflow: 'hidden' }}>
             <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', textTransform: 'capitalize' }}>
               {userRole === 'admin' ? 'Administrator' : userRole || 'Manager'}
             </div>
@@ -191,8 +195,6 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
               color: 'var(--color-text-muted)',
               cursor: 'pointer',
               padding: '4px',
-              transition: 'opacity 0.2s ease',
-              opacity: isCollapsed ? 0 : 1,
               flexShrink: 0
             }}
           >
@@ -202,7 +204,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
       </aside>
 
       {/* Main Content */}
-      <div className="app-main" style={{ marginLeft: isPulseDesk ? '80px' : '208px', transition: 'margin-left 0.3s ease' }}>
+      <div className="app-main" style={{ marginLeft: isPulseDesk ? '0px' : '208px', transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
         {/* Top Bar */}
         {pathname !== '/admin/pulsedesk' && (
           <header className="app-topbar">
