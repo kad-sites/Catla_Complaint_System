@@ -106,13 +106,6 @@ export default function OperatorConsole() {
         const custom = localStorage.getItem('custom_customers')
         if (custom) {
           let parsed = JSON.parse(custom)
-          
-          // Auto-remove any 'anupam' test customers requested by the user
-          const originalLength = parsed.length
-          parsed = parsed.filter((c: any) => !c.name.toLowerCase().includes('anupam'))
-          if (parsed.length !== originalLength) {
-            localStorage.setItem('custom_customers', JSON.stringify(parsed))
-          }
           setAllCustomers([...MOCK_CUSTOMERS, ...parsed])
         } else {
           setAllCustomers(MOCK_CUSTOMERS)
