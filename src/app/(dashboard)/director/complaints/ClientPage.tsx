@@ -203,7 +203,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
 
   const filtered = complaints
     .filter(t => {
-      if (statusFilter === 'ALL') return true;
+      if (statusFilter === 'ALL') return t.status !== 'RESOLVED' && t.status !== 'CLOSED';
       if (statusFilter === 'OPEN') return t.status === 'OPEN' || t.status === 'REJECTED';
       if (statusFilter === 'IN_PROGRESS') return t.status === 'IN_PROGRESS' || t.status === 'ASSIGNED' || t.status === 'WORKING';
       if (statusFilter === 'PREMIUM') return t.status !== 'RESOLVED' && ['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(t.category?.toUpperCase() || '');
@@ -219,10 +219,10 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
     })
 
   const counts: Record<string, number> = {
-    ALL: complaints.length,
+    ALL: complaints.filter(t => t.status !== 'RESOLVED' && t.status !== 'CLOSED').length,
     OPEN: complaints.filter(t => t.status === 'OPEN' || t.status === 'REJECTED').length,
     IN_PROGRESS: complaints.filter(t => t.status === 'IN_PROGRESS' || t.status === 'ASSIGNED' || t.status === 'WORKING').length,
-    RESOLVED: complaints.filter(t => t.status === 'RESOLVED').length,
+    RESOLVED: complaints.filter(t => t.status === 'RESOLVED' || t.status === 'CLOSED').length,
     BREACHED: complaints.filter(t => t.status === 'BREACHED').length,
     PREMIUM: complaints.filter(t => t.status !== 'RESOLVED' && ['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(t.category?.toUpperCase() || '')).length,
   }
@@ -309,7 +309,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
           </div>
 
           <div style={{ display: 'flex', gap: '6px' }}>
-            {(['ALL', 'OPEN', 'IN_PROGRESS', 'RESOLVED', 'BREACHED', 'PREMIUM'] as const).map(s => {
+            {(['ALL', 'OPEN', 'IN_PROGRESS', 'BREACHED', 'PREMIUM', 'RESOLVED'] as const).map(s => {
               const isPremium = s === 'PREMIUM';
               const pCount = counts['PREMIUM'] ?? 0;
               const premiumStyle = isPremium ? {
@@ -326,7 +326,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                 className={`btn btn-sm ${statusFilter === s && !isPremium ? 'btn-primary' : !isPremium ? 'btn-secondary' : ''}`}
                 style={{ fontSize: '11px', position: 'relative', ...premiumStyle }}
               >
-                {s === 'ALL' ? 'All' : s === 'IN_PROGRESS' ? 'Working' : s === 'PREMIUM' ? 'Premium' : s.charAt(0) + s.slice(1).toLowerCase()}
+                {s === 'ALL' ? 'All' : s === 'IN_PROGRESS' ? 'Working' : s === 'PREMIUM' ? 'Premium' : s === 'RESOLVED' ? 'Resolved History' : s.charAt(0) + s.slice(1).toLowerCase()}
                 <span style={{
                   marginLeft: '6px', padding: '1px 6px', borderRadius: '10px',
                   background: statusFilter === s ? 'rgba(255,255,255,0.2)' : 'rgba(100,116,139,0.2)',
