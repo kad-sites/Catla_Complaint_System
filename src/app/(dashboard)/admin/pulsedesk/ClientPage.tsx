@@ -213,34 +213,35 @@ function CustomerCard({ item }: { item: FeedItem }) {
     >
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded bg-slate-800 flex items-center justify-center border border-slate-700">
-            <span className="text-[8px] font-mono text-slate-400">CBS</span>
+          <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center border border-slate-700">
+            <span className="text-[10px] font-mono text-slate-400">CBS</span>
           </div>
-          <span className="text-[10px] font-mono font-bold text-slate-300">{item.ticketId}</span>
+          <span className="text-[12px] font-mono font-bold text-slate-300">{item.ticketId}</span>
         </div>
-        <div className="flex items-center gap-1 text-slate-500 text-[8px]">
-          <Clock size={10} />
+        <div className="flex items-center gap-1 text-slate-500 text-[10px]">
+          <Clock size={12} />
           {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </div>
       </div>
       
-      <div className="grid grid-cols-[60px_1fr] gap-y-2 items-center">
-        <div className="text-[8px] text-slate-500 flex items-center gap-1"><Users size={10}/> Cust</div>
-        <div className="text-[9px] text-white font-semibold tracking-wide">{item.customerName}</div>
+      <div className="grid grid-cols-[65px_1fr] gap-y-2 items-center">
+        <div className="text-[10px] text-slate-500 flex items-center gap-1"><Users size={12}/> Cust</div>
+        <div className="text-[11px] text-white font-semibold tracking-wide">{item.customerName}</div>
         
-        <div className="text-[8px] text-slate-500 flex items-center gap-1"><Phone size={10}/> Phone</div>
-        <div className="text-[9px] text-slate-400 font-mono">{item.phone || 'N/A'}</div>
+        <div className="text-[10px] text-slate-500 flex items-center gap-1"><Phone size={12}/> Phone</div>
+        <div className="text-[11px] text-slate-400 font-mono">{item.phone || 'N/A'}</div>
         
-        <div className="text-[8px] text-slate-500 flex items-center gap-1"><FileWarning size={10}/> Issue</div>
-        <div className="text-[9px] text-red-400 font-medium">{item.issue}</div>
+        <div className="text-[10px] text-slate-500 flex items-center gap-1"><FileWarning size={12}/> Issue</div>
+        <div className="text-[11px] text-red-400 font-medium">{item.issue}</div>
       </div>
 
       <div className="mt-3 pt-2 flex justify-between items-center">
-        <div className="text-[8px] text-slate-500 flex items-center gap-1">
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+        <div className="text-[10px] text-slate-500 flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
           NEW COMPLAINT
         </div>
-        <div className="flex items-center gap-1 border border-amber-500/20 bg-amber-500/5 px-2 py-0.5 rounded text-[8px] text-amber-400 font-semibold tracking-wider">
+        <div className="flex items-center gap-1 border border-amber-500/20 bg-amber-500/5 px-2 py-0.5 rounded text-[10px] text-amber-400 font-semibold tracking-wider">
+          <Clock size={12} />
           {item.slaHours} HOURS
         </div>
       </div>
@@ -304,34 +305,34 @@ function TechCard({ item }: { item: FeedItem }) {
     >
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded bg-slate-800 flex items-center justify-center border border-slate-700">
-            <span className="text-[8px] font-mono text-slate-400">TCH</span>
+          <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center border border-slate-700">
+            <span className="text-[10px] font-mono text-slate-400">TCH</span>
           </div>
-          <span className="text-[10px] font-mono font-bold text-slate-300">{item.ticketId}</span>
+          <span className="text-[12px] font-mono font-bold text-slate-300">{item.ticketId}</span>
         </div>
-        <div className="flex items-center gap-1 text-slate-500 text-[8px]">
-          <Clock size={10} />
+        <div className="flex items-center gap-1 text-slate-500 text-[10px]">
+          <Clock size={12} />
           {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </div>
       </div>
       
-      <div className="grid grid-cols-[60px_1fr] gap-y-2 items-center">
-        <div className="text-[8px] text-slate-500 flex items-center gap-1"><Users size={10}/> Tech</div>
-        <div className="text-[9px] text-white font-semibold tracking-wide">{item.techName}</div>
+      <div className="grid grid-cols-[65px_1fr] gap-y-2 items-center">
+        <div className="text-[10px] text-slate-500 flex items-center gap-1"><Users size={12}/> Tech</div>
+        <div className="text-[11px] text-white font-semibold tracking-wide">{item.techName}</div>
         
-        <div className="text-[8px] text-slate-500 flex items-center gap-1"><Phone size={10}/> Phone</div>
-        <div className="text-[9px] text-slate-400 font-mono">{item.phone || 'N/A'}</div>
+        <div className="text-[10px] text-slate-500 flex items-center gap-1"><Phone size={12}/> Phone</div>
+        <div className="text-[11px] text-slate-400 font-mono">{item.phone || 'N/A'}</div>
         
-        <div className="text-[8px] text-slate-500 flex items-center gap-1"><MapPin size={10}/> Dest</div>
-        <div className="text-[9px] text-slate-400 truncate">{item.location || 'Unknown'}</div>
+        <div className="text-[10px] text-slate-500 flex items-center gap-1"><MapPin size={12}/> Dest</div>
+        <div className="text-[11px] text-slate-400 truncate">{item.location || 'Unknown'}</div>
       </div>
 
       <div className="mt-3 pt-2 flex justify-between items-center">
-        <div className="text-[8px] text-slate-500 flex items-center gap-1">
-          <div className={`w-1.5 h-1.5 rounded-full ${dotColor} ${isWorking ? 'animate-pulse' : ''}`}></div>
+        <div className="text-[10px] text-slate-500 flex items-center gap-1">
+          <div className={`w-2 h-2 rounded-full ${dotColor} ${isWorking ? 'animate-pulse' : ''}`}></div>
           {isResolved ? 'JOB COMPLETED' : 'DISPATCH EVENT'}
         </div>
-        <div className={`flex items-center gap-1 border ${borderColor} ${bgColor} px-2 py-0.5 rounded text-[8px] ${textColor} font-semibold tracking-wider uppercase`}>
+        <div className={`flex items-center gap-1 border ${borderColor} ${bgColor} px-2 py-0.5 rounded text-[10px] ${textColor} font-semibold tracking-wider uppercase`}>
           {item.status?.replace('_', ' ') || 'ASSIGNED'}
         </div>
       </div>
