@@ -226,7 +226,7 @@ function CustomerCard({ item }: { item: FeedItem }) {
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
           NEW COMPLAINT
         </div>
-        <div className="flex items-center gap-1 border border-orange-500/20 bg-orange-500/5 px-2 py-0.5 rounded text-[8px] text-orange-400 font-bold tracking-wider">
+        <div className="flex items-center gap-1 border border-amber-500/20 bg-amber-500/5 px-2 py-0.5 rounded text-[8px] text-amber-400 font-semibold tracking-wider">
           {item.slaHours} HOURS
         </div>
       </div>
@@ -317,7 +317,7 @@ function TechCard({ item }: { item: FeedItem }) {
           <div className={`w-1.5 h-1.5 rounded-full ${dotColor} ${isWorking ? 'animate-pulse' : ''}`}></div>
           {isResolved ? 'JOB COMPLETED' : 'DISPATCH EVENT'}
         </div>
-        <div className={`flex items-center gap-1 border ${borderColor} ${bgColor} px-2 py-0.5 rounded text-[8px] ${textColor} font-bold tracking-wider uppercase`}>
+        <div className={`flex items-center gap-1 border ${borderColor} ${bgColor} px-2 py-0.5 rounded text-[8px] ${textColor} font-semibold tracking-wider uppercase`}>
           {item.status?.replace('_', ' ') || 'ASSIGNED'}
         </div>
       </div>
