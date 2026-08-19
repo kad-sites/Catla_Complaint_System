@@ -49,7 +49,8 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
       try {
         const data = await getComplaints()
         if (isMounted && Array.isArray(data)) {
-          setComplaintCount(data.length)
+          const activeComplaints = data.filter(c => c.status !== 'RESOLVED' && c.status !== 'CLOSED');
+          setComplaintCount(activeComplaints.length)
         }
       } catch (err) {
         console.error("Failed to load complaints count", err)
