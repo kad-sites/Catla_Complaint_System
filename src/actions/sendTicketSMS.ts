@@ -12,10 +12,13 @@ export async function sendTicketSMS(phone: string, ticketNum: string, name: stri
   try {
     if (!accountSid || !authToken || !twilioNumber) return { success: false, error: 'Twilio not configured' }
     
+    const cleanPhone = phone.replace(/\s+/g, '')
+    const toPhone = cleanPhone.startsWith('+') ? cleanPhone : '+91' + cleanPhone.replace(/\D/g, '').slice(-10)
+    
     const message = await client.messages.create({
       body: `Hi ${name}, your complaint ticket no: *${ticketNum}* has been registered with CATLA BROADBAND. Our technician will resolve it shortly.`,
       from: `whatsapp:${twilioNumber}`,
-      to: `whatsapp:${phone.startsWith('+') ? phone : '+91' + phone.replace(/\D/g, '').slice(-10)}`
+      to: `whatsapp:${toPhone}`
     })
     console.log('WhatsApp registration sent successfully:', message.sid)
     return { success: true, sid: message.sid }
@@ -32,7 +35,7 @@ export async function sendAssignmentSMS(phone: string, ticketNum: string, name: 
     const message = await client.messages.create({
       body: `Hi ${name}, our technician *${techName}* has been assigned to your complaint ticket no: *${ticketNum}*. They will reach out to you shortly.`,
       from: `whatsapp:${twilioNumber}`,
-      to: `whatsapp:${phone.startsWith('+') ? phone : '+91' + phone.replace(/\D/g, '').slice(-10)}`
+      to: `whatsapp:${phone.replace(/\s+/g, '').startsWith('+') ? phone.replace(/\s+/g, '') : '+91' + phone.replace(/\D/g, '').slice(-10)}`
     })
     console.log('WhatsApp assignment sent successfully:', message.sid)
     return { success: true, sid: message.sid }
@@ -49,7 +52,7 @@ export async function sendReassignmentSMS(phone: string, ticketNum: string, name
     const message = await client.messages.create({
       body: `Hi ${name}, we have reassigned your ticket no: *${ticketNum}* to ${techName} due to a technical issue, Our technician will reach out to you shortly. We apologize for the inconvenience.`,
       from: `whatsapp:${twilioNumber}`,
-      to: `whatsapp:${phone.startsWith('+') ? phone : '+91' + phone.replace(/\D/g, '').slice(-10)}`
+      to: `whatsapp:${phone.replace(/\s+/g, '').startsWith('+') ? phone.replace(/\s+/g, '') : '+91' + phone.replace(/\D/g, '').slice(-10)}`
     })
     console.log('WhatsApp reassignment sent successfully:', message.sid)
     return { success: true, sid: message.sid }
@@ -66,7 +69,7 @@ export async function sendResolutionSMS(phone: string, ticketNum: string, name: 
     const message = await client.messages.create({
       body: `Hi ${name}, your complaint ticket no: *${ticketNum}* has been marked as RESOLVED by our technician. If you still face issues, please reply or contact support. Thank you for choosing CATLA BROADBAND!`,
       from: `whatsapp:${twilioNumber}`,
-      to: `whatsapp:${phone.startsWith('+') ? phone : '+91' + phone.replace(/\D/g, '').slice(-10)}`
+      to: `whatsapp:${phone.replace(/\s+/g, '').startsWith('+') ? phone.replace(/\s+/g, '') : '+91' + phone.replace(/\D/g, '').slice(-10)}`
     })
     console.log('WhatsApp resolution sent successfully:', message.sid)
     return { success: true, sid: message.sid }
