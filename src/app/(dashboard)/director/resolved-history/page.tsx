@@ -1,4 +1,4 @@
-﻿import { getComplaints } from '@/actions/complaintStore'
+import { getComplaints } from '@/actions/complaintStore'
 import { getUsers } from '@/actions/userStore'
 import ClientPage from './ClientPage'
 

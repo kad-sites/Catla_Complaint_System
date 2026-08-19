@@ -314,7 +314,7 @@ export default function OperatorConsole() {
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
           <div>
-            <h1 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <h1 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color-text-primary)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Zap size={22} style={{ color: 'var(--color-accent)' }} /> Complaint Registration
             </h1>
             <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>

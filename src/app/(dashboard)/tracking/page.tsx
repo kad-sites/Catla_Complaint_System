@@ -90,7 +90,7 @@ export default function TrackingPage() {
       <div className="animate-fade-in">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div>
-            <h1 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px' }}>
+            <h1 style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color-text-primary)', marginBottom: '4px' }}>
               Live Tracking
             </h1>
             <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>
