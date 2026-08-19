@@ -108,7 +108,7 @@ export default function ClientPage({ initialComplaints }: { initialComplaints: a
   const techPanel2 = techFeed.slice(Math.max(0, techFeed.length - 5))
 
   return (
-    <div className="flex-1 p-6 pb-8 font-sans text-slate-300 flex flex-col h-[100vh]" style={{ backgroundColor: 'var(--color-bg-app)' }}>
+    <div className="flex-1 p-6 pb-8 font-sans text-slate-300 flex flex-col h-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-app)' }}>
       {/* KPI Banner */}
       <div className="flex justify-center items-center gap-6 shrink-0" style={{ paddingTop: '6px', paddingBottom: '20px' }}>
         <div className="flex items-center gap-2 h-[36px] rounded-md bg-red-950/80 border border-red-900/50" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
