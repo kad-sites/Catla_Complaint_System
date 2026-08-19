@@ -5,7 +5,7 @@ import { UserPlus, Save, CheckCircle2 } from 'lucide-react'
 
 export default function AddCustomerPage() {
   const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
+  const [phone, setPhone] = useState('+91 ')
   const [category, setCategory] = useState('RESIDENTIAL')
   const [success, setSuccess] = useState(false)
   const [userRole, setUserRole] = useState<string | null>(null)
@@ -45,7 +45,7 @@ export default function AddCustomerPage() {
       localStorage.setItem('custom_customers', JSON.stringify(parsed))
       setSuccess(true)
       setName('')
-      setPhone('')
+      setPhone('+91 ')
       setTimeout(() => setSuccess(false), 3000)
     } catch (e) {
       console.error('Failed to save customer', e)

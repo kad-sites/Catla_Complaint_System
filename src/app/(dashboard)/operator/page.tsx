@@ -86,7 +86,6 @@ const MOCK_CUSTOMERS = [
   { id: 'c4', smartguardId: 'CID-4055', name: 'Govt Office Sec-5', phone: '+91-1120304050', address: 'Block A, Govt Complex, Sector 5', category: 'GOVERNMENT', plan: '200 Mbps Dedicated', status: 'ACTIVE', openTickets: 0 },
   { id: 'c5', smartguardId: 'CID-5023', name: 'DataStream Ltd', phone: '+91-9090909090', address: 'Unit 7, Industrial Area', category: 'ENTERPRISE', plan: '1 Gbps Leased Line', status: 'ACTIVE', openTickets: 0 },
   { id: 'c6', smartguardId: 'CID-6011', name: 'Deep Das', phone: '+91-9864980087', address: 'H-12, Laketown, Kolkata', category: 'RESIDENTIAL', plan: '100 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
-  { id: 'c7', smartguardId: 'CID-6022', name: 'Anupam Das', phone: '+91-9854051519', address: 'Flat 4B, Salt Lake, Sector V, Kolkata', category: 'RESIDENTIAL', plan: '200 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c8', smartguardId: 'CID-6033', name: 'Deep Singh', phone: '+91-9854051525', address: 'A-22, Rajouri Garden, New Delhi', category: 'RESIDENTIAL', plan: '50 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c9', smartguardId: 'CID-6044', name: 'Utpal Das', phone: '+91-9854051520', address: 'C-7, Dum Dum Park, Kolkata', category: 'RESIDENTIAL', plan: '100 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
   { id: 'c11', smartguardId: 'CID-6066', name: 'Daviaan Aziz', phone: '+91-9365241910', address: 'Dummy Address, Sector 1, City', category: 'RESIDENTIAL', plan: '200 Mbps Fiber', status: 'ACTIVE', openTickets: 0 },
@@ -105,7 +104,16 @@ export default function OperatorConsole() {
     try {
       const custom = localStorage.getItem('custom_customers')
       if (custom) {
-        setAllCustomers([...MOCK_CUSTOMERS, ...JSON.parse(custom)])
+        let parsed = JSON.parse(custom)
+        
+        // Auto-remove any 'anupam' test customers requested by the user
+        const originalLength = parsed.length
+        parsed = parsed.filter((c: any) => !c.name.toLowerCase().includes('anupam'))
+        if (parsed.length !== originalLength) {
+          localStorage.setItem('custom_customers', JSON.stringify(parsed))
+        }
+
+        setAllCustomers([...MOCK_CUSTOMERS, ...parsed])
       } else {
         setAllCustomers(MOCK_CUSTOMERS)
       }
