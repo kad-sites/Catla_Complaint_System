@@ -98,7 +98,7 @@ export default function PulseDesk() {
   const techPanel2 = techFeed.slice(Math.max(0, techFeed.length - 5))
 
   return (
-    <div className="-m-[28px] p-6 min-h-screen bg-[#151a23] font-sans text-slate-300">
+    <div className="-m-[28px] p-6 min-h-screen font-sans text-slate-300" style={{ backgroundColor: 'var(--color-bg-app)' }}>
       {/* Header & KPIs */}
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -128,7 +128,7 @@ export default function PulseDesk() {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 h-[calc(100vh-160px)]">
         
         {/* PANEL 1: CUSTOMERS (Older) */}
-        <div className="flex flex-col bg-[#1a212d] border border-[#2a3441] rounded-xl p-3 shadow-lg relative h-full">
+        <div className="flex flex-col rounded-xl p-3 shadow-lg relative h-full" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
           <div className="text-[9px] uppercase tracking-widest text-slate-400 mb-3 font-semibold border-b border-slate-700/50 pb-2">
             Customer Complaints
           </div>
@@ -142,7 +142,7 @@ export default function PulseDesk() {
         </div>
 
         {/* PANEL 2: CUSTOMERS (Newer) */}
-        <div className="flex flex-col bg-[#1a212d] border border-[#2a3441] rounded-xl p-3 shadow-lg relative h-full">
+        <div className="flex flex-col rounded-xl p-3 shadow-lg relative h-full" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
           <div className="text-[9px] uppercase tracking-widest text-slate-400 mb-3 font-semibold flex justify-between border-b border-slate-700/50 pb-2">
             <span>Customer Complaints</span>
           </div>
@@ -156,7 +156,7 @@ export default function PulseDesk() {
         </div>
 
         {/* PANEL 3: TECHNICIANS (Older) */}
-        <div className="flex flex-col bg-[#1a212d] border border-[#2a3441] rounded-xl p-3 shadow-lg relative h-full">
+        <div className="flex flex-col rounded-xl p-3 shadow-lg relative h-full" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
           <div className="text-[9px] uppercase tracking-widest text-slate-400 mb-3 font-semibold border-b border-slate-700/50 pb-2">
             Technician Assignment
           </div>
@@ -170,7 +170,7 @@ export default function PulseDesk() {
         </div>
 
         {/* PANEL 4: TECHNICIANS (Newer) */}
-        <div className="flex flex-col bg-[#1a212d] border border-[#2a3441] rounded-xl p-3 shadow-lg relative h-full">
+        <div className="flex flex-col rounded-xl p-3 shadow-lg relative h-full" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
           <div className="text-[9px] uppercase tracking-widest text-slate-400 mb-3 font-semibold flex justify-between border-b border-slate-700/50 pb-2">
             <span>Technician Assignment</span>
           </div>
@@ -196,7 +196,8 @@ function CustomerCard({ item }: { item: FeedItem }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="bg-[#1d2430] border border-[#2a3441] rounded-md p-3 shrink-0"
+      className="rounded-md p-3 shrink-0"
+      style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }}
     >
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
@@ -253,7 +254,8 @@ function TechCard({ item }: { item: FeedItem }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="bg-[#1d2430] border border-[#2a3441] rounded-md p-3 shrink-0"
+      className="rounded-md p-3 shrink-0"
+      style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }}
     >
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
