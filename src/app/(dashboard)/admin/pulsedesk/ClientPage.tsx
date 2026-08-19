@@ -208,10 +208,10 @@ function CustomerCard({ item }: { item: FeedItem }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 1.1, filter: 'blur(8px)', y: -20, height: 0, margin: 0, padding: 0 }}
       transition={{ duration: 0.6, ease: "easeInOut" }}
-      className="rounded-md p-3 shrink-0"
+      className="rounded-md px-3 py-2 shrink-0"
       style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)', overflow: 'hidden' }}
     >
-      <div className="flex justify-between items-center mb-3">
+      <div className="flex justify-between items-center mb-2">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center border border-slate-700">
             <span className="text-[10px] font-mono text-slate-400">CBS</span>
@@ -224,7 +224,7 @@ function CustomerCard({ item }: { item: FeedItem }) {
         </div>
       </div>
       
-      <div className="grid grid-cols-[65px_1fr] gap-y-2 items-center">
+      <div className="grid grid-cols-[65px_1fr] gap-y-1 items-center">
         <div className="text-[10px] text-slate-500 flex items-center gap-1"><Users size={12}/> Cust</div>
         <div className="text-[11px] text-white font-semibold tracking-wide">{item.customerName}</div>
         
@@ -235,7 +235,7 @@ function CustomerCard({ item }: { item: FeedItem }) {
         <div className="text-[11px] text-red-400 font-medium">{item.issue}</div>
       </div>
 
-      <div className="mt-3 pt-2 flex justify-between items-center">
+      <div className="mt-2 pt-1.5 flex justify-between items-center">
         <div className="text-[10px] text-slate-500 flex items-center gap-1">
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
           NEW COMPLAINT
@@ -300,10 +300,10 @@ function TechCard({ item }: { item: FeedItem }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 1.1, filter: 'blur(8px)', y: -20, height: 0, margin: 0, padding: 0 }}
       transition={{ duration: 0.6, ease: "easeInOut" }}
-      className="rounded-md p-3 shrink-0"
+      className="rounded-md px-3 py-2 shrink-0"
       style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)', overflow: 'hidden' }}
     >
-      <div className="flex justify-between items-center mb-3">
+      <div className="flex justify-between items-center mb-2">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center border border-slate-700">
             <span className="text-[10px] font-mono text-slate-400">TCH</span>
@@ -316,7 +316,7 @@ function TechCard({ item }: { item: FeedItem }) {
         </div>
       </div>
       
-      <div className="grid grid-cols-[65px_1fr] gap-y-2 items-center">
+      <div className="grid grid-cols-[65px_1fr] gap-y-1 items-center">
         <div className="text-[10px] text-slate-500 flex items-center gap-1"><Users size={12}/> Tech</div>
         <div className="text-[11px] text-white font-semibold tracking-wide">{item.techName}</div>
         
@@ -327,7 +327,7 @@ function TechCard({ item }: { item: FeedItem }) {
         <div className="text-[11px] text-slate-400 truncate">{item.location || 'Unknown'}</div>
       </div>
 
-      <div className="mt-3 pt-2 flex justify-between items-center">
+      <div className="mt-2 pt-1.5 flex justify-between items-center">
         <div className="text-[10px] text-slate-500 flex items-center gap-1">
           <div className={`w-2 h-2 rounded-full ${dotColor} ${isWorking ? 'animate-pulse' : ''}`}></div>
           {isResolved ? 'JOB COMPLETED' : 'DISPATCH EVENT'}
