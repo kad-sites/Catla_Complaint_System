@@ -306,7 +306,7 @@ export default function TechnicianApp() {
     setStage('resolved')
     
     await updateComplaint(selectedTask.id, {
-      status: 'RESOLVED'
+      status: 'RESOLVED', time: Date.now().toString()
     })
 
     // Notify customer

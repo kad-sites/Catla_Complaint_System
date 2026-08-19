@@ -369,7 +369,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                   >
                     <td style={{ padding: '12px 16px' }}>
                       <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#0ea5e9' }}>{ticket.id}</span>
-                      <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', marginTop: '2px' }}>{ticket.time}</div>
+                      <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', marginTop: '2px' }}>{/^\d+$/.test(ticket.time) ? new Date(parseInt(ticket.time)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ticket.time}</div>
                     </td>
                     <td style={{ padding: '12px 16px' }}>
                       <div style={{ fontWeight: 600 }}>{ticket.customer}</div>
@@ -385,7 +385,9 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                     <td style={{ padding: '12px 16px' }}>
                       {(() => {
                         if (ticket.createdAt && ticket.slaHours) {
-                          const elapsedMs = now - ticket.createdAt;
+                          const isResolved = ticket.status === 'RESOLVED' || ticket.status === 'CLOSED';
+                          const resolvedTimestamp = (isResolved && /^\d+$/.test(ticket.time)) ? parseInt(ticket.time) : (isResolved ? ticket.createdAt : now);
+                          const elapsedMs = resolvedTimestamp - ticket.createdAt;
                           const slaMs = ticket.slaHours * 3600000;
                           const isBreached = elapsedMs > slaMs;
                           const secs = Math.floor(elapsedMs / 1000);
