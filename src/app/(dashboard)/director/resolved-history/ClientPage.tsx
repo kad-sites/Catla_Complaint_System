@@ -71,7 +71,9 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
   const [statusFilter, setStatusFilter] = useState('RESOLVED')
 
   const [searchQuery, setSearchQuery] = useState('')
-  const [dateFilter, setDateFilter] = useState('')
+  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false)
+  const [filterType, setFilterType] = useState('ALL')
+  const [filterValue, setFilterValue] = useState('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [reassigningId, setReassigningId] = useState<string | null>(null)
   const [reassignState, setReassignState] = useState<{ id: string, tech: string, reason: string } | null>(null)
@@ -200,25 +202,45 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
     }
   }
 
-  const handleRatePhoto = async (ticketId: string, score: number) => {
-    setComplaints(prev => prev.map(t => t.id === ticketId ? { ...t, photoQualityScore: score } : t))
+  const handleUpdateStatus = async (ticketId: string, newStatus: string) => {
+    const timestamp = Date.now()
+    lastMutationTime.current = timestamp
+    setComplaints(prev => prev.map(c => 
+      c.id === ticketId ? { ...c, status: newStatus } : c
+    ))
+    await updateComplaint(ticketId, { status: newStatus })
+  }
+
+  const handleQualityScore = async (ticketId: string, score: number) => {
+    setComplaints(prev => prev.map(c => 
+      c.id === ticketId ? { ...c, photoQualityScore: score } : c
+    ))
     /* updateComplaint(ticketId, { photoQualityScore: score }) - disabled until schema updated */
   }
 
   const filtered = complaints
+    .filter(t => t.status === 'RESOLVED' || t.status === 'CLOSED')
     .filter(t => {
-      if (statusFilter === 'ALL') return t.status !== 'RESOLVED' && t.status !== 'CLOSED';
-      if (statusFilter === 'OPEN') return t.status === 'OPEN' || t.status === 'REJECTED';
-      if (statusFilter === 'IN_PROGRESS') return t.status === 'IN_PROGRESS' || t.status === 'ASSIGNED' || t.status === 'WORKING';
-      if (statusFilter === 'PREMIUM') return t.status !== 'RESOLVED' && ['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(t.category?.toUpperCase() || '');
-      if (statusFilter === 'RESOLVED') return t.status === 'RESOLVED' || t.status === 'CLOSED';
-      return t.status === statusFilter;
-    })
-    .filter(t => {
-      if (!dateFilter) return true;
-      if (!t.createdAt) return false;
-      const dateString = new Date(t.createdAt).toISOString().split('T')[0];
-      return dateString === dateFilter;
+      if (filterType === 'ALL' || !filterValue) return true;
+      if (filterType === 'DATE') {
+        if (!t.createdAt) return false;
+        return new Date(t.createdAt).toISOString().split('T')[0] === filterValue;
+      }
+      if (filterType === 'MONTH') {
+        if (!t.createdAt) return false;
+        return new Date(t.createdAt).toISOString().startsWith(filterValue);
+      }
+      if (filterType === 'YEAR') {
+        if (!t.createdAt) return false;
+        return new Date(t.createdAt).toISOString().startsWith(filterValue);
+      }
+      if (filterType === 'NAME') {
+        return t.customer.toLowerCase().includes(filterValue.toLowerCase());
+      }
+      if (filterType === 'TICKET') {
+        return t.id.toLowerCase().includes(filterValue.toLowerCase());
+      }
+      return true;
     })
     .filter(t => {
       if (!searchQuery) return true
@@ -232,7 +254,8 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
   const exportPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(18);
-    doc.text(`Complaints Report - ${statusFilter}${dateFilter ? ` (${dateFilter})` : ''}`, 14, 22);
+    const filterDesc = filterType !== 'ALL' && filterValue ? ` (${filterType}: ${filterValue})` : '';
+    doc.text(`Complaints Report - RESOLVED${filterDesc}`, 14, 22);
     
     const tableData = filtered.map(t => [
       t.id,
@@ -252,7 +275,8 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
       headStyles: { fillColor: [14, 165, 233] },
     });
 
-    doc.save(`complaints-${statusFilter.toLowerCase()}${dateFilter ? `-${dateFilter}` : ''}.pdf`);
+    const fileSuffix = filterType !== 'ALL' && filterValue ? `-${filterType.toLowerCase()}-${filterValue.replace(/[^a-zA-Z0-9]/g, '')}` : '';
+    doc.save(`resolved-complaints${fileSuffix}.pdf`);
   };
 
   const counts: Record<string, number> = {
@@ -310,13 +334,58 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
           </div>
           
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <input 
-              type="date"
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-              className="form-input"
-              style={{ height: '32px', fontSize: '12px', padding: '0 12px', width: 'auto', background: 'var(--color-bg-card)' }}
-            />
+            <div style={{ position: 'relative' }}>
+              <button 
+                onClick={() => setIsFilterMenuOpen(!isFilterMenuOpen)}
+                className="btn btn-secondary btn-sm"
+                style={{ padding: '0 12px', height: '32px', display: 'flex', alignItems: 'center', gap: '6px' }}
+              >
+                <Filter size={14} />
+                Filter
+              </button>
+
+              {isFilterMenuOpen && (
+                <div style={{
+                  position: 'absolute', right: 0, top: '100%', marginTop: '8px',
+                  background: 'var(--color-bg-card)', border: '1px solid var(--color-border)',
+                  borderRadius: '8px', padding: '16px', width: '260px', zIndex: 100,
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', gap: '12px'
+                }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '11px', color: 'var(--color-text-muted)', marginBottom: '4px' }}>Filter By</label>
+                    <select 
+                      className="form-input" 
+                      style={{ height: '32px', fontSize: '12px', width: '100%' }} 
+                      value={filterType} 
+                      onChange={e => { setFilterType(e.target.value); setFilterValue(''); }}
+                    >
+                      <option value="ALL">All Complaints</option>
+                      <option value="DATE">Specific Date</option>
+                      <option value="MONTH">Specific Month</option>
+                      <option value="YEAR">Specific Year</option>
+                      <option value="NAME">Customer Name</option>
+                      <option value="TICKET">Ticket ID</option>
+                    </select>
+                  </div>
+                  
+                  {filterType !== 'ALL' && (
+                    <div>
+                      <label style={{ display: 'block', fontSize: '11px', color: 'var(--color-text-muted)', marginBottom: '4px' }}>Value</label>
+                      {filterType === 'DATE' && <input type="date" className="form-input" style={{ height: '32px', width: '100%' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'MONTH' && <input type="month" className="form-input" style={{ height: '32px', width: '100%' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'YEAR' && <input type="number" placeholder="YYYY" className="form-input" style={{ height: '32px', width: '100%' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'NAME' && <input type="text" placeholder="Enter name..." className="form-input" style={{ height: '32px', width: '100%' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                      {filterType === 'TICKET' && <input type="text" placeholder="Enter ticket ID..." className="form-input" style={{ height: '32px', width: '100%' }} value={filterValue} onChange={e => setFilterValue(e.target.value)} />}
+                    </div>
+                  )}
+                  
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4px' }}>
+                    <button className="btn btn-primary btn-sm" style={{ padding: '0 16px', height: '28px' }} onClick={() => setIsFilterMenuOpen(false)}>Apply</button>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={exportPDF}
               className="btn btn-secondary btn-sm"
