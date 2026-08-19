@@ -350,7 +350,6 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
               onClick={() => setStatusFilter('RESOLVED')}
               className={`btn btn-sm ${statusFilter === 'RESOLVED' ? '' : 'btn-secondary'}`}
               style={{
-                fontSize: '11px',
                 position: 'relative',
                 ...(statusFilter === 'RESOLVED' ? {
                   background: 'rgba(16, 185, 129, 0.9)',
@@ -360,11 +359,11 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                 } : {})
               }}
             >
-              Resolved History
+              Resolved
               <span style={{
-                marginLeft: '6px', padding: '1px 6px', borderRadius: '10px',
+                marginLeft: '6px', padding: '2px 6px', borderRadius: '10px',
                 background: statusFilter === 'RESOLVED' ? 'rgba(255,255,255,0.2)' : 'rgba(100,116,139,0.2)',
-                fontSize: '10px',
+                fontSize: '11px',
               }}>{counts['RESOLVED'] ?? 0}</span>
             </button>
           </div>
