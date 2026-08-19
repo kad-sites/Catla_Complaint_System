@@ -101,19 +101,19 @@ export default function PulseDesk() {
     <div className="-m-[28px] px-6 pb-12 h-[100dvh] font-sans text-slate-300 flex flex-col" style={{ backgroundColor: 'var(--color-bg-app)' }}>
       {/* KPI Banner */}
       <div className="flex justify-center items-center gap-6 shrink-0" style={{ paddingTop: '11px', paddingBottom: '32px' }}>
-        <div className="flex items-center gap-2 px-12 h-[36px] rounded-md bg-red-950/80 border border-red-900/50">
+        <div className="flex items-center gap-2 h-[36px] rounded-md bg-red-950/80 border border-red-900/50" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
           <CircleDashed size={14} className="text-red-400" />
           <span className="text-[10px] text-red-100 uppercase tracking-widest font-bold">Open</span>
           <span className="text-[15px] font-black text-white ml-1">{openCount}</span>
         </div>
 
-        <div className="flex items-center gap-2 px-12 h-[36px] rounded-md bg-blue-950/80 border border-blue-900/50">
+        <div className="flex items-center gap-2 h-[36px] rounded-md bg-blue-950/80 border border-blue-900/50" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
           <Zap size={14} className="text-blue-400" />
           <span className="text-[10px] text-blue-100 uppercase tracking-widest font-bold">Working</span>
           <span className="text-[15px] font-black text-white ml-1">{workingCount}</span>
         </div>
 
-        <div className="flex items-center gap-2 px-12 h-[36px] rounded-md bg-emerald-950/80 border border-emerald-900/50">
+        <div className="flex items-center gap-2 h-[36px] rounded-md bg-emerald-950/80 border border-emerald-900/50" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
           <CheckCircle2 size={14} className="text-emerald-400" />
           <span className="text-[10px] text-emerald-100 uppercase tracking-widest font-bold">Closed</span>
           <span className="text-[15px] font-black text-white ml-1">{closedCount}</span>
