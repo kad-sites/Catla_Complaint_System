@@ -72,7 +72,10 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const tab = params.get('tab');
-      if (tab) setStatusFilter(tab);
+      if (tab) {
+        setStatusFilter(tab);
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
     }
   }, [])
 
