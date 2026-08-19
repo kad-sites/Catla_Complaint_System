@@ -100,7 +100,7 @@ export default function PulseDesk() {
   return (
     <div className="-m-[28px] p-6 min-h-screen font-sans text-slate-300" style={{ backgroundColor: 'var(--color-bg-app)' }}>
       {/* KPI Banner */}
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-8 pt-4">
         <div className="flex items-center gap-6 px-6 py-2 rounded-full shadow-lg" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
           <div className="flex items-center gap-2">
             <CircleDashed size={10} className="text-red-400" />
@@ -123,7 +123,7 @@ export default function PulseDesk() {
       </div>
 
       {/* 4-Column Waterfall Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 h-[calc(100vh-160px)]">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 h-[calc(100vh-120px)]">
         
         {/* PANEL 1: CUSTOMERS (Older) */}
         <div className="flex flex-col rounded-xl p-3 shadow-lg relative h-full" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
