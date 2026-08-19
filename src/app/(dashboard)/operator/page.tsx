@@ -285,8 +285,11 @@ export default function OperatorConsole() {
       slaHours: slaHours,
     })
 
-    // Send Twilio SMS in background
-    sendTicketSMS(customer.phone, ticketNum, customer.name)
+      // Send Twilio SMS in background and catch errors explicitly
+      const smsRes = await sendTicketSMS(customer.phone, ticketNum, customer.name)
+      if (smsRes && !smsRes.success) {
+        alert(`Warning: Complaint saved, but WhatsApp failed to send!\nReason: ${smsRes.error}`)
+      }
 
     // Send Telegram alert in background
     const isPremium = ['COMMERCIAL', 'ENTERPRISE', 'GOVERNMENT'].includes(customer.category?.toUpperCase());
