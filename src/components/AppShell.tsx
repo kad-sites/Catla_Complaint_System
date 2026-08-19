@@ -87,105 +87,102 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
   return (
     <div className="app-layout">
       {/* Sidebar */}
-      {pathname !== '/admin/pulsedesk' ? (
-        <aside className="app-sidebar">
-          <div className="sidebar-brand" style={{ padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '12px' }}>
-            <img 
-              src="/dashboard-logo.png" 
-              alt="Support"
-              style={{ width: '40px', height: '40px', objectFit: 'contain' }}
-            />
+      <aside className="app-sidebar" style={{ width: pathname === '/admin/pulsedesk' ? '80px' : '208px', transition: 'width 0.3s ease' }}>
+        <div className="sidebar-brand" style={{ padding: pathname === '/admin/pulsedesk' ? '16px 0' : '16px 24px', display: 'flex', alignItems: 'center', justifyContent: pathname === '/admin/pulsedesk' ? 'center' : 'flex-start', gap: '12px' }}>
+          <img 
+            src="/dashboard-logo.png" 
+            alt="Support"
+            style={{ width: '40px', height: '40px', objectFit: 'contain', cursor: pathname === '/admin/pulsedesk' ? 'pointer' : 'default' }}
+            onClick={() => { if(pathname === '/admin/pulsedesk') window.location.href='/admin' }}
+          />
+          {pathname !== '/admin/pulsedesk' && (
             <img 
               src="/resonova_logo_horizontal.png" 
               alt="Resonova Complaint Management System" 
               style={{ maxWidth: '120px', height: 'auto', objectFit: 'contain' }} 
             />
-          </div>
+          )}
+        </div>
 
-          <nav className="sidebar-nav">
-            {NAV_ITEMS.map((section) => (
-              <React.Fragment key={section.label}>
-                <div className="sidebar-section-title">{section.label}</div>
-                {section.items.map((item) => {
-                  const Icon = item.icon
-                  const isActive = pathname === item.href || (item.href !== '/director' && pathname?.startsWith(item.href + '/'))
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`sidebar-link ${isActive ? 'active' : ''}`}
-                      style={{ position: 'relative' }}
-                    >
-                      <Icon />
-                      <span>{item.label}</span>
-                      {item.badge && <span className="sidebar-badge">{item.badge}</span>}
-                    </Link>
-                  )
-                })}
-              </React.Fragment>
-            ))}
-          </nav>
+        <nav className="sidebar-nav" style={{ padding: pathname === '/admin/pulsedesk' ? '16px 8px' : '16px 12px' }}>
+          {NAV_ITEMS.map((section) => (
+            <React.Fragment key={section.label}>
+              {pathname !== '/admin/pulsedesk' && <div className="sidebar-section-title">{section.label}</div>}
+              {section.items.map((item) => {
+                const Icon = item.icon
+                const isActive = pathname === item.href || (item.href !== '/director' && pathname?.startsWith(item.href + '/'))
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`sidebar-link ${isActive ? 'active' : ''}`}
+                    style={{ position: 'relative', justifyContent: pathname === '/admin/pulsedesk' ? 'center' : 'flex-start', padding: pathname === '/admin/pulsedesk' ? '12px' : '10px 14px' }}
+                    title={pathname === '/admin/pulsedesk' ? item.label : undefined}
+                  >
+                    <Icon />
+                    {pathname !== '/admin/pulsedesk' && <span>{item.label}</span>}
+                    {(item.badge && pathname !== '/admin/pulsedesk') && <span className="sidebar-badge">{item.badge}</span>}
+                  </Link>
+                )
+              })}
+            </React.Fragment>
+          ))}
+        </nav>
 
-          {/* User at bottom */}
+        {/* User at bottom */}
+        <div style={{
+          padding: pathname === '/admin/pulsedesk' ? '16px 0' : '16px 20px',
+          borderTop: '1px solid var(--color-border)',
+          display: 'flex',
+          flexDirection: pathname === '/admin/pulsedesk' ? 'column' : 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '12px'
+        }}>
           <div style={{
-            padding: '16px 20px',
-            borderTop: '1px solid var(--color-border)',
+            width: '36px',
+            height: '36px',
+            borderRadius: '8px',
+            background: 'var(--color-accent)',
             display: 'flex',
             alignItems: 'center',
-            gap: '12px'
+            justifyContent: 'center',
+            fontWeight: 700,
+            fontSize: '13px',
+            color: 'white',
+            textTransform: 'uppercase'
           }}>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              background: 'var(--color-accent)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 700,
-              fontSize: '13px',
-              color: 'white',
-              textTransform: 'uppercase'
-            }}>
-              {userRole ? userRole.substring(0, 2) : 'ZA'}
-            </div>
+            {userRole ? userRole.substring(0, 2) : 'ZA'}
+          </div>
+          {pathname !== '/admin/pulsedesk' && (
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', textTransform: 'capitalize' }}>
                 {userRole === 'admin' ? 'Administrator' : userRole || 'Manager'}
               </div>
               <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>Online</div>
             </div>
-            <button 
-              onClick={() => {
-                localStorage.removeItem('userRole');
-                window.location.href = '/';
-              }}
-              title="Logout"
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--color-text-muted)',
-                cursor: 'pointer',
-                padding: '4px'
-              }}
-            >
-              <LogOut size={16} />
-            </button>
-          </div>
-        </aside>
-      ) : (
-        <Link href="/admin" style={{ position: 'fixed', top: '16px', left: '24px', zIndex: 50 }}>
-          <img 
-            src="/dashboard-logo.png" 
-            alt="Support"
-            style={{ width: '40px', height: '40px', objectFit: 'contain' }}
-            title="Return to Dashboard"
-          />
-        </Link>
-      )}
+          )}
+          <button 
+            onClick={() => {
+              localStorage.removeItem('userRole');
+              window.location.href = '/';
+            }}
+            title="Logout"
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--color-text-muted)',
+              cursor: 'pointer',
+              padding: '4px'
+            }}
+          >
+            <LogOut size={16} />
+          </button>
+        </div>
+      </aside>
 
       {/* Main Content */}
-      <div className="app-main">
+      <div className="app-main" style={{ marginLeft: pathname === '/admin/pulsedesk' ? '80px' : '208px', transition: 'margin-left 0.3s ease' }}>
         {/* Top Bar */}
         {pathname !== '/admin/pulsedesk' && (
           <header className="app-topbar">
