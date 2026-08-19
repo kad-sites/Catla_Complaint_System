@@ -126,7 +126,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
           <img 
             src="/dashboard-logo.png" 
             alt="Support"
-            style={{ width: '40px', height: '40px', objectFit: 'contain', cursor: isPulseDesk ? 'pointer' : 'default', flexShrink: 0 }}
+            style={{ width: '40px', height: '40px', objectFit: 'contain', cursor: isPulseDesk ? 'pointer' : 'default', flexShrink: 0, transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1 }}
             onClick={() => { if(isPulseDesk) window.location.href='/admin' }}
           />
           <img 
