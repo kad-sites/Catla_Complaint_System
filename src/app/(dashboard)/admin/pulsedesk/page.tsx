@@ -98,7 +98,7 @@ export default function PulseDesk() {
   const techPanel2 = techFeed.slice(Math.max(0, techFeed.length - 5))
 
   return (
-    <div className="-m-[28px] p-6 min-h-[calc(100vh-64px)] bg-[#151a23] font-sans text-slate-300">
+    <div className="-m-[28px] p-6 min-h-screen bg-[#151a23] font-sans text-slate-300">
       {/* Header & KPIs */}
       <div className="flex items-center justify-between mb-8">
         <div>

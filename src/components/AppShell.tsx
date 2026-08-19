@@ -176,76 +176,78 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
       {/* Main Content */}
       <div className="app-main">
         {/* Top Bar */}
-        <header className="app-topbar">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'center'
-            }}>
-              <Search size={16} style={{ position: 'absolute', left: '12px', color: 'var(--color-text-muted)' }} />
-              <input
-                type="text"
-                placeholder="Search tickets, customers..."
-                className="form-input"
-                style={{
-                  paddingLeft: '36px',
-                  width: '320px',
-                  height: '38px',
-                  fontSize: '13px',
-                  background: 'var(--color-bg-surface)',
-                  borderColor: 'var(--color-border)'
-                }}
-              />
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 12px',
-              borderRadius: '6px',
-              background: 'rgba(16, 185, 129, 0.1)',
-              border: '1px solid rgba(16, 185, 129, 0.2)',
-              fontSize: '12px',
-              fontWeight: 600,
-              color: '#34d399'
-            }}>
-              <span style={{
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
-                background: '#10b981',
-                boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)'
-              }}></span>
-              System Online
+        {pathname !== '/admin/pulsedesk' && (
+          <header className="app-topbar">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <Search size={16} style={{ position: 'absolute', left: '12px', color: 'var(--color-text-muted)' }} />
+                <input
+                  type="text"
+                  placeholder="Search tickets, customers..."
+                  className="form-input"
+                  style={{
+                    paddingLeft: '36px',
+                    width: '320px',
+                    height: '38px',
+                    fontSize: '13px',
+                    background: 'var(--color-bg-surface)',
+                    borderColor: 'var(--color-border)'
+                  }}
+                />
+              </div>
             </div>
 
-            <button style={{
-              position: 'relative',
-              background: 'var(--color-bg-input)',
-              border: '1px solid var(--color-border)',
-              borderRadius: '8px',
-              padding: '8px',
-              cursor: 'pointer',
-              color: 'var(--color-text-secondary)'
-            }}>
-              <Bell size={18} />
-              <span style={{
-                position: 'absolute',
-                top: '4px',
-                right: '4px',
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                background: '#ef4444',
-                border: '2px solid var(--color-bg-app)'
-              }}></span>
-            </button>
-          </div>
-        </header>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 12px',
+                borderRadius: '6px',
+                background: 'rgba(16, 185, 129, 0.1)',
+                border: '1px solid rgba(16, 185, 129, 0.2)',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#34d399'
+              }}>
+                <span style={{
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  background: '#10b981',
+                  boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)'
+                }}></span>
+                System Online
+              </div>
+
+              <button style={{
+                position: 'relative',
+                background: 'var(--color-bg-input)',
+                border: '1px solid var(--color-border)',
+                borderRadius: '8px',
+                padding: '8px',
+                cursor: 'pointer',
+                color: 'var(--color-text-secondary)'
+              }}>
+                <Bell size={18} />
+                <span style={{
+                  position: 'absolute',
+                  top: '4px',
+                  right: '4px',
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: '#ef4444',
+                  border: '2px solid var(--color-bg-app)'
+                }}></span>
+              </button>
+            </div>
+          </header>
+        )}
 
         {/* Page Content */}
         <main className="app-content">
