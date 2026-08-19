@@ -43,6 +43,7 @@ export default function AddCustomerPage() {
       const parsed = existing ? JSON.parse(existing) : []
       parsed.push(newCustomer)
       localStorage.setItem('custom_customers', JSON.stringify(parsed))
+      window.dispatchEvent(new Event('customers_updated'))
       setSuccess(true)
       setName('')
       setPhone('+91 ')

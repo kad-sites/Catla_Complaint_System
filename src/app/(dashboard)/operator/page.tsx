@@ -101,24 +101,42 @@ export default function OperatorConsole() {
   const [customer, setCustomer] = useState<(typeof MOCK_CUSTOMERS)[0] | null>(null)
   
   useEffect(() => {
-    try {
-      const custom = localStorage.getItem('custom_customers')
-      if (custom) {
-        let parsed = JSON.parse(custom)
-        
-        // Auto-remove any 'anupam' test customers requested by the user
-        const originalLength = parsed.length
-        parsed = parsed.filter((c: any) => !c.name.toLowerCase().includes('anupam'))
-        if (parsed.length !== originalLength) {
-          localStorage.setItem('custom_customers', JSON.stringify(parsed))
+    const loadCustomers = () => {
+      try {
+        const custom = localStorage.getItem('custom_customers')
+        if (custom) {
+          let parsed = JSON.parse(custom)
+          
+          // Auto-remove any 'anupam' test customers requested by the user
+          const originalLength = parsed.length
+          parsed = parsed.filter((c: any) => !c.name.toLowerCase().includes('anupam'))
+          if (parsed.length !== originalLength) {
+            localStorage.setItem('custom_customers', JSON.stringify(parsed))
+          }
+          setAllCustomers([...MOCK_CUSTOMERS, ...parsed])
+        } else {
+          setAllCustomers(MOCK_CUSTOMERS)
         }
-
-        setAllCustomers([...MOCK_CUSTOMERS, ...parsed])
-      } else {
+      } catch (e) {
         setAllCustomers(MOCK_CUSTOMERS)
       }
-    } catch {
-      setAllCustomers(MOCK_CUSTOMERS)
+    }
+
+    loadCustomers()
+
+    // Listen for changes from other tabs
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === 'custom_customers') loadCustomers()
+    }
+    window.addEventListener('storage', handleStorage)
+    
+    // Also listen for a custom event in case it's in the same tab
+    const handleCustomEvent = () => loadCustomers()
+    window.addEventListener('customers_updated', handleCustomEvent)
+
+    return () => {
+      window.removeEventListener('storage', handleStorage)
+      window.removeEventListener('customers_updated', handleCustomEvent)
     }
   }, [])
   
@@ -166,9 +184,10 @@ export default function OperatorConsole() {
     if (searchTimeout.current) clearTimeout(searchTimeout.current)
     searchTimeout.current = setTimeout(() => {
       const q = searchQuery.toLowerCase()
+      const qClean = q.replace(/\s+/g, '')
       const results = allCustomers.filter(c =>
         c.name.toLowerCase().includes(q) ||
-        c.phone.includes(q) ||
+        c.phone.replace(/\s+/g, '').includes(qClean) ||
         c.smartguardId.toLowerCase().includes(q)
       )
       setSearchResults(results)
