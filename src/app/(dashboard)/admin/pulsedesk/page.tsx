@@ -100,25 +100,23 @@ export default function PulseDesk() {
   return (
     <div className="-m-[28px] p-6 min-h-screen font-sans text-slate-300 flex flex-col" style={{ backgroundColor: 'var(--color-bg-app)' }}>
       {/* KPI Banner */}
-      <div className="flex justify-center mb-6 pt-2 shrink-0">
-        <div className="flex items-center gap-6 px-6 py-2 rounded-full shadow-lg" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
-          <div className="flex items-center gap-2">
-            <CircleDashed size={10} className="text-red-400" />
-            <span className="text-[9px] text-slate-400 uppercase tracking-wider">Open</span>
-            <span className="text-[11px] font-bold text-white">{openCount}</span>
-          </div>
-          <div className="w-px h-4 bg-slate-700/50"></div>
-          <div className="flex items-center gap-2">
-            <Zap size={10} className="text-blue-400" />
-            <span className="text-[9px] text-slate-400 uppercase tracking-wider">Working</span>
-            <span className="text-[11px] font-bold text-white">{workingCount}</span>
-          </div>
-          <div className="w-px h-4 bg-slate-700/50"></div>
-          <div className="flex items-center gap-2">
-            <CheckCircle2 size={10} className="text-emerald-400" />
-            <span className="text-[9px] text-slate-400 uppercase tracking-wider">Closed</span>
-            <span className="text-[11px] font-bold text-white">{closedCount}</span>
-          </div>
+      <div className="flex justify-center gap-4 mb-6 pt-2 shrink-0">
+        <div className="flex items-center gap-2 px-4 h-[30px] rounded-full shadow-lg bg-[#1a212d] border border-red-500/30">
+          <CircleDashed size={10} className="text-red-400" />
+          <span className="text-[9px] text-red-300 uppercase tracking-wider font-semibold">Open</span>
+          <span className="text-[11px] font-bold text-white ml-1">{openCount}</span>
+        </div>
+
+        <div className="flex items-center gap-2 px-4 h-[30px] rounded-full shadow-lg bg-[#1a212d] border border-blue-500/30">
+          <Zap size={10} className="text-blue-400" />
+          <span className="text-[9px] text-blue-300 uppercase tracking-wider font-semibold">Working</span>
+          <span className="text-[11px] font-bold text-white ml-1">{workingCount}</span>
+        </div>
+
+        <div className="flex items-center gap-2 px-4 h-[30px] rounded-full shadow-lg bg-[#1a212d] border border-emerald-500/30">
+          <CheckCircle2 size={10} className="text-emerald-400" />
+          <span className="text-[9px] text-emerald-300 uppercase tracking-wider font-semibold">Closed</span>
+          <span className="text-[11px] font-bold text-white ml-1">{closedCount}</span>
         </div>
       </div>
 
