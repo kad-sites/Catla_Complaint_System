@@ -33,6 +33,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
   const pathname = usePathname()
   const [complaintCount, setComplaintCount] = React.useState<number>(0)
   const [userRole, setUserRole] = React.useState<string | null>(null)
+  const [isHovered, setIsHovered] = React.useState(false)
 
   React.useEffect(() => {
     setUserRole(localStorage.getItem('userRole'))
@@ -84,18 +85,26 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
     return { ...section, items: newItems };
   })
 
+  const isPulseDesk = pathname === '/admin/pulsedesk';
+  const isCollapsed = isPulseDesk && !isHovered;
+
   return (
     <div className="app-layout">
       {/* Sidebar */}
-      <aside className="app-sidebar" style={{ width: pathname === '/admin/pulsedesk' ? '80px' : '208px', transition: 'width 0.3s ease' }}>
-        <div className="sidebar-brand" style={{ padding: pathname === '/admin/pulsedesk' ? '16px 0' : '16px 24px', display: 'flex', alignItems: 'center', justifyContent: pathname === '/admin/pulsedesk' ? 'center' : 'flex-start', gap: '12px' }}>
+      <aside 
+        className="app-sidebar" 
+        style={{ width: isCollapsed ? '80px' : '208px', transition: 'width 0.3s ease', zIndex: 50 }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="sidebar-brand" style={{ padding: isCollapsed ? '16px 0' : '16px 24px', display: 'flex', alignItems: 'center', justifyContent: isCollapsed ? 'center' : 'flex-start', gap: '12px' }}>
           <img 
             src="/dashboard-logo.png" 
             alt="Support"
-            style={{ width: '40px', height: '40px', objectFit: 'contain', cursor: pathname === '/admin/pulsedesk' ? 'pointer' : 'default' }}
-            onClick={() => { if(pathname === '/admin/pulsedesk') window.location.href='/admin' }}
+            style={{ width: '40px', height: '40px', objectFit: 'contain', cursor: isPulseDesk ? 'pointer' : 'default' }}
+            onClick={() => { if(isPulseDesk) window.location.href='/admin' }}
           />
-          {pathname !== '/admin/pulsedesk' && (
+          {!isCollapsed && (
             <img 
               src="/resonova_logo_horizontal.png" 
               alt="Resonova Complaint Management System" 
@@ -104,10 +113,10 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
           )}
         </div>
 
-        <nav className="sidebar-nav" style={{ padding: pathname === '/admin/pulsedesk' ? '16px 8px' : '16px 12px' }}>
+        <nav className="sidebar-nav" style={{ padding: isCollapsed ? '16px 8px' : '16px 12px' }}>
           {NAV_ITEMS.map((section) => (
             <React.Fragment key={section.label}>
-              {pathname !== '/admin/pulsedesk' && <div className="sidebar-section-title">{section.label}</div>}
+              {!isCollapsed && <div className="sidebar-section-title">{section.label}</div>}
               {section.items.map((item) => {
                 const Icon = item.icon
                 const isActive = pathname === item.href || (item.href !== '/director' && pathname?.startsWith(item.href + '/'))
@@ -116,12 +125,12 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
                     key={item.href}
                     href={item.href}
                     className={`sidebar-link ${isActive ? 'active' : ''}`}
-                    style={{ position: 'relative', justifyContent: pathname === '/admin/pulsedesk' ? 'center' : 'flex-start', padding: pathname === '/admin/pulsedesk' ? '12px' : '10px 14px' }}
-                    title={pathname === '/admin/pulsedesk' ? item.label : undefined}
+                    style={{ position: 'relative', justifyContent: isCollapsed ? 'center' : 'flex-start', padding: isCollapsed ? '12px' : '10px 14px' }}
+                    title={isCollapsed ? item.label : undefined}
                   >
                     <Icon />
-                    {pathname !== '/admin/pulsedesk' && <span>{item.label}</span>}
-                    {(item.badge && pathname !== '/admin/pulsedesk') && <span className="sidebar-badge">{item.badge}</span>}
+                    {!isCollapsed && <span>{item.label}</span>}
+                    {(item.badge && !isCollapsed) && <span className="sidebar-badge">{item.badge}</span>}
                   </Link>
                 )
               })}
@@ -131,10 +140,10 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
 
         {/* User at bottom */}
         <div style={{
-          padding: pathname === '/admin/pulsedesk' ? '16px 0' : '16px 20px',
+          padding: isCollapsed ? '16px 0' : '16px 20px',
           borderTop: '1px solid var(--color-border)',
           display: 'flex',
-          flexDirection: pathname === '/admin/pulsedesk' ? 'column' : 'row',
+          flexDirection: isCollapsed ? 'column' : 'row',
           alignItems: 'center',
           justifyContent: 'center',
           gap: '12px'
@@ -154,7 +163,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
           }}>
             {userRole ? userRole.substring(0, 2) : 'ZA'}
           </div>
-          {pathname !== '/admin/pulsedesk' && (
+          {!isCollapsed && (
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', textTransform: 'capitalize' }}>
                 {userRole === 'admin' ? 'Administrator' : userRole || 'Manager'}
@@ -182,7 +191,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
       </aside>
 
       {/* Main Content */}
-      <div className="app-main" style={{ marginLeft: pathname === '/admin/pulsedesk' ? '80px' : '208px', transition: 'margin-left 0.3s ease' }}>
+      <div className="app-main" style={{ marginLeft: isPulseDesk ? '80px' : '208px', transition: 'margin-left 0.3s ease' }}>
         {/* Top Bar */}
         {pathname !== '/admin/pulsedesk' && (
           <header className="app-topbar">
