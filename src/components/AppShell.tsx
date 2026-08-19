@@ -66,7 +66,10 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
     }
   }, [])
 
-  const NAV_ITEMS = NAV_ITEMS_TEMPLATE.map(section => {
+  const isPulseDesk = pathname === '/admin/pulsedesk';
+  const isDeskUser = userRole === 'desk';
+  
+  let NAV_ITEMS = NAV_ITEMS_TEMPLATE.map(section => {
     let newItems = section.items;
     
     // Filter out Add Customer if not admin
@@ -86,8 +89,16 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
     return { ...section, items: newItems };
   })
 
-  const isPulseDesk = pathname === '/admin/pulsedesk';
-  const isCollapsed = isPulseDesk && !isHovered;
+  if (isDeskUser) {
+    NAV_ITEMS = [
+      { label: 'PULSE DESK', items: [
+        { href: '/admin/pulsedesk', icon: Activity, label: 'PulseDesk Live', badge: '' },
+        { href: '/director/complaints?tab=RESOLVED', icon: ListTodo, label: 'Resolved History', badge: '' }
+      ]}
+    ];
+  }
+
+  const isCollapsed = isPulseDesk && !isHovered && !isDeskUser;
 
   return (
     <div className="app-layout">
