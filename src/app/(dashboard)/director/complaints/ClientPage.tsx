@@ -339,8 +339,17 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
           <div>
             <button
               onClick={() => setStatusFilter('RESOLVED')}
-              className={`btn btn-sm ${statusFilter === 'RESOLVED' ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ fontSize: '11px', position: 'relative' }}
+              className={`btn btn-sm ${statusFilter === 'RESOLVED' ? '' : 'btn-secondary'}`}
+              style={{
+                fontSize: '11px',
+                position: 'relative',
+                ...(statusFilter === 'RESOLVED' ? {
+                  background: 'rgba(16, 185, 129, 0.9)',
+                  color: '#fff',
+                  borderColor: 'rgba(16, 185, 129, 0.5)',
+                  boxShadow: '0 0 15px rgba(16, 185, 129, 0.4)',
+                } : {})
+              }}
             >
               Resolved History
               <span style={{
