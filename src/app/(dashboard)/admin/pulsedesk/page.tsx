@@ -212,7 +212,7 @@ function CustomerCard({ item }: { item: FeedItem }) {
       
       <div className="grid grid-cols-[60px_1fr] gap-y-2 items-center">
         <div className="text-[8px] text-slate-500 flex items-center gap-1"><Users size={10}/> Cust</div>
-        <div className="text-[9px] text-white font-semibold">{item.customerName}</div>
+        <div className="text-[9px] text-white font-semibold tracking-wide">{item.customerName}</div>
         
         <div className="text-[8px] text-slate-500 flex items-center gap-1"><Phone size={10}/> Phone</div>
         <div className="text-[9px] text-slate-400 font-mono">{item.phone || 'N/A'}</div>
@@ -303,7 +303,7 @@ function TechCard({ item }: { item: FeedItem }) {
       
       <div className="grid grid-cols-[60px_1fr] gap-y-2 items-center">
         <div className="text-[8px] text-slate-500 flex items-center gap-1"><Users size={10}/> Tech</div>
-        <div className="text-[9px] text-white font-semibold">{item.techName}</div>
+        <div className="text-[9px] text-white font-semibold tracking-wide">{item.techName}</div>
         
         <div className="text-[8px] text-slate-500 flex items-center gap-1"><Phone size={10}/> Phone</div>
         <div className="text-[9px] text-slate-400 font-mono">{item.phone || 'N/A'}</div>
