@@ -109,9 +109,12 @@ export default function DirectorDashboard() {
     return () => window.removeEventListener('keydown', handler)
   }, [router])
 
-  const filteredTickets = statusFilter === 'ALL'
-    ? complaints
-    : complaints.filter(t => t.status === statusFilter)
+  const filteredTickets = complaints.filter(t => {
+    if (statusFilter === 'ALL') return t.status !== 'RESOLVED' && t.status !== 'CLOSED';
+    if (statusFilter === 'OPEN') return t.status === 'OPEN' || t.status === 'REJECTED';
+    if (statusFilter === 'IN_PROGRESS') return t.status === 'IN_PROGRESS' || t.status === 'ASSIGNED' || t.status === 'WORKING' || t.status === 'PREMIUM';
+    return t.status === statusFilter;
+  });
 
   return (
     <>
