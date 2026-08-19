@@ -64,6 +64,65 @@ function CategoryBadge({ category }: { category: string }) {
   return <span className={`category-badge ${map[category] || 'residential'}`}>{category}</span>
 }
 
+function LiveTechStatus({ ticket }: { ticket: any }) {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    if (ticket.techAccepted) return;
+    const interval = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(interval);
+  }, [ticket.techAccepted]);
+  
+  if (ticket.techAccepted) {
+    return <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>{ticket.tech} ✓</span>
+  }
+  if (ticket.assignedAt) {
+    const waitMs = now - ticket.assignedAt;
+    const waitColor = waitMs > 15 * 60000 ? 'var(--color-danger)' : waitMs > 5 * 60000 ? 'var(--color-warning)' : '#3b82f6';
+    return <span style={{ color: waitColor, fontWeight: 600 }}>{ticket.tech}</span>
+  }
+  return <span style={{ color: 'var(--color-text-primary)' }}>{ticket.tech}</span>
+}
+
+function LiveElapsed({ ticket }: { ticket: any }) {
+  const [now, setNow] = useState(Date.now());
+  const isResolved = ticket.status === 'RESOLVED' || ticket.status === 'CLOSED';
+
+  useEffect(() => {
+    if (isResolved) return;
+    const interval = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(interval);
+  }, [isResolved]);
+
+  if (ticket.createdAt && ticket.slaHours) {
+    const resolvedTimestamp = (isResolved && /^\d+$/.test(ticket.time)) ? parseInt(ticket.time) : (isResolved ? ticket.createdAt : now);
+    const elapsedMs = resolvedTimestamp - ticket.createdAt;
+    const slaMs = ticket.slaHours * 3600000;
+    const isBreached = elapsedMs > slaMs;
+    const secs = Math.floor(elapsedMs / 1000);
+    const h = Math.floor(secs / 3600);
+    const m = Math.floor((secs % 3600) / 60);
+    const s = secs % 60;
+    const elapsedStr = (h > 0 ? `${h}h ` : '') + (m > 0 ? `${m}m ` : '') + `${s}s`;
+    
+    return (
+      <div className={isBreached ? 'animate-pulse' : ''} style={{
+        fontWeight: 700,
+        color: isBreached ? 'var(--color-danger)' : 'var(--color-text-primary)'
+      }}>
+        <div style={{ fontSize: '13px' }}>{elapsedStr}</div>
+        <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontWeight: 400 }}>SLA: {ticket.slaHours}h</div>
+      </div>
+    )
+  }
+  
+  return (
+    <span style={{
+      fontWeight: 700,
+      color: ticket.slaPercent > 80 ? 'var(--color-danger)' : ticket.slaPercent > 50 ? 'var(--color-warning)' : 'var(--color-text-primary)',
+    }}>{ticket.sla}</span>
+  )
+}
+
 export default function ComplaintsDirectory({ initialComplaints, initialTechnicians }: { initialComplaints: any[], initialTechnicians: any[] }) {
   const router = useRouter()
   const [complaints, setComplaints] = useState<Complaint[]>([...initialComplaints, ...STATIC_COMPLAINTS])
@@ -77,7 +136,6 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [reassigningId, setReassigningId] = useState<string | null>(null)
   const [reassignState, setReassignState] = useState<{ id: string, tech: string, reason: string } | null>(null)
-  const [now, setNow] = useState(Date.now())
   const [userRole, setUserRole] = useState<string | null>(null)
   const lastMutationTime = React.useRef<number>(0)
 
@@ -87,6 +145,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
       if (e.key === 'Escape') {
         setReassignState(null)
         setExpandedId(null)
+        setIsFilterMenuOpen(false)
         return
       }
 
@@ -105,8 +164,6 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
   // Timer for dynamic timelapse and role check
   useEffect(() => {
     setUserRole(localStorage.getItem('userRole'))
-    const timer = setInterval(() => setNow(Date.now()), 1000)
-    return () => clearInterval(timer)
   }, [])
 
   // Poll server store for complaints and technicians
@@ -120,8 +177,16 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
           getUsers()
         ])
         if (isMounted && fetchStartTime >= lastMutationTime.current) {
-          setComplaints([...stored, ...STATIC_COMPLAINTS])
-          setTechnicians(users.filter((u: any) => u.role === 'TECHNICIAN' && u.active))
+          setComplaints(prev => {
+            const next = [...stored, ...STATIC_COMPLAINTS]
+            if (prev.length !== next.length) return next
+            return JSON.stringify(prev) === JSON.stringify(next) ? prev : next
+          })
+          setTechnicians(prev => {
+            const next = users.filter((u: any) => u.role === 'TECHNICIAN' && u.active)
+            if (prev.length !== next.length) return next
+            return JSON.stringify(prev) === JSON.stringify(next) ? prev : next
+          })
         }
       } catch {}
     }
@@ -459,38 +524,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                       </div>
                     </td>
                     <td style={{ padding: '12px 16px' }}>
-                      {(() => {
-                        if (ticket.createdAt && ticket.slaHours) {
-                          const isResolved = ticket.status === 'RESOLVED' || ticket.status === 'CLOSED';
-                          const resolvedTimestamp = (isResolved && /^\d+$/.test(ticket.time)) ? parseInt(ticket.time) : (isResolved ? ticket.createdAt : now);
-                          const elapsedMs = resolvedTimestamp - ticket.createdAt;
-                          const slaMs = ticket.slaHours * 3600000;
-                          const isBreached = elapsedMs > slaMs;
-                          const secs = Math.floor(elapsedMs / 1000);
-                          const h = Math.floor(secs / 3600);
-                          const m = Math.floor((secs % 3600) / 60);
-                          const s = secs % 60;
-                          const elapsedStr = (h > 0 ? `${h}h ` : '') + (m > 0 ? `${m}m ` : '') + `${s}s`;
-                          
-                          return (
-                            <div className={isBreached ? 'animate-pulse' : ''} style={{
-                              fontWeight: 700,
-                              color: isBreached ? 'var(--color-danger)' : 'var(--color-text-primary)'
-                            }}>
-                              <div style={{ fontSize: '13px' }}>{elapsedStr}</div>
-                              <div style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontWeight: 400 }}>SLA: {ticket.slaHours}h</div>
-                            </div>
-                          )
-                        } else {
-                          // Fallback for static mock data
-                          return (
-                            <span style={{
-                              fontWeight: 700,
-                              color: ticket.slaPercent > 80 ? 'var(--color-danger)' : ticket.slaPercent > 50 ? 'var(--color-warning)' : 'var(--color-text-primary)',
-                            }}>{ticket.sla}</span>
-                          )
-                        }
-                      })()}
+                      <LiveElapsed ticket={ticket} />
                     </td>
                     <td style={{ padding: '12px 16px' }}>
                       {ticket.tech === 'Unassigned' ? (
@@ -515,20 +549,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                           onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
                           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                         >
-                          {(() => {
-                            if (ticket.techAccepted) {
-                              return <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>{ticket.tech} ✓</span>
-                            }
-                            if (ticket.assignedAt) {
-                              const waitMs = now - ticket.assignedAt
-                              // > 15 mins = red, > 5 mins = yellow, else blue
-                              const waitColor = waitMs > 15 * 60000 ? 'var(--color-danger)' : waitMs > 5 * 60000 ? 'var(--color-warning)' : '#3b82f6'
-                              return (
-                                <span style={{ color: waitColor, fontWeight: 600 }}>{ticket.tech}</span>
-                              )
-                            }
-                            return <span style={{ color: 'var(--color-text-primary)' }}>{ticket.tech}</span>
-                          })()}
+                          <LiveTechStatus ticket={ticket} />
                           
                           {(!ticket.techAccepted && ticket.assignedAt) && (
                             <a 
