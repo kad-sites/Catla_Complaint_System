@@ -174,7 +174,7 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
           </div>
         </aside>
       ) : (
-        <Link href="/admin/dashboard" style={{ position: 'fixed', top: '16px', left: '24px', zIndex: 50 }}>
+        <Link href="/admin" style={{ position: 'fixed', top: '16px', left: '24px', zIndex: 50 }}>
           <img 
             src="/dashboard-logo.png" 
             alt="Support"
