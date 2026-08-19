@@ -308,8 +308,8 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '6px' }}>
-            {(['ALL', 'OPEN', 'IN_PROGRESS', 'BREACHED', 'PREMIUM', 'RESOLVED'] as const).map(s => {
+          <div style={{ display: 'flex', gap: '6px', flex: 1 }}>
+            {(['ALL', 'OPEN', 'IN_PROGRESS', 'BREACHED', 'PREMIUM'] as const).map(s => {
               const isPremium = s === 'PREMIUM';
               const pCount = counts['PREMIUM'] ?? 0;
               const premiumStyle = isPremium ? {
@@ -326,7 +326,7 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                 className={`btn btn-sm ${statusFilter === s && !isPremium ? 'btn-primary' : !isPremium ? 'btn-secondary' : ''}`}
                 style={{ fontSize: '11px', position: 'relative', ...premiumStyle }}
               >
-                {s === 'ALL' ? 'All' : s === 'IN_PROGRESS' ? 'Working' : s === 'PREMIUM' ? 'Premium' : s === 'RESOLVED' ? 'Resolved History' : s.charAt(0) + s.slice(1).toLowerCase()}
+                {s === 'ALL' ? 'All' : s === 'IN_PROGRESS' ? 'Working' : s === 'PREMIUM' ? 'Premium' : s.charAt(0) + s.slice(1).toLowerCase()}
                 <span style={{
                   marginLeft: '6px', padding: '1px 6px', borderRadius: '10px',
                   background: statusFilter === s ? 'rgba(255,255,255,0.2)' : 'rgba(100,116,139,0.2)',
@@ -334,6 +334,21 @@ export default function ComplaintsDirectory({ initialComplaints, initialTechnici
                 }}>{counts[s] ?? 0}</span>
               </button>
             )})}
+          </div>
+
+          <div>
+            <button
+              onClick={() => setStatusFilter('RESOLVED')}
+              className={`btn btn-sm ${statusFilter === 'RESOLVED' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ fontSize: '11px', position: 'relative' }}
+            >
+              Resolved History
+              <span style={{
+                marginLeft: '6px', padding: '1px 6px', borderRadius: '10px',
+                background: statusFilter === 'RESOLVED' ? 'rgba(255,255,255,0.2)' : 'rgba(100,116,139,0.2)',
+                fontSize: '10px',
+              }}>{counts['RESOLVED'] ?? 0}</span>
+            </button>
           </div>
         </div>
 
