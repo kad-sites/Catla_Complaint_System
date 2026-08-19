@@ -112,7 +112,7 @@ export default function ClientPage({ initialComplaints }: { initialComplaints: a
       {/* Close Button */}
       <button 
         onClick={() => router.push('/director')} 
-        className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors border border-transparent hover:border-slate-700"
+        className="absolute top-6 right-3 p-2 rounded-full hover:bg-red-950/50 text-red-500 hover:text-red-400 transition-colors"
         title="Close PulseDesk"
       >
         <X size={20} />
