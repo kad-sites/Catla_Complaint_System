@@ -93,30 +93,36 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
       {/* Sidebar */}
       <aside 
         className="app-sidebar" 
-        style={{ width: isCollapsed ? '80px' : '208px', transition: 'width 0.3s ease', zIndex: 50 }}
+        style={{ 
+          width: isCollapsed ? '80px' : '208px', 
+          transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)', 
+          zIndex: 50,
+          overflowX: 'hidden',
+          whiteSpace: 'nowrap'
+        }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="sidebar-brand" style={{ padding: isCollapsed ? '16px 0' : '16px 24px', display: 'flex', alignItems: 'center', justifyContent: isCollapsed ? 'center' : 'flex-start', gap: '12px' }}>
+        <div className="sidebar-brand" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <img 
             src="/dashboard-logo.png" 
             alt="Support"
-            style={{ width: '40px', height: '40px', objectFit: 'contain', cursor: isPulseDesk ? 'pointer' : 'default' }}
+            style={{ width: '40px', height: '40px', objectFit: 'contain', cursor: isPulseDesk ? 'pointer' : 'default', flexShrink: 0 }}
             onClick={() => { if(isPulseDesk) window.location.href='/admin' }}
           />
-          {!isCollapsed && (
-            <img 
-              src="/resonova_logo_horizontal.png" 
-              alt="Resonova Complaint Management System" 
-              style={{ maxWidth: '120px', height: 'auto', objectFit: 'contain' }} 
-            />
-          )}
+          <img 
+            src="/resonova_logo_horizontal.png" 
+            alt="Resonova Complaint Management System" 
+            style={{ maxWidth: '120px', height: 'auto', objectFit: 'contain', transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1 }} 
+          />
         </div>
 
-        <nav className="sidebar-nav" style={{ padding: isCollapsed ? '16px 8px' : '16px 12px' }}>
+        <nav className="sidebar-nav" style={{ padding: '16px 12px' }}>
           {NAV_ITEMS.map((section) => (
             <React.Fragment key={section.label}>
-              {!isCollapsed && <div className="sidebar-section-title">{section.label}</div>}
+              <div className="sidebar-section-title" style={{ transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1 }}>
+                {section.label}
+              </div>
               {section.items.map((item) => {
                 const Icon = item.icon
                 const isActive = pathname === item.href || (item.href !== '/director' && pathname?.startsWith(item.href + '/'))
@@ -125,12 +131,16 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
                     key={item.href}
                     href={item.href}
                     className={`sidebar-link ${isActive ? 'active' : ''}`}
-                    style={{ position: 'relative', justifyContent: isCollapsed ? 'center' : 'flex-start', padding: isCollapsed ? '12px' : '10px 14px' }}
+                    style={{ position: 'relative', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '12px' }}
                     title={isCollapsed ? item.label : undefined}
                   >
-                    <Icon />
-                    {!isCollapsed && <span>{item.label}</span>}
-                    {(item.badge && !isCollapsed) && <span className="sidebar-badge">{item.badge}</span>}
+                    <Icon style={{ flexShrink: 0 }} />
+                    <span style={{ transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1, flex: 1 }}>{item.label}</span>
+                    {item.badge && (
+                      <span className="sidebar-badge" style={{ transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1 }}>
+                        {item.badge}
+                      </span>
+                    )}
                   </Link>
                 )
               })}
@@ -140,12 +150,11 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
 
         {/* User at bottom */}
         <div style={{
-          padding: isCollapsed ? '16px 0' : '16px 20px',
+          padding: '16px 20px',
           borderTop: '1px solid var(--color-border)',
           display: 'flex',
-          flexDirection: isCollapsed ? 'column' : 'row',
+          flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'center',
           gap: '12px'
         }}>
           <div style={{
@@ -159,18 +168,17 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
             fontWeight: 700,
             fontSize: '13px',
             color: 'white',
-            textTransform: 'uppercase'
+            textTransform: 'uppercase',
+            flexShrink: 0
           }}>
             {userRole ? userRole.substring(0, 2) : 'ZA'}
           </div>
-          {!isCollapsed && (
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', textTransform: 'capitalize' }}>
-                {userRole === 'admin' ? 'Administrator' : userRole || 'Manager'}
-              </div>
-              <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>Online</div>
+          <div style={{ flex: 1, transition: 'opacity 0.2s ease', opacity: isCollapsed ? 0 : 1, overflow: 'hidden' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-primary)', textTransform: 'capitalize' }}>
+              {userRole === 'admin' ? 'Administrator' : userRole || 'Manager'}
             </div>
-          )}
+            <div style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>Online</div>
+          </div>
           <button 
             onClick={() => {
               localStorage.removeItem('userRole');
@@ -182,7 +190,10 @@ export default function AppShell({ children, role = 'DIRECTOR' }: { children: Re
               border: 'none',
               color: 'var(--color-text-muted)',
               cursor: 'pointer',
-              padding: '4px'
+              padding: '4px',
+              transition: 'opacity 0.2s ease',
+              opacity: isCollapsed ? 0 : 1,
+              flexShrink: 0
             }}
           >
             <LogOut size={16} />
