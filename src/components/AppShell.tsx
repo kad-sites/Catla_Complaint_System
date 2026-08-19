@@ -20,6 +20,7 @@ const NAV_ITEMS_TEMPLATE = [
   ]},
   { label: 'FIELD', items: [
     { href: '/admin/field', icon: Wrench, label: 'Technician View', badge: '' },
+    { href: '/admin/pulsedesk', icon: Activity, label: 'PulseDesk Live', badge: '' },
   ]},
   { label: 'ADMINISTRATION', items: [
     { href: '/admin/users', icon: Users, label: 'Staff Management', badge: '' },
