@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getComplaints } from '@/actions/complaintStore'
-import { CheckCircle2, CircleDashed, Users, MapPin, Phone, Clock, FileWarning, Zap } from 'lucide-react'
+import { CheckCircle2, CircleDashed, Users, MapPin, Phone, Clock, FileWarning, Zap, X } from 'lucide-react'
 
 // Data models
 type FeedItem = {
@@ -108,7 +108,16 @@ export default function ClientPage({ initialComplaints }: { initialComplaints: a
   const techPanel2 = techFeed.slice(Math.max(0, techFeed.length - 5))
 
   return (
-    <div className="flex-1 p-6 pb-8 font-sans text-slate-300 flex flex-col h-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-app)' }}>
+    <div className="flex-1 p-6 pb-8 font-sans text-slate-300 flex flex-col h-full overflow-hidden relative" style={{ backgroundColor: 'var(--color-bg-app)' }}>
+      {/* Close Button */}
+      <button 
+        onClick={() => router.push('/director')} 
+        className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors border border-transparent hover:border-slate-700"
+        title="Close PulseDesk"
+      >
+        <X size={20} />
+      </button>
+
       {/* KPI Banner */}
       <div className="flex justify-center items-center gap-6 shrink-0" style={{ paddingTop: '6px', paddingBottom: '20px' }}>
         <div className="flex items-center gap-2 h-[36px] rounded-md bg-red-950/80 border border-red-900/50" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
