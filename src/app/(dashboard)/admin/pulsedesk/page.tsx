@@ -100,23 +100,23 @@ export default function PulseDesk() {
   return (
     <div className="-m-[28px] px-6 pb-12 h-[100dvh] font-sans text-slate-300 flex flex-col" style={{ backgroundColor: 'var(--color-bg-app)' }}>
       {/* KPI Banner */}
-      <div className="flex justify-center items-center gap-4 py-4 shrink-0">
-        <div className="flex items-center gap-2 px-5 h-[34px] rounded-md shadow-[0_0_15px_rgba(220,38,38,0.3)] bg-red-600">
-          <CircleDashed size={12} className="text-white/90" />
-          <span className="text-[10px] text-white/90 uppercase tracking-widest font-bold">Open</span>
-          <span className="text-sm font-black text-white ml-1 drop-shadow-sm">{openCount}</span>
+      <div className="flex justify-center items-center gap-6 py-4 shrink-0">
+        <div className="flex items-center gap-3 px-8 h-[36px] rounded-md bg-red-950/80 border border-red-900/50">
+          <CircleDashed size={14} className="text-red-400" />
+          <span className="text-[10px] text-red-100 uppercase tracking-widest font-bold">Open</span>
+          <span className="text-[15px] font-black text-white ml-1">{openCount}</span>
         </div>
 
-        <div className="flex items-center gap-2 px-5 h-[34px] rounded-md shadow-[0_0_15px_rgba(37,99,235,0.3)] bg-blue-600">
-          <Zap size={12} className="text-white/90" />
-          <span className="text-[10px] text-white/90 uppercase tracking-widest font-bold">Working</span>
-          <span className="text-sm font-black text-white ml-1 drop-shadow-sm">{workingCount}</span>
+        <div className="flex items-center gap-3 px-8 h-[36px] rounded-md bg-blue-950/80 border border-blue-900/50">
+          <Zap size={14} className="text-blue-400" />
+          <span className="text-[10px] text-blue-100 uppercase tracking-widest font-bold">Working</span>
+          <span className="text-[15px] font-black text-white ml-1">{workingCount}</span>
         </div>
 
-        <div className="flex items-center gap-2 px-5 h-[34px] rounded-md shadow-[0_0_15px_rgba(5,150,105,0.3)] bg-emerald-600">
-          <CheckCircle2 size={12} className="text-white/90" />
-          <span className="text-[10px] text-white/90 uppercase tracking-widest font-bold">Closed</span>
-          <span className="text-sm font-black text-white ml-1 drop-shadow-sm">{closedCount}</span>
+        <div className="flex items-center gap-3 px-8 h-[36px] rounded-md bg-emerald-950/80 border border-emerald-900/50">
+          <CheckCircle2 size={14} className="text-emerald-400" />
+          <span className="text-[10px] text-emerald-100 uppercase tracking-widest font-bold">Closed</span>
+          <span className="text-[15px] font-black text-white ml-1">{closedCount}</span>
         </div>
       </div>
 
