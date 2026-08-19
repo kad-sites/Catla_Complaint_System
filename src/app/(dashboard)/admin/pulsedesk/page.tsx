@@ -126,12 +126,12 @@ export default function PulseDesk() {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 h-[calc(100vh-120px)]">
         
         {/* PANEL 1: CUSTOMERS (Older) */}
-        <div className="flex flex-col rounded-xl p-3 shadow-lg relative h-full" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
-          <div className="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-semibold border-b border-slate-700/50 py-3 text-center">
+        <div className="flex flex-col rounded-xl shadow-lg relative h-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
+          <div className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 py-5 text-center bg-black/20">
             Customer Complaints
           </div>
-          <div className="flex-1 overflow-hidden relative">
-            <div className="absolute inset-0 flex flex-col gap-3 justify-start">
+          <div className="flex-1 overflow-hidden relative p-3">
+            <div className="absolute inset-x-3 inset-y-3 flex flex-col gap-3 justify-start">
               <AnimatePresence mode="popLayout">
                 {custPanel1.map(item => <CustomerCard key={item.id} item={item} />)}
               </AnimatePresence>
@@ -139,28 +139,13 @@ export default function PulseDesk() {
           </div>
         </div>
 
-        {/* PANEL 2: CUSTOMERS (Newer) */}
-        <div className="flex flex-col rounded-xl p-3 shadow-lg relative h-full" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
-          <div className="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-semibold border-b border-slate-700/50 py-3 text-center relative">
-            <span>Customer Complaints</span>
-            <span className="absolute right-2 top-1/2 -translate-y-1/2 animate-pulse text-emerald-500 text-[8px]">● LIVE</span>
-          </div>
-          <div className="flex-1 overflow-hidden relative">
-            <div className="absolute inset-0 flex flex-col gap-3 justify-start">
-              <AnimatePresence mode="popLayout">
-                {custPanel2.map(item => <CustomerCard key={item.id} item={item} />)}
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-
-        {/* PANEL 3: TECHNICIANS (Older) */}
-        <div className="flex flex-col rounded-xl p-3 shadow-lg relative h-full" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
-          <div className="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-semibold border-b border-slate-700/50 py-3 text-center">
+        {/* PANEL 2: TECHNICIANS (Older) */}
+        <div className="flex flex-col rounded-xl shadow-lg relative h-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
+          <div className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 py-5 text-center bg-black/20">
             Technician Assignment
           </div>
-          <div className="flex-1 overflow-hidden relative">
-            <div className="absolute inset-0 flex flex-col gap-3 justify-start">
+          <div className="flex-1 overflow-hidden relative p-3">
+            <div className="absolute inset-x-3 inset-y-3 flex flex-col gap-3 justify-start">
               <AnimatePresence mode="popLayout">
                 {techPanel1.map(item => <TechCard key={item.id} item={item} />)}
               </AnimatePresence>
@@ -168,14 +153,29 @@ export default function PulseDesk() {
           </div>
         </div>
 
-        {/* PANEL 4: TECHNICIANS (Newer) */}
-        <div className="flex flex-col rounded-xl p-3 shadow-lg relative h-full" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
-          <div className="text-[10px] uppercase tracking-widest text-slate-400 mb-3 font-semibold border-b border-slate-700/50 py-3 text-center relative">
-            <span>Technician Assignment</span>
-            <span className="absolute right-2 top-1/2 -translate-y-1/2 animate-pulse text-blue-500 text-[8px]">● LIVE</span>
+        {/* PANEL 3: CUSTOMERS (Newer) */}
+        <div className="flex flex-col rounded-xl shadow-lg relative h-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
+          <div className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 py-5 text-center relative bg-black/20">
+            <span>Customer Complaints</span>
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 animate-pulse text-emerald-500 text-[8px]">● LIVE</span>
           </div>
-          <div className="flex-1 overflow-hidden relative">
-            <div className="absolute inset-0 flex flex-col gap-3 justify-start">
+          <div className="flex-1 overflow-hidden relative p-3">
+            <div className="absolute inset-x-3 inset-y-3 flex flex-col gap-3 justify-start">
+              <AnimatePresence mode="popLayout">
+                {custPanel2.map(item => <CustomerCard key={item.id} item={item} />)}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+
+        {/* PANEL 4: TECHNICIANS (Newer) */}
+        <div className="flex flex-col rounded-xl shadow-lg relative h-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border)' }}>
+          <div className="text-[10px] uppercase tracking-widest text-slate-400 font-semibold border-b border-slate-700/50 py-5 text-center relative bg-black/20">
+            <span>Technician Assignment</span>
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 animate-pulse text-blue-500 text-[8px]">● LIVE</span>
+          </div>
+          <div className="flex-1 overflow-hidden relative p-3">
+            <div className="absolute inset-x-3 inset-y-3 flex flex-col gap-3 justify-start">
               <AnimatePresence mode="popLayout">
                 {techPanel2.map(item => <TechCard key={item.id} item={item} />)}
               </AnimatePresence>
