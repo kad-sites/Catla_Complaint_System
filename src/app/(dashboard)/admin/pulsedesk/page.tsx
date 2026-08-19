@@ -100,7 +100,7 @@ export default function PulseDesk() {
   return (
     <div className="-m-[28px] px-6 pb-12 h-[100dvh] font-sans text-slate-300 flex flex-col" style={{ backgroundColor: 'var(--color-bg-app)' }}>
       {/* KPI Banner */}
-      <div className="flex justify-center items-center gap-6 shrink-0" style={{ paddingTop: '11px', paddingBottom: '32px' }}>
+      <div className="flex justify-center items-center gap-6 shrink-0" style={{ paddingTop: '11px', paddingBottom: '20px' }}>
         <div className="flex items-center gap-2 h-[36px] rounded-md bg-red-950/80 border border-red-900/50" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
           <CircleDashed size={14} className="text-red-400" />
           <span className="text-[10px] text-red-100 uppercase tracking-widest font-bold">Open</span>
