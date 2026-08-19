@@ -198,7 +198,7 @@ export default function ComplaintsDirectory() {
 
   const handleRatePhoto = async (ticketId: string, score: number) => {
     setComplaints(prev => prev.map(t => t.id === ticketId ? { ...t, photoQualityScore: score } : t))
-    await updateComplaint(ticketId, { photoQualityScore: score })
+    /* updateComplaint(ticketId, { photoQualityScore: score }) - disabled until schema updated */
   }
 
   const filtered = complaints

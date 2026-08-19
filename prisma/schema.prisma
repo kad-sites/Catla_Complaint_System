@@ -175,4 +175,8 @@ model UIComplaint {
   address    String
   createdAt  Float
   slaHours   Float
+  resolvedAt      String?
+  resolutionNotes String?
+  materialsUsed   String?
+  photoQualityScore Float?
 }

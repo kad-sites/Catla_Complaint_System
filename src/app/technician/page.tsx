@@ -306,10 +306,7 @@ export default function TechnicianApp() {
     setStage('resolved')
     
     await updateComplaint(selectedTask.id, {
-      status: 'RESOLVED',
-      resolvedAt: new Date().toISOString(),
-      resolutionNotes,
-      materialsUsed
+      status: 'RESOLVED'
     })
 
     // Notify customer
@@ -382,7 +379,7 @@ export default function TechnicianApp() {
 
           {stage === 'pending' ? (
             <div style={{ marginBottom: '16px' }}>
-              <button onClick={async () => { setStage('enroute'); await sendAssignmentSMS(selectedTask.phone || '+919999999999', selectedTask.id, selectedTask.customer, loggedInTech!); await updateComplaint(selectedTask.id, { status: 'WORKING', acceptedAt: new Date().toISOString() }); lastMutationTime.current = Date.now(); }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
+              <button onClick={async () => { setStage('enroute'); await sendAssignmentSMS(selectedTask.phone || '+919999999999', selectedTask.id, selectedTask.customer, loggedInTech!); await updateComplaint(selectedTask.id, { status: 'WORKING' }); lastMutationTime.current = Date.now(); }} className="btn btn-primary" style={{ width: '100%', padding: '14px', fontSize: '15px', fontWeight: 700 }}>
                 Accept Job
               </button>
             </div>
