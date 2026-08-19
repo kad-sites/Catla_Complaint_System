@@ -51,7 +51,7 @@ export default function PulseDesk() {
         setClosedCount(closed)
 
         // Customers feed: Sort by createdAt
-        const custEvents = [...raw].sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)).map(c => ({
+        const custEvents = [...raw].filter(c => c.status !== 'RESOLVED' && c.status !== 'CLOSED').sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)).map(c => ({
           id: `c_${c.id}`,
           type: 'customer' as const,
           ticketId: c.id,
@@ -63,7 +63,7 @@ export default function PulseDesk() {
         }))
 
         // Tech feed: Sort by assignedAt or resolvedAt to show tech activity
-        const techEvents = [...raw].filter(c => c.tech && c.tech !== 'Unassigned').map(c => ({
+        const techEvents = [...raw].filter(c => c.tech && c.tech !== 'Unassigned' && c.status !== 'RESOLVED' && c.status !== 'CLOSED').map(c => ({
           id: `t_${c.id}_${c.status}`,
           type: 'tech' as const,
           ticketId: c.id,
@@ -192,10 +192,10 @@ function CustomerCard({ item }: { item: FeedItem }) {
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      exit={{ opacity: 0, scale: 1.1, filter: 'blur(8px)', y: -20, height: 0, margin: 0, padding: 0 }}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
       className="rounded-md p-3 shrink-0"
-      style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }}
+      style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)', overflow: 'hidden' }}
     >
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
@@ -283,10 +283,10 @@ function TechCard({ item }: { item: FeedItem }) {
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      exit={{ opacity: 0, scale: 1.1, filter: 'blur(8px)', y: -20, height: 0, margin: 0, padding: 0 }}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
       className="rounded-md p-3 shrink-0"
-      style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }}
+      style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)', overflow: 'hidden' }}
     >
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
