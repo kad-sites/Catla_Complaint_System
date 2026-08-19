@@ -128,10 +128,12 @@ export default function PulseDesk() {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 h-[calc(100vh-160px)]">
         
         {/* PANEL 1: CUSTOMERS (Older) */}
-        <div className="flex flex-col gap-2 relative">
-          <div className="text-[9px] uppercase tracking-widest text-slate-500 mb-2 font-semibold">Customer Complaints (Overflow)</div>
+        <div className="flex flex-col bg-[#1a212d] border border-[#2a3441] rounded-xl p-3 shadow-lg relative h-full">
+          <div className="text-[9px] uppercase tracking-widest text-slate-400 mb-3 font-semibold border-b border-slate-700/50 pb-2">
+            Customer Complaints
+          </div>
           <div className="flex-1 overflow-hidden relative">
-            <div className="absolute inset-0 flex flex-col gap-2 justify-end">
+            <div className="absolute inset-0 flex flex-col gap-3 justify-start">
               <AnimatePresence mode="popLayout">
                 {custPanel1.map(item => <CustomerCard key={item.id} item={item} />)}
               </AnimatePresence>
@@ -140,13 +142,12 @@ export default function PulseDesk() {
         </div>
 
         {/* PANEL 2: CUSTOMERS (Newer) */}
-        <div className="flex flex-col gap-2 relative border-r border-slate-800/50 pr-4">
-          <div className="text-[9px] uppercase tracking-widest text-slate-500 mb-2 font-semibold flex justify-between">
-            <span>Customer Complaints (Live)</span>
-            <span className="animate-pulse text-emerald-500">● LIVE</span>
+        <div className="flex flex-col bg-[#1a212d] border border-[#2a3441] rounded-xl p-3 shadow-lg relative h-full">
+          <div className="text-[9px] uppercase tracking-widest text-slate-400 mb-3 font-semibold flex justify-between border-b border-slate-700/50 pb-2">
+            <span>Customer Complaints</span>
           </div>
           <div className="flex-1 overflow-hidden relative">
-            <div className="absolute inset-0 flex flex-col gap-2 justify-end">
+            <div className="absolute inset-0 flex flex-col gap-3 justify-start">
               <AnimatePresence mode="popLayout">
                 {custPanel2.map(item => <CustomerCard key={item.id} item={item} />)}
               </AnimatePresence>
@@ -155,10 +156,12 @@ export default function PulseDesk() {
         </div>
 
         {/* PANEL 3: TECHNICIANS (Older) */}
-        <div className="flex flex-col gap-2 relative pl-2">
-          <div className="text-[9px] uppercase tracking-widest text-slate-500 mb-2 font-semibold">Technician Dispatch (Overflow)</div>
+        <div className="flex flex-col bg-[#1a212d] border border-[#2a3441] rounded-xl p-3 shadow-lg relative h-full">
+          <div className="text-[9px] uppercase tracking-widest text-slate-400 mb-3 font-semibold border-b border-slate-700/50 pb-2">
+            Technician Assignment
+          </div>
           <div className="flex-1 overflow-hidden relative">
-            <div className="absolute inset-0 flex flex-col gap-2 justify-end">
+            <div className="absolute inset-0 flex flex-col gap-3 justify-start">
               <AnimatePresence mode="popLayout">
                 {techPanel1.map(item => <TechCard key={item.id} item={item} />)}
               </AnimatePresence>
@@ -167,13 +170,12 @@ export default function PulseDesk() {
         </div>
 
         {/* PANEL 4: TECHNICIANS (Newer) */}
-        <div className="flex flex-col gap-2 relative">
-          <div className="text-[9px] uppercase tracking-widest text-slate-500 mb-2 font-semibold flex justify-between">
-            <span>Technician Dispatch (Live)</span>
-            <span className="animate-pulse text-blue-500">● LIVE</span>
+        <div className="flex flex-col bg-[#1a212d] border border-[#2a3441] rounded-xl p-3 shadow-lg relative h-full">
+          <div className="text-[9px] uppercase tracking-widest text-slate-400 mb-3 font-semibold flex justify-between border-b border-slate-700/50 pb-2">
+            <span>Technician Assignment</span>
           </div>
           <div className="flex-1 overflow-hidden relative">
-            <div className="absolute inset-0 flex flex-col gap-2 justify-end">
+            <div className="absolute inset-0 flex flex-col gap-3 justify-start">
               <AnimatePresence mode="popLayout">
                 {techPanel2.map(item => <TechCard key={item.id} item={item} />)}
               </AnimatePresence>
